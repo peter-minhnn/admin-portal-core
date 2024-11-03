@@ -1,5 +1,5 @@
 import { BaseResponseType } from "@/types/common.type";
-import axiosConfig from "@/shared/api/axios.config";
+import axiosConfig from "@/shared/configs/axios.config";
 
 export const useAxios = {
   get: async <T>(url: string, params: T | Object = {}) => {

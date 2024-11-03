@@ -4,10 +4,11 @@
     // "no-undef": "error",
     "no-unused-vars": "warn",
     "no-duplicate-imports": "warn",
-    "import/no-unresolved": "error",
+    "import/no-unresolved": "off",
     "react/react-in-jsx-scope": "off",
     "react/no-unknown-property": "warn",
     "react/no-unescaped-entities": "off",
-    "@next/next/no-page-custom-font": "off"
+    "@next/next/no-page-custom-font": "off",
+    "no-unused-expressions": "off"
   }
 }

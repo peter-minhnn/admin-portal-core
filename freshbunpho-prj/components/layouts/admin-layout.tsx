@@ -34,7 +34,7 @@ export const AdminLayout: FC<Props> = ({ children }) => {
     getSession().then((session) => {
       if (session) setUserInfo({ id: Number(session?.userId ?? 0) });
     });
-  }, []);
+  }, [setUserInfo]);
 
   return (
     <QueryClientProvider client={queryClient}>

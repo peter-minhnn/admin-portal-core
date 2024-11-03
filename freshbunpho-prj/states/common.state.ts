@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { UserType } from "@/types/user.type";
-import { ModalType } from "@/types/modal";
+import { ModalType } from "@/types/modal.type";
 
 /*
  *  USER STORE

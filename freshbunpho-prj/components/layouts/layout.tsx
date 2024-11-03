@@ -29,7 +29,7 @@ const Layout = ({ className, fixed = false, ...props }: LayoutProps) => {
     return () => div.removeEventListener("scroll", onScroll);
   }, []);
 
-  const contextData = useMemo(() => ({ offset, fixed }), []); // value is cached by useMemo
+  const contextData = useMemo(() => ({ offset, fixed }), [fixed, offset]); // value is cached by useMemo
 
   return (
     <LayoutContext.Provider value={contextData}>

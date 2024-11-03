@@ -10,18 +10,16 @@ import { login } from "@/actions";
 import { loginMessages } from "@/shared/messages";
 import get from "lodash/get";
 
-interface UserAuthFormProps extends HTMLAttributes<HTMLDivElement> {}
-
-export function LoginForm({ className, ...props }: UserAuthFormProps) {
+export function LoginForm({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
   const { pending } = useFormStatus();
   const [state, loginAction] = useActionState(login, undefined);
 
-  // useEffect(() => {
-  //   document.body.classList.add("overflow-hidden");
-  //   return () => {
-  //     document.body.classList.remove("overflow-hidden");
-  //   };
-  // });
+  useEffect(() => {
+    document.body.classList.add("overflow-hidden");
+    return () => {
+      document.body.classList.remove("overflow-hidden");
+    };
+  });
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
