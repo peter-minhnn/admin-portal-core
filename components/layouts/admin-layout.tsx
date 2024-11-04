@@ -10,7 +10,7 @@ import Sidebar from "@/components/layouts/sidebar";
 import Breadcrumbs from "@/components/layouts/breadcrumbs";
 import GlobalModal from "@/components/layouts/global-modal";
 import useIsCollapsed from "@/hooks/use-is-collapsed";
-import { getSession } from "@/actions";
+import { getSession } from "@/actions/cookies.action";
 import { useUserStore } from "@/states/common.state";
 
 const NextProgress = dynamic(

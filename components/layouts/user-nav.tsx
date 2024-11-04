@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { logout } from "@/actions";
+import { logout } from "@/actions/login.action";
 import {useTranslations} from "next-intl";
 
 export function UserNav() {

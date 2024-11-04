@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { getSession } from "@/actions";
+import { getSession } from "@/actions/cookies.action";
 
 interface IErrorResponse {
   code: number;

@@ -1,5 +1,5 @@
 import {NextRequest, NextResponse} from "next/server";
-import {getSession} from "@/actions";
+import {getSession} from "@/actions/cookies.action";
 import {pageRoutes} from "@/shared/routes/pages.route";
 import createMiddleware from "next-intl/middleware";
 import {routing} from "@/shared/configs/i18n/routing";

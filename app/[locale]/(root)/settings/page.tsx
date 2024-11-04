@@ -1,9 +1,8 @@
 import { Metadata } from "next";
-import { loginMessages } from "../../../../shared/messages";
 
 export const metadata: Metadata = {
-  title: loginMessages.title,
-  description: loginMessages.description,
+  title: "Settings",
+  description: "",
 };
 
 export default function SettingsPage() {

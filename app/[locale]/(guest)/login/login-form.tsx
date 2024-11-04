@@ -6,7 +6,7 @@ import { cn } from "@/shared/lib";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { login } from "@/actions";
+import { login } from "@/actions/login.action";
 import get from "lodash/get";
 import {useTranslations} from "next-intl";
 
