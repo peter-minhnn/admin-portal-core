@@ -39,23 +39,26 @@ export default function Nav({
 }: Readonly<NavProps>) {
   const renderLink = ({ sub, ...rest }: SideLink) => {
     const key = `${rest.title}-${rest.href}`;
-    if (isCollapsed && sub)
+    if (isCollapsed && sub) {
       return (
-        <NavLinkIconDropdown
-          {...rest}
-          sub={sub}
-          key={key}
-          closeNav={closeNav}
-        />
+          <NavLinkIconDropdown
+              {...rest}
+              sub={sub}
+              key={key}
+              closeNav={closeNav}
+          />
       );
+    }
 
-    if (isCollapsed)
+    if (isCollapsed) {
       return <NavLinkIcon {...rest} key={key} closeNav={closeNav} />;
+    }
 
-    if (sub)
+    if (sub) {
       return (
-        <NavLinkDropdown {...rest} sub={sub} key={key} closeNav={closeNav} />
+          <NavLinkDropdown {...rest} sub={sub} key={key} closeNav={closeNav} />
       );
+    }
 
     return <NavLink {...rest} key={key} closeNav={closeNav} />;
   };

@@ -13,6 +13,7 @@ export const pageRoutes = {
   sample: {
     input: "/samples/input",
     grid: "/samples/grid",
+    multipleSelector: "/samples/multiple-selector",
   },
   products: {
     list: "/products/list",

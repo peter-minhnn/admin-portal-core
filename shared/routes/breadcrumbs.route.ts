@@ -30,6 +30,20 @@ export const breadcrumbsRoutes: BreadCrumbType[] = [
   {
     id: "6",
     href: pageRoutes.sample.grid,
+    title: "samplePages",
+  },
+  {
+    id: "7",
+    href: pageRoutes.sample.grid,
     title: "grid",
+  },
+  {
+    id: "8",
+    href: pageRoutes.sample.multipleSelector,
+    title: "samplePages",
+  },{
+    id: "9",
+    href: pageRoutes.sample.multipleSelector,
+    title: "multipleSelector",
   },
 ];

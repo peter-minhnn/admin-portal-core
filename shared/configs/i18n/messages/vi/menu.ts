@@ -6,6 +6,7 @@ export const menuMessages = {
   samplePages: "Trang Mẫu",
   input: "Input",
   grid: "Grid",
+  multipleSelector: "Multiple Selector",
 };
 
 export default menuMessages;

@@ -1,10 +1,10 @@
 export type UserType = {
-  id: number;
+  id?: number;
   firstName?: string;
   lastName?: string;
   userName?: string;
   email?: string;
-  phoneNumber?: string;
+  phoneNumber: string;
   roleCode?: string;
   isActive?: boolean;
   isDeleted?: boolean;

@@ -5,6 +5,7 @@ const withNextIntl = createNextIntlPlugin("./shared/configs/i18n/i18n.ts");
 
 const nextConfig: NextConfig = {
   /* config options here */
+  output: "standalone",
   reactStrictMode: false,
   images: {
     remotePatterns: [
@@ -13,6 +14,9 @@ const nextConfig: NextConfig = {
         protocol: "https",
       },
     ],
+  },
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
   },
 };
 
