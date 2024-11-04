@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { login } from "@/actions/login.action";
 import get from "lodash/get";
-import {useTranslations} from "next-intl";
+import { useTranslations } from "next-intl";
 
 export function LoginForm({
   className,

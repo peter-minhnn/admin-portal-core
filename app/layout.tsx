@@ -27,22 +27,22 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   return (
-      <html lang="vi">
+    <html lang="vi">
       <head>
-        <meta charSet="UTF-8"/>
+        <meta charSet="UTF-8" />
         <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, maximum-scale=2"
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=2"
         />
-        <meta httpEquiv="x-ua-compatible" content="ie=edge"/>
+        <meta httpEquiv="x-ua-compatible" content="ie=edge" />
       </head>
       <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-          suppressHydrationWarning
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        suppressHydrationWarning
       >
-      {children}
-      <Toaster/>
+        {children}
+        <Toaster />
       </body>
-      </html>
+    </html>
   );
 }

@@ -12,7 +12,7 @@ import { sideLinks } from "@/shared/data/side-links";
 import { Layout } from "@/components/layouts/layout";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import {useTranslations} from "next-intl";
+import { useTranslations } from "next-intl";
 
 interface SidebarProps extends HTMLAttributes<HTMLElement> {
   isCollapsed: boolean;

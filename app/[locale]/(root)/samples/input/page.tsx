@@ -8,23 +8,23 @@ import {
   controlledInputCodes,
   disabledInputCodes,
   errorInlineInputCodes,
-  inputWithHookFormCodes
+  inputWithHookFormCodes,
 } from "@/shared/data/samples.data";
 import SyntaxHighlighter from "@/components/ui/syntax-highlighter";
-import {SubmitHandler, useForm} from "react-hook-form";
-import {useModal} from "@/hooks/use-modal";
-import {Button} from "@/components/ui/button";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useModal } from "@/hooks/use-modal";
+import { Button } from "@/components/ui/button";
 
 type InputType = {
-    example4: string;
-}
+  example4: string;
+};
 
 export default function InputExamplePage() {
   const [value, setValue] = useState("Input 1");
-  const {openModal} = useModal();
+  const { openModal } = useModal();
   const { register, handleSubmit } = useForm<InputType>({
     defaultValues: {
-      example4: ""
+      example4: "",
     },
   });
 
@@ -32,7 +32,7 @@ export default function InputExamplePage() {
     openModal({
       isOpen: false,
       title: "Form Input Data",
-      modalContent: <h1>{data.example4}</h1>
+      modalContent: <h1>{data.example4}</h1>,
     });
   };
 
@@ -63,12 +63,25 @@ export default function InputExamplePage() {
                   disabled
                   className="max-w-96"
                 />
-                  <Label htmlFor="example3">Error Inline Input</Label>
-                <Input id="example3" errorMessage={"This is an error message"} className="max-w-96" />
-                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
+                <Label htmlFor="example3">Error Inline Input</Label>
+                <Input
+                  id="example3"
+                  errorMessage={"This is an error message"}
+                  className="max-w-96"
+                />
+                <form
+                  onSubmit={handleSubmit(onSubmit)}
+                  className="flex flex-col gap-2"
+                >
                   <Label htmlFor="example4">Input With React Hook Form</Label>
-                  <Input id="example4" {...register("example4")} className="max-w-96" />
-                  <Button type="submit" variant="default" className="max-w-20">Submit</Button>
+                  <Input
+                    id="example4"
+                    {...register("example4")}
+                    className="max-w-96"
+                  />
+                  <Button type="submit" variant="default" className="max-w-20">
+                    Submit
+                  </Button>
                 </form>
               </div>
             </TabsContent>

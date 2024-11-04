@@ -1,15 +1,15 @@
 import { LoginForm } from "@/app/[locale]/(guest)/login/login-form";
 import Image from "next/image";
-import {useTranslations} from "next-intl";
-import {getTranslations} from "next-intl/server";
-import {metaObject} from "@/shared/configs";
+import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
+import { metaObject } from "@/shared/configs";
 
 export async function generateMetadata() {
   "use server";
-  const t = await getTranslations('metaDataMessages');
+  const t = await getTranslations("metaDataMessages");
 
   return {
-    ...metaObject(t('loginTitle')),
+    ...metaObject(t("loginTitle")),
   };
 }
 
@@ -51,9 +51,7 @@ export default function AuthenticationPage() {
               <h1 className="text-2xl font-semibold tracking-tight">
                 {t("welcome")}
               </h1>
-              <p className="text-sm text-muted-foreground">
-                {t("hint")}
-              </p>
+              <p className="text-sm text-muted-foreground">{t("hint")}</p>
             </div>
             <LoginForm />
           </div>

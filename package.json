@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --write freshbunpho-prj"
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",

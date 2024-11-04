@@ -1,3 +1,3 @@
-'use client';
+"use client";
 
-export { default as useCopyToClipboard } from 'react-use/lib/useCopyToClipboard';
+export { default as useCopyToClipboard } from "react-use/lib/useCopyToClipboard";

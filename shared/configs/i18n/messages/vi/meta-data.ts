@@ -1,5 +1,5 @@
 const metaDataMessages = {
-    loginTitle: 'Đăng nhập',
-}
+  loginTitle: "Đăng nhập",
+};
 
 export default metaDataMessages;

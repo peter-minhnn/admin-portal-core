@@ -4,8 +4,8 @@ import { z } from "zod";
 import { createSession, deleteSession } from "@/shared/lib/session";
 import { redirect } from "next/navigation";
 import { pageRoutes } from "@/shared/routes/pages.route";
-import {isEqual} from "lodash";
-import {getTranslations} from "next-intl/server";
+import { isEqual } from "lodash";
+import { getTranslations } from "next-intl/server";
 
 const testUser = {
   id: "1",
@@ -21,19 +21,22 @@ const loginSchema = z.object({
 export const login = async (prevState: unknown, formData: FormData) => {
   const t = await getTranslations("loginMessages");
 
-  const result = await loginSchema.safeParseAsync(Object.fromEntries(formData), {
-        errorMap(issue, ctx) {
-          let message: string = "";
+  const result = await loginSchema.safeParseAsync(
+    Object.fromEntries(formData),
+    {
+      errorMap(issue, ctx) {
+        let message: string = "";
 
-          if (isEqual(issue.path, ['phone'])) {
-            message = t('errors.phone');
-          } else if (isEqual(issue.path, ['password'])) {
-            message = t('errors.password');
-          }
-
-          return {message: message ?? ctx.defaultError};
+        if (isEqual(issue.path, ["phone"])) {
+          message = t("errors.phone");
+        } else if (isEqual(issue.path, ["password"])) {
+          message = t("errors.password");
         }
-      });
+
+        return { message: message ?? ctx.defaultError };
+      },
+    },
+  );
 
   if (!result.success) {
     return {

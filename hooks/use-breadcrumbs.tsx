@@ -1,4 +1,4 @@
-import {useTranslations} from "next-intl";
+import { useTranslations } from "next-intl";
 import { breadcrumbsRoutes } from "@/shared/routes/breadcrumbs.route";
 import { BreadCrumbType } from "@/components/layouts/breadcrumbs";
 import useCheckActiveNav from "@/hooks/use-check-active-nav";

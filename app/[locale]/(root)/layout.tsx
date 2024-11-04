@@ -1,13 +1,13 @@
 import { ReactNode } from "react";
 import AdminLayout from "@/components/layouts/admin-layout";
-import {Locale, locales} from "@/shared/configs/i18n/config";
-import {notFound} from "next/navigation";
-import {LocalesProvider} from "@/components/providers/locale-provider";
-import {setRequestLocale} from 'next-intl/server';
-import {useLocale} from "next-intl";
+import { Locale, locales } from "@/shared/configs/i18n/config";
+import { notFound } from "next/navigation";
+import { LocalesProvider } from "@/components/providers/locale-provider";
+import { setRequestLocale } from "next-intl/server";
+import { useLocale } from "next-intl";
 
 export function generateStaticParams() {
-  return locales.map((locale) => ({locale}));
+  return locales.map((locale) => ({ locale }));
 }
 
 export default function AuthorizationLayout({
@@ -24,8 +24,8 @@ export default function AuthorizationLayout({
   setRequestLocale(locale);
 
   return (
-      <LocalesProvider locale={locale as Locale}>
-        <AdminLayout>{children}</AdminLayout>
-      </LocalesProvider>
+    <LocalesProvider locale={locale as Locale}>
+      <AdminLayout>{children}</AdminLayout>
+    </LocalesProvider>
   );
 }
