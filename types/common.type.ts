@@ -10,13 +10,18 @@ export type ListResponseType<T> = {
   meta: MetaType;
 };
 
+export interface PaginationState {
+  pageIndex: number
+  pageSize: number
+}
+
 export type MetaType = {
   page: number;
   take: number;
-  itemCount: number;
-  pageCount: number;
-  hasPreviousPage: boolean;
-  hasNextPage: boolean;
+  itemCount?: number;
+  pageCount?: number;
+  hasPreviousPage?: boolean;
+  hasNextPage?: boolean;
 };
 
 export type CommonType = {

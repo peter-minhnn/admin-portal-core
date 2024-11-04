@@ -38,7 +38,7 @@ export default function InputExamplePage() {
 
   return (
     <>
-      <h2 className="text-lg font-bold md:text-xl">Input</h2>
+      <h2 className="text-lg font-bold md:text-xl">SAMPLE INPUT</h2>
       <div className="flex flex-col gap-12 lg:flex-row">
         <div className="flex-1">
           <Tabs defaultValue="preview">

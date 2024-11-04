@@ -12,5 +12,6 @@ export const pageRoutes = {
   settings: "/settings",
   sample: {
     input: "/samples/input",
+    grid: "/samples/grid",
   },
 };

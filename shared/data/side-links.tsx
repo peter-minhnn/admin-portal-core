@@ -5,6 +5,7 @@ import {
   IconSettings,
   IconUserShield,
   IconInputAi,
+    IconTable
 } from "@tabler/icons-react";
 import { ReactElement } from "react";
 import { pageRoutes } from "@/shared/routes/pages.route";
@@ -55,10 +56,16 @@ export const sideLinks = (t: any): SideLink[] => {
       icon: <IconComponents size={18} />,
       sub: [
         {
-          title: "Input",
+          title: t("input"),
           label: "",
           href: pageRoutes.sample.input,
           icon: <IconInputAi size={18} />,
+        },
+        {
+          title: t("grid"),
+          label: "",
+          href: pageRoutes.sample.grid,
+          icon: <IconTable size={18} />,
         },
       ],
     },
