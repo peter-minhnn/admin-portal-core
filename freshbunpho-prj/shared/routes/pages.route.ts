@@ -3,9 +3,14 @@ export const pageRoutes = {
     login: "/login",
     register: "/register",
   },
+  dashboard: "/dashboard",
   comingSoon: "/coming-soon",
   accessDenied: "/access-denied",
   notFound: "/not-found",
   maintenance: "/maintenance",
   blank: "/blank",
+  settings: "/settings",
+  sample: {
+    input: "/samples/input",
+  },
 };

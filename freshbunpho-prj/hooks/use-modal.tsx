@@ -1,7 +1,7 @@
 "use client";
 
 import { useModalStore } from "@/states/common.state";
-import { ModalType } from "@/types/modal";
+import { ModalType } from "@/types/modal.type";
 
 export function useModal() {
   const { modalProps, setModalOpen } = useModalStore();

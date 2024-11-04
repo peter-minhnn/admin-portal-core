@@ -4,16 +4,26 @@ export const breadcrumbsRoutes: BreadCrumbType[] = [
   {
     id: "1",
     href: "/dashboard",
-    title: "Trang chủ",
+    title: "dashboard",
   },
   {
     id: "2",
     href: "/products",
-    title: "Trang sản phẩm",
+    title: "products",
   },
   {
     id: "3",
     href: "/products/list",
-    title: "Danh sách sản phẩm",
+    title: "productsList",
+  },
+  {
+    id: "4",
+    href: "/samples/input",
+    title: "samplePages",
+  },
+  {
+    id: "5",
+    href: "/samples/input",
+    title: "input",
   },
 ];

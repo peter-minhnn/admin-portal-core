@@ -8,7 +8,7 @@ import {
   ResponsiveModalHeader,
   ResponsiveModalTitle,
   ResponsiveModalTrigger,
-} from "@/components/ui/modal";
+} from "@/components/ui/responsive-modal";
 
 export default function GlobalModal() {
   const { isOpen, title, modalContent, modalFooter, modalButton, customSize } =

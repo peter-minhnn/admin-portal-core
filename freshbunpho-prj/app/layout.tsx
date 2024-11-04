@@ -4,7 +4,6 @@ import { Toaster } from "react-hot-toast";
 import localFont from "next/font/local";
 import "react-day-picker/style.css";
 import "./globals.css";
-import { loginMessages } from "@/shared/messages";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -18,7 +17,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: loginMessages.webName,
+  title: "freshphởbún",
   description: "Chuyên cung cấp bún tươi, phở nóng",
 };
 
@@ -28,14 +27,22 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   return (
-    <html lang="en">
+      <html lang="vi">
+      <head>
+        <meta charSet="UTF-8"/>
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, maximum-scale=2"
+        />
+        <meta httpEquiv="x-ua-compatible" content="ie=edge"/>
+      </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        suppressHydrationWarning
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          suppressHydrationWarning
       >
-        {children}
-        <Toaster />
+      {children}
+      <Toaster/>
       </body>
-    </html>
+      </html>
   );
 }

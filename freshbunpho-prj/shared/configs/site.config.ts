@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import { OpenGraph } from "next/dist/lib/metadata/types/opengraph-types";
-import { loginMessages } from "@/shared/messages";
 
 enum MODE {
   DARK = "dark",
@@ -8,8 +7,8 @@ enum MODE {
 }
 
 export const siteConfig = {
-  title: `${loginMessages.webName} - Trang Quản Lý`,
-  description: loginMessages.webName,
+  title: `freshphởbún - Trang Quản Lý`,
+  description: "freshphởbún",
   // logo: logoImg,
   // icon: logoIconImg,
   mode: MODE.LIGHT,
@@ -22,19 +21,19 @@ export const metaObject = (
   description: string = siteConfig.description,
 ): Metadata => {
   return {
-    title: title ? `${title} - ${loginMessages.webName}` : siteConfig.title,
+    title: title ? `${title} - freshphởbún` : siteConfig.title,
     description,
     openGraph: openGraph ?? {
-      title: title ? `${title} - ${loginMessages.webName}` : title,
+      title: title ? `${title} - freshphởbún` : title,
       description,
-      url: "https://betiadmin.com",
-      siteName: loginMessages.webName, // https://developers.google.com/search/docs/appearance/site-names
+      url: "https://freshphobun.com",
+      siteName: "freshphởbún", // https://developers.google.com/search/docs/appearance/site-names
       images: {
         url: "",
         width: 1200,
         height: 630,
       },
-      locale: "en_US",
+      locale: "vi_VN",
       type: "website",
     },
   };

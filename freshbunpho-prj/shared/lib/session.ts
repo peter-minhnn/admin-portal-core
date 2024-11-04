@@ -1,15 +1,16 @@
 import "server-only";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
+import { CookieEnums } from "@/shared/enums";
 
 const secretKey = process.env.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
 
-export async function createSession(userId: string) {
+export async function createSession(phoneNumber: string) {
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
-  const session = await encrypt({ userId, expiresAt });
+  const session = await encrypt({ phoneNumber, expiresAt });
 
-  (await cookies()).set("session_id", session, {
+  (await cookies()).set(CookieEnums.SESSION_ID, session, {
     httpOnly: true,
     secure: true,
     expires: expiresAt,
@@ -17,11 +18,11 @@ export async function createSession(userId: string) {
 }
 
 export async function deleteSession() {
-  (await cookies()).delete("session_id");
+  (await cookies()).delete(CookieEnums.SESSION_ID);
 }
 
 type SessionPayload = {
-  userId: string;
+  phoneNumber: string;
   expiresAt: Date;
 };
 
@@ -39,7 +40,7 @@ export async function decrypt(session: string | undefined = "") {
       algorithms: ["HS256"],
     });
     return payload;
-  } catch (error) {
+  } catch {
     console.log("Failed to verify session");
   }
 }

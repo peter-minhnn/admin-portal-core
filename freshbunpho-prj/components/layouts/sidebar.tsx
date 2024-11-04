@@ -12,7 +12,7 @@ import { sideLinks } from "@/shared/data/side-links";
 import { Layout } from "@/components/layouts/layout";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { loginMessages } from "@/shared/messages";
+import {useTranslations} from "next-intl";
 
 interface SidebarProps extends HTMLAttributes<HTMLElement> {
   isCollapsed: boolean;
@@ -24,6 +24,7 @@ export default function Sidebar({
   isCollapsed,
   setIsCollapsed,
 }: Readonly<SidebarProps>) {
+  const t = useTranslations("menuMessages");
   const [navOpened, setNavOpened] = useState(false);
 
   /* Make body not scrollable when navBar is opened */
@@ -68,7 +69,7 @@ export default function Sidebar({
             <div
               className={`flex flex-col justify-end truncate ${isCollapsed ? "invisible w-0" : "visible w-auto"}`}
             >
-              <span className="font-medium">{loginMessages.webName}</span>
+              <span className="font-medium">freshphởbún</span>
             </div>
           </div>
 
@@ -92,7 +93,7 @@ export default function Sidebar({
           className={`z-40 h-full flex-1 overflow-auto ${navOpened ? "max-h-screen" : "max-h-0 py-0 md:max-h-screen md:py-2"}`}
           closeNav={() => setNavOpened(false)}
           isCollapsed={isCollapsed}
-          links={sideLinks}
+          links={sideLinks(t)}
         />
 
         {/* Scrollbar width toggle button */}

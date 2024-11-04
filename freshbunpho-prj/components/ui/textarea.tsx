@@ -87,7 +87,8 @@ export const AutosizeTextarea = React.forwardRef<
     }));
 
     React.useEffect(() => {
-      autoSize && setTriggerAutoSize(value as string);
+      if (!autoSize) return;
+      setTriggerAutoSize(value as string);
     }, [props?.defaultValue, value, autoSize]);
 
     return (
@@ -100,7 +101,7 @@ export const AutosizeTextarea = React.forwardRef<
           className,
         )}
         onChange={(e) => {
-          autoSize && setTriggerAutoSize(e.target.value);
+          if (autoSize) setTriggerAutoSize(e.target.value);
           onChange?.(e);
         }}
       />

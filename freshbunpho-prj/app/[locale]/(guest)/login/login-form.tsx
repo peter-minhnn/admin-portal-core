@@ -7,12 +7,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { login } from "@/actions";
-import { loginMessages } from "@/shared/messages";
 import get from "lodash/get";
+import {useTranslations} from "next-intl";
 
-export function LoginForm({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+export function LoginForm({
+  className,
+  ...props
+}: Readonly<HTMLAttributes<HTMLDivElement>>) {
   const { pending } = useFormStatus();
   const [state, loginAction] = useActionState(login, undefined);
+  const t = useTranslations("loginMessages");
 
   useEffect(() => {
     document.body.classList.add("overflow-hidden");
@@ -27,12 +31,12 @@ export function LoginForm({ className, ...props }: HTMLAttributes<HTMLDivElement
         <div className="grid gap-4">
           <div className="grid gap-4">
             <Label className="sr-only" htmlFor="phone">
-              {loginMessages.form.phone}
+              {t("form.phone")}
             </Label>
             <Input
               id="phone"
               name="phone"
-              placeholder={loginMessages.form.phone}
+              placeholder={t("form.phone")}
               type="text"
               autoCapitalize="none"
               autoCorrect="off"
@@ -42,7 +46,7 @@ export function LoginForm({ className, ...props }: HTMLAttributes<HTMLDivElement
             <Input
               id="password"
               name="password"
-              placeholder={loginMessages.form.password}
+              placeholder={t("form.password")}
               type="password"
               autoCapitalize="none"
               autoCorrect="off"
@@ -51,7 +55,7 @@ export function LoginForm({ className, ...props }: HTMLAttributes<HTMLDivElement
             />
           </div>
           <Button disabled={pending} loading={pending} type="submit">
-            {loginMessages.form.submit}
+            {t("form.submit")}
           </Button>
         </div>
       </form>

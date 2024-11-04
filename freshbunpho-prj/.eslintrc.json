@@ -9,6 +9,8 @@
     "react/no-unknown-property": "warn",
     "react/no-unescaped-entities": "off",
     "@next/next/no-page-custom-font": "off",
-    "no-unused-expressions": "off"
+    "no-empty-object-type": "off",
+    "no-unused-expressions": "warn",
+    "@typescript-eslint/no-explicit-any": "off"
   }
 }

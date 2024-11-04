@@ -1,14 +1,20 @@
-import { Metadata } from "next";
-import { LoginForm } from "@/app/(guest)/login/login-form";
-import { loginMessages } from "@/shared/messages";
+import { LoginForm } from "@/app/[locale]/(guest)/login/login-form";
 import Image from "next/image";
+import {useTranslations} from "next-intl";
+import {getTranslations} from "next-intl/server";
+import {metaObject} from "@/shared/configs";
 
-export const metadata: Metadata = {
-  title: loginMessages.title,
-  description: loginMessages.description,
-};
+export async function generateMetadata() {
+  "use server";
+  const t = await getTranslations('metaDataMessages');
+
+  return {
+    ...metaObject(t('loginTitle')),
+  };
+}
 
 export default function AuthenticationPage() {
+  const t = useTranslations("loginMessages");
   return (
     <main className="max-h-screen">
       <div className="container relative min-h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0 overflow-hidden">
@@ -27,7 +33,7 @@ export default function AuthenticationPage() {
             >
               <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3" />
             </svg>
-            {loginMessages.webName}
+            {t("webName")}
           </div>
           <Image
             src="/images/logo-freshbunpho.jpg"
@@ -43,10 +49,10 @@ export default function AuthenticationPage() {
           <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
             <div className="flex flex-col space-y-2 text-center">
               <h1 className="text-2xl font-semibold tracking-tight">
-                {loginMessages.welcome}
+                {t("welcome")}
               </h1>
               <p className="text-sm text-muted-foreground">
-                {loginMessages.hint}
+                {t("hint")}
               </p>
             </div>
             <LoginForm />
