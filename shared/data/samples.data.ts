@@ -30,7 +30,6 @@ export const inputWithHookFormCodes = `// Input with react-hook-form
 + </form>`;
 
 /* GRID SAMPLE*/
-
 export const paginationGridCodes = `// Pagination Grid
 + import {MaterialReactTable, useMaterialReactTable} from 'material-react-table';
 + import {columns, data} from "@/shared/data/grid-mock.data";
@@ -49,12 +48,6 @@ export const paginationGridCodes = `// Pagination Grid
 +       shape: 'rounded',
 +       showRowsPerPage: false,
 +       variant: 'outlined',
-+   },
-+   muiTablePaperProps: {
-+       sx: {
-+           borderRadius: "7px",
-+           border: "1px solid var(--custom-1)",
-+       },
 +   },
 +   onPaginationChange: setPagination
 + });

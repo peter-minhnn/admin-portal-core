@@ -1,5 +1,5 @@
 export const menuMessages = {
-  dashboard: "Trang ",
+  dashboard: "Trang Tổng Quan",
   products: "Sản Phẩm",
   productsList: "Danh Sách Sản Phẩm",
   settings: "Cài Đặt",

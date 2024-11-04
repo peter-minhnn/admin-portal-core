@@ -29,13 +29,6 @@ export default function ExampleGridPage() {
             showRowsPerPage: false,
             variant: 'outlined',
         },
-        muiTablePaperProps: {
-            sx: {
-                //stripe the rows, make odd rows a darker color
-                borderRadius: "7px",
-                border: "1px solid var(--custom-1)",
-            },
-        },
         paginationDisplayMode: 'pages',
         onPaginationChange: setPagination, //hoist pagination state to your state when it changes internally
         state: { pagination }, //pass the pagination state to the table

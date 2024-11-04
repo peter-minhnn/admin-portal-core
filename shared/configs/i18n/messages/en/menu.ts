@@ -1,9 +1,9 @@
 export const menuMessages = {
   dashboard: "Dashboard",
-  products: "Sản Phẩm",
-  productsList: "Danh Sách Sản Phẩm",
-  settings: "Cài Đặt",
-  samplePages: "Trang Mẫu",
+  products: "Products",
+  productsList: "Products List",
+  settings: "Settings",
+  samplePages: "Sample Pages",
   input: "Input",
   grid: "Grid",
 };

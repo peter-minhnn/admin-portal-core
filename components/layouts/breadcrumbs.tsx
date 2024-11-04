@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Fragment } from "react";
 import useBreadcrumbs from "@/hooks/use-breadcrumbs";
+import {pageRoutes} from "@/shared/routes/pages.route";
+import {usePathname} from "next/navigation";
 
 export type BreadCrumbType = {
   id: string;
@@ -18,19 +20,17 @@ export type BreadCrumbType = {
 
 export default function Breadcrumbs() {
   const { breadcrumbs } = useBreadcrumbs();
+  const pathname = usePathname();
 
   return (
     <Breadcrumb>
       <BreadcrumbList>
-        <BreadcrumbItem>
-          <BreadcrumbLink href="/public">Trang chủ</BreadcrumbLink>
-        </BreadcrumbItem>
-        {breadcrumbs?.map((item) => (
+        {breadcrumbs?.map((item, index) => (
           <Fragment key={item.id}>
-            <BreadcrumbSeparator>/</BreadcrumbSeparator>
             <BreadcrumbItem>
               <BreadcrumbLink href={item.href}>{item.title}</BreadcrumbLink>
             </BreadcrumbItem>
+            {(breadcrumbs.length - 1) !== index && (<BreadcrumbSeparator>/</BreadcrumbSeparator>)}
           </Fragment>
         ))}
       </BreadcrumbList>
