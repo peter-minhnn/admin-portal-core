@@ -97,7 +97,7 @@ export default function ExampleMultipleSelectorPage() {
                                                         value={field.value}
                                                         onChange={field.onChange}
                                                         placeholder={'Select Options'}
-                                                        errorBorder={Boolean(errors.selectedOptions?.message)}
+                                                        hasError={Boolean(errors.selectedOptions?.message)}
                                                     />
                                                     <FormMessage />
                                                 </FormItem>

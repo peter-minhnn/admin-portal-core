@@ -91,7 +91,7 @@ export default function InputExamplePage() {
                                                         type="text"
                                                         value={field.value ?? ""}
                                                         onChange={field.onChange}
-                                                        isError={Boolean(errors.inputExample?.message)}
+                                                        hasError={Boolean(errors.inputExample?.message)}
                                                     />
                                                     <FormMessage/>
                                                 </FormItem>
