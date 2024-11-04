@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { loginMessages } from "@/shared/messages";
+import { loginMessages } from "../../../../shared/messages";
 
 export const metadata: Metadata = {
   title: loginMessages.title,

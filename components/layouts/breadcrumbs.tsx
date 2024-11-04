@@ -23,7 +23,7 @@ export default function Breadcrumbs() {
     <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink href="/">Trang chủ</BreadcrumbLink>
+          <BreadcrumbLink href="/public">Trang chủ</BreadcrumbLink>
         </BreadcrumbItem>
         {breadcrumbs?.map((item) => (
           <Fragment key={item.id}>
