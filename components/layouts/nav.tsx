@@ -41,12 +41,12 @@ export default function Nav({
     const key = `${rest.title}-${rest.href}`;
     if (isCollapsed && sub) {
       return (
-          <NavLinkIconDropdown
-              {...rest}
-              sub={sub}
-              key={key}
-              closeNav={closeNav}
-          />
+        <NavLinkIconDropdown
+          {...rest}
+          sub={sub}
+          key={key}
+          closeNav={closeNav}
+        />
       );
     }
 
@@ -56,7 +56,7 @@ export default function Nav({
 
     if (sub) {
       return (
-          <NavLinkDropdown {...rest} sub={sub} key={key} closeNav={closeNav} />
+        <NavLinkDropdown {...rest} sub={sub} key={key} closeNav={closeNav} />
       );
     }
 

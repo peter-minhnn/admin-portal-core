@@ -2,7 +2,7 @@
   "extends": ["next/core-web-vitals", "next/typescript"],
   "rules": {
     // "no-undef": "error",
-    "no-unused-vars": "warn",
+    "no-unused-vars": "off",
     "no-duplicate-imports": "warn",
     "import/no-unresolved": "off",
     "react/react-in-jsx-scope": "off",

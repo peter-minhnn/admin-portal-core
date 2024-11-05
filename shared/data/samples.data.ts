@@ -1,4 +1,7 @@
 /* INPUT SAMPLE*/
+import {FormItem, FormLabel, FormMessage} from "@/components/ui/form";
+import {DateTimePicker} from "@/components/ui/datepicker";
+
 export const controlledInputCodes = `//Controlled Input 
 import {Input} from "@/components/ui/input";
 const [value, setValue] = useState<string>('Input 1');
@@ -16,17 +19,17 @@ import {Input} from "@/components/ui/input";
 
 export const formInputCodes = `// Form Input 
 import { useForm } from "react-hook-form";
-import { useModal } from "@/hooks/use-modal";
-import { Button } from "@/components/ui/button";
 import {z} from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Form, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
+import { useModal } from "@/hooks/use-modal";
+import { Button } from "@/components/ui/button";
 
 const FormInputSchema = z.object({
     inputExample: z
       .string({
-        required_error: "Please enter a value",
-      }),
+        required_error: "Please enter a value"
+      })
 })
 
 export default function InputPage() {
@@ -39,7 +42,7 @@ export default function InputPage() {
         openModal({
           isOpen: false,
           title: "Form Input Data",
-          modalContent: <h1>{data.inputExample}</h1>,
+          modalContent: <h1>{data.inputExample}</h1>
         });
     };
     
@@ -55,7 +58,7 @@ export default function InputPage() {
                     render={({ field }) => (
                         <FormItem>
                           <FormLabel>Form Input</FormLabel>
-                          <Input type="text" value={field.value} onChange={field.onChange}/>
+                          <Input type="text" value={field.value} onChange={field.onChange} hasError={!!errors.inputExample}/>
                           <FormMessage />
                         </FormItem>
                     )}
@@ -98,14 +101,14 @@ export default function PaginationGridPage() {
 
 /* MULTIPLE SELECTOR SAMPLE*/
 export const defaultMultipleSelectorCodes = `//Default Multiple Selector 
-import MultipleSelector, {Option} from "@/components/ui/multiple-selector";
+import MultipleSelector from "@/components/ui/multiple-selector";
 <MultipleSelector
   options={[
       {label: 'Option 1', value: 'option1'},
       {label: 'Option 2', value: 'option2'},
       {label: 'Option 3', value: 'option3'},
       {label: 'Option 4', value: 'option4'},
-      {label: 'Option 5', value: 'option5'},
+      {label: 'Option 5', value: 'option5'}
   ]}
 />`;
 
@@ -118,20 +121,20 @@ const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
       {label: 'Option 2', value: 'option2'},
       {label: 'Option 3', value: 'option3'},
       {label: 'Option 4', value: 'option4'},
-      {label: 'Option 5', value: 'option5'},
+      {label: 'Option 5', value: 'option5'}
   ]}
   value={selectedOptions}
   onChange={(e) => setSelectedOptions(e)}
 />`;
 
 export const formMultipleSelectorCodes = `//Form Multiple Selector 
-import MultipleSelector from "@/components/ui/multiple-selector";
-import {Button} from "@/components/ui/button";
 import toast from "react-hot-toast";
 import {z} from "zod"
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod"
 import {Form, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
+import MultipleSelector from "@/components/ui/multiple-selector";
+import {Button} from "@/components/ui/button";
 
 const FormSchema = z.object({
     selectedOptions: z
@@ -140,7 +143,7 @@ const FormSchema = z.object({
             value: z.string(),
         }), {
             required_error: "Please select an option",
-        }),
+        })
 })
 
 export default function MultipleSelectorPage() {
@@ -177,8 +180,73 @@ export default function MultipleSelectorPage() {
                                 value={field.value}
                                 onChange={field.onChange}
                                 placeholder={'Select Options'}
+                                hasError={!!errors.selectedOptions}
                             />
                             <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <Button type="submit" variant="default" className="max-w-20">Submit</Button>
+            </form>
+        </Form>
+    )
+}`;
+
+/* DATE PICKER SAMPLE*/
+export const controlledDatePickerCodes = `//Controlled Date Picker 
+import {DateTimePicker} from "@/components/ui/datepicker";
+const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+<DateTimePicker
+  value={selectedDate}
+  onChange={(date) => setSelectedDate(date ?? new Date())}
+  displayFormat={{ hour24: 'yyyy/MM/dd' }}
+/>`;
+
+export const formDatePickerCodes = `//Form Date Picker 
+import toast from "react-hot-toast";
+import {z} from "zod"
+import {useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod"
+import {formatDate} from "date-fns";
+import {Form, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
+import {DateTimePicker} from "@/components/ui/datepicker";
+import {Button} from "@/components/ui/button";
+
+const FormDatePickerSchema = z.object({
+    selectedDate: z.date({required_error: "Please select a date"})
+});
+
+export default function DatePickerPage() {
+    const form = useForm<z.infer<typeof FormDatePickerSchema>>({
+        resolver: zodResolver(FormDatePickerSchema)
+    });
+
+    const onSubmit = (data: z.infer<typeof FormDatePickerSchema>) => {
+        // Do something with the form data
+        toast(() => (
+            <span className="text-black font-semibold">
+                {JSON.stringify(formatDate(data.selectedDate, "yyyy-MM-dd"))}
+            </span>
+        ));
+    };
+    
+    return (
+        <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-2">
+                <FormField
+                    control={form.control}
+                    name="selectedDate"
+                    render={({field}) => (
+                        <FormItem className="flex flex-col w-[240px]">
+                          <FormLabel>Form Date Picker</FormLabel>
+                          <DateTimePicker
+                              value={field.value}
+                              onChange={field.onChange}
+                              granularity="day"
+                              displayFormat={{ hour24: 'yyyy/MM/dd' }}
+                              hasError={!!errors.selectedDate}
+                          />
+                          <FormMessage />
                         </FormItem>
                     )}
                 />

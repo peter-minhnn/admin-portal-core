@@ -5,7 +5,7 @@ import { cn } from "@/shared/lib";
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   errorMessage?: string | string[];
-    hasError?: boolean;
+  hasError?: boolean;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(

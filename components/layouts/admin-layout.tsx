@@ -1,6 +1,6 @@
 "use client";
 
-import {FC, ReactNode, useEffect} from "react";
+import { FC, ReactNode, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { TopNav } from "@/components/layouts/top-nav";
@@ -32,7 +32,8 @@ export const AdminLayout: FC<Props> = ({ children }) => {
 
   useEffect(() => {
     getSession().then((session) => {
-      if (session) setUserInfo({ phoneNumber: String(session?.phoneNumber ?? "") });
+      if (session)
+        setUserInfo({ phoneNumber: String(session?.phoneNumber ?? "") });
     });
   }, [setUserInfo]);
 

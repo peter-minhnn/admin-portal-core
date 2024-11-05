@@ -7,6 +7,7 @@ export const menuMessages = {
   input: "Input",
   grid: "Grid",
   multipleSelector: "Multiple Selector",
+  datePicker: "Date Picker",
 };
 
 export default menuMessages;

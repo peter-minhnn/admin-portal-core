@@ -27,7 +27,9 @@ export default function Breadcrumbs() {
             <BreadcrumbItem>
               <BreadcrumbLink href={item.href}>{item.title}</BreadcrumbLink>
             </BreadcrumbItem>
-            {(breadcrumbs.length - 1) !== index && (<BreadcrumbSeparator>/</BreadcrumbSeparator>)}
+            {breadcrumbs.length - 1 !== index && (
+              <BreadcrumbSeparator>/</BreadcrumbSeparator>
+            )}
           </Fragment>
         ))}
       </BreadcrumbList>

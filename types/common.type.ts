@@ -11,8 +11,8 @@ export type ListResponseType<T> = {
 };
 
 export interface PaginationState {
-  pageIndex: number
-  pageSize: number
+  pageIndex: number;
+  pageSize: number;
 }
 
 export type MetaType = {

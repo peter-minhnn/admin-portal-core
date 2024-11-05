@@ -5,8 +5,9 @@ import {
   IconSettings,
   IconUserShield,
   IconInputAi,
-    IconTable,
-    IconBoxMultiple
+  IconTable,
+  IconBoxMultiple,
+  IconCalendar,
 } from "@tabler/icons-react";
 import { ReactElement } from "react";
 import { pageRoutes } from "@/shared/routes/pages.route";
@@ -73,6 +74,12 @@ export const sideLinks = (t: any): SideLink[] => {
           label: "",
           href: pageRoutes.sample.multipleSelector,
           icon: <IconBoxMultiple size={18} />,
+        },
+        {
+          title: t("datePicker"),
+          label: "",
+          href: pageRoutes.sample.datePicker,
+          icon: <IconCalendar size={18} />,
         },
       ],
     },

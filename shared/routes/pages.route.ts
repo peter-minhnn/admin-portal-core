@@ -14,9 +14,10 @@ export const pageRoutes = {
     input: "/samples/input",
     grid: "/samples/grid",
     multipleSelector: "/samples/multiple-selector",
+    datePicker: "/samples/datepicker",
   },
   products: {
     list: "/products/list",
     detail: "/products/detail",
-  }
+  },
 };

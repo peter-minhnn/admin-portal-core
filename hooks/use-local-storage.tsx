@@ -12,7 +12,8 @@ export default function useLocalStorage<T>({
   const [value, setValue] = useState<T>(defaultValue);
 
   useEffect(() => {
-    if (typeof localStorage !== "undefined") localStorage.setItem(key, JSON.stringify(value));
+    if (typeof localStorage !== "undefined")
+      localStorage.setItem(key, JSON.stringify(value));
   }, [value, key]);
 
   return [value, setValue] as const;
