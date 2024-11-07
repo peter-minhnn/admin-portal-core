@@ -1,13 +1,12 @@
 import {
   IconComponents,
-  IconHexagonNumber1,
   IconLayoutDashboard,
-  IconSettings,
-  IconUserShield,
   IconInputAi,
   IconTable,
   IconBoxMultiple,
   IconCalendar,
+  IconPackages,
+  IconSettings,
 } from "@tabler/icons-react";
 import { ReactElement } from "react";
 import { pageRoutes } from "@/shared/routes/pages.route";
@@ -34,16 +33,8 @@ export const sideLinks = (t: any): SideLink[] => {
     {
       title: t("products"),
       label: "",
-      href: "",
-      icon: <IconUserShield size={18} />,
-      sub: [
-        {
-          title: t("productsList"),
-          label: "",
-          href: "/products/list",
-          icon: <IconHexagonNumber1 size={18} />,
-        },
-      ],
+      href: pageRoutes.products,
+      icon: <IconPackages size={18} />,
     },
     {
       title: t("settings"),

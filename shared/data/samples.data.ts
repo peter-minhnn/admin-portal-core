@@ -1,6 +1,6 @@
 /* INPUT SAMPLE*/
-import {FormItem, FormLabel, FormMessage} from "@/components/ui/form";
-import {DateTimePicker} from "@/components/ui/datepicker";
+import { FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { DateTimePicker } from "@/components/ui/datepicker";
 
 export const controlledInputCodes = `//Controlled Input 
 import {Input} from "@/components/ui/input";

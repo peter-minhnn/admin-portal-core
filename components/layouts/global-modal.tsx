@@ -3,7 +3,7 @@
 import { useModal } from "@/hooks/use-modal";
 import {
   ResponsiveModal,
-  ResponsiveModalContent,
+  ResponsiveModalContent, ResponsiveModalDescription,
   ResponsiveModalFooter,
   ResponsiveModalHeader,
   ResponsiveModalTitle,
@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/responsive-modal";
 
 export default function GlobalModal() {
-  const { isOpen, title, modalContent, modalFooter, modalButton, customSize } =
+  const { isOpen, title, description, modalContent, modalFooter, modalButton, customSize } =
     useModal();
 
   return (
@@ -22,6 +22,7 @@ export default function GlobalModal() {
       <ResponsiveModalContent className={customSize}>
         <ResponsiveModalHeader>
           <ResponsiveModalTitle>{title}</ResponsiveModalTitle>
+          <ResponsiveModalDescription>{description}</ResponsiveModalDescription>
           {modalContent}
         </ResponsiveModalHeader>
         {modalFooter && (

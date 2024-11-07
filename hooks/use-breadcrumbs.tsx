@@ -5,7 +5,7 @@ import useCheckActiveNav from "@/hooks/use-check-active-nav";
 
 export default function useBreadcrumbs() {
   const { checkActiveNav } = useCheckActiveNav();
-  const t = useTranslations("menuMessages");
+  const t = useTranslations("MenuMessages");
   const breadcrumbs: BreadCrumbType[] = [];
 
   breadcrumbsRoutes.forEach((item) => {

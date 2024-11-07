@@ -13,7 +13,7 @@ import { logout } from "@/actions/login.action";
 import { useTranslations } from "next-intl";
 
 export function UserNav() {
-  const t = useTranslations("loginMessages");
+  const t = useTranslations("LoginMessages");
 
   return (
     <DropdownMenu>

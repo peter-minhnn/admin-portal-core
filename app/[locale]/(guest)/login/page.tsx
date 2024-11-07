@@ -6,7 +6,7 @@ import { metaObject } from "@/shared/configs";
 
 export async function generateMetadata() {
   "use server";
-  const t = await getTranslations("metaDataMessages");
+  const t = await getTranslations("MetaDataMessages");
 
   return {
     ...metaObject(t("loginTitle")),
@@ -14,7 +14,7 @@ export async function generateMetadata() {
 }
 
 export default function AuthenticationPage() {
-  const t = useTranslations("loginMessages");
+  const t = useTranslations("LoginMessages");
   return (
     <main className="max-h-screen">
       <div className="container relative min-h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0 overflow-hidden">

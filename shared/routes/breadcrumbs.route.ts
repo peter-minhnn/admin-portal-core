@@ -9,13 +9,8 @@ export const breadcrumbsRoutes: BreadCrumbType[] = [
   },
   {
     id: "2",
-    href: pageRoutes.products.list,
+    href: pageRoutes.products,
     title: "products",
-  },
-  {
-    id: "3",
-    href: pageRoutes.products.list,
-    title: "productsList",
   },
   {
     id: "4",

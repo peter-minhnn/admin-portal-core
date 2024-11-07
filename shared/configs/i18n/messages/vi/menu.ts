@@ -1,8 +1,8 @@
-export const menuMessages = {
+export const MenuMessages = {
   dashboard: "Trang Tổng Quan",
-  products: "Sản Phẩm",
+  products: "Trang Sản Phẩm",
   productsList: "Danh Sách Sản Phẩm",
-  settings: "Cài Đặt",
+  settings: "Trang Cài Đặt",
   samplePages: "Trang Mẫu",
   input: "Input",
   grid: "Grid",
@@ -10,4 +10,4 @@ export const menuMessages = {
   datePicker: "Date Picker",
 };
 
-export default menuMessages;
+export default MenuMessages;

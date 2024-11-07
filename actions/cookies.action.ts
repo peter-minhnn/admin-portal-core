@@ -8,3 +8,7 @@ export const getSession = async () => {
   const cookie = (await cookies()).get(CookieEnums.SESSION_ID)?.value;
   return await decrypt(cookie);
 };
+
+export const getToken = async () => {
+  return (await cookies()).get(CookieEnums.TOKEN)?.value;
+};

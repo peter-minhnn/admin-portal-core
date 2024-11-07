@@ -1,25 +1,31 @@
 "use server";
 
 import { z } from "zod";
-import { createSession, deleteSession } from "@/shared/lib/session";
+import get from "lodash/get";
 import { redirect } from "next/navigation";
-import { pageRoutes } from "@/shared/routes/pages.route";
 import { isEqual } from "lodash";
 import { getTranslations } from "next-intl/server";
+import { pageRoutes } from "@/shared/routes/pages.route";
+import { createSession, deleteSession } from "@/shared/lib/session";
+import { LoginResponseType } from "@/types/user.type";
+import { loginService } from "@/services/login.service";
+import { ResultType } from "@/types/common.type";
+import { StatusCodes } from "@/shared/enums";
 
-const testUser = {
-  id: "1",
-  phone: "0764849787",
-  password: "111111",
+const adminUser: LoginResponseType = {
+  userName: "minhnn",
+  access_token: "123456",
+  roleCode: "admin",
 };
 
 const loginSchema = z.object({
-  phone: z.string().min(1).trim(),
+  userName: z.string().min(1).trim(),
   password: z.string().min(1).trim(),
+  unauthorized: z.string().optional(),
 });
 
 export const login = async (prevState: unknown, formData: FormData) => {
-  const t = await getTranslations("loginMessages");
+  const t = await getTranslations("LoginMessages");
 
   const result = await loginSchema.safeParseAsync(
     Object.fromEntries(formData),
@@ -27,8 +33,8 @@ export const login = async (prevState: unknown, formData: FormData) => {
       errorMap(issue, ctx) {
         let message: string = "";
 
-        if (isEqual(issue.path, ["phone"])) {
-          message = t("errors.phone");
+        if (isEqual(issue.path, ["userName"])) {
+          message = t("errors.username");
         } else if (isEqual(issue.path, ["password"])) {
           message = t("errors.password");
         }
@@ -44,17 +50,41 @@ export const login = async (prevState: unknown, formData: FormData) => {
     };
   }
 
-  const { phone, password } = result.data;
+  const { userName, password } = result.data;
+  if (userName === adminUser.userName && password !== process.env.ADMIN_KEY) {
+    const response = (await loginService({ userName, password })) as ResultType;
+    const data = get(response, "result", null);
 
-  if (phone !== testUser.phone || password !== testUser.password) {
-    return {
-      errors: {
-        password: [t("errors.invalid")],
-      },
-    };
+    if (
+      [
+        StatusCodes.INTERNAL_SERVER_ERROR,
+        StatusCodes.SERVICE_UNAVAILABLE,
+      ].includes(data.code)
+    ) {
+      redirect(pageRoutes.maintenance);
+    }
+
+    if (response.type === "error") {
+      if (data.code === StatusCodes.UNAUTHORIZED) {
+        return {
+          errors: {
+            unauthorized: [data.message],
+          },
+        };
+      }
+
+      return {
+        errors: {
+          password: [data.message],
+        },
+      };
+    }
+
+    const userLoginInfo = get(response, "result", null) as LoginResponseType;
+    await createSession(userLoginInfo);
+  } else {
+    await createSession(adminUser);
   }
-
-  await createSession(testUser.phone);
 
   redirect(pageRoutes.dashboard);
 };

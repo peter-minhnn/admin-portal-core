@@ -10,14 +10,12 @@ export const pageRoutes = {
   maintenance: "/maintenance",
   blank: "/blank",
   settings: "/settings",
+  settingsAccount: "/settings/account",
   sample: {
     input: "/samples/input",
     grid: "/samples/grid",
     multipleSelector: "/samples/multiple-selector",
     datePicker: "/samples/datepicker",
   },
-  products: {
-    list: "/products/list",
-    detail: "/products/detail",
-  },
+  products: "/products",
 };

@@ -1,5 +1,8 @@
-const metaDataMessages = {
+const MetaDataMessages = {
   loginTitle: "Login",
+  maintenance: "Maintenance",
+  settingsTitle: "Settings",
+  productsTitle: "Product list",
 };
 
-export default metaDataMessages;
+export default MetaDataMessages;

@@ -1,5 +1,7 @@
 import axios, { AxiosResponse } from "axios";
-import { getSession } from "@/actions/cookies.action";
+import { getToken } from "@/actions/cookies.action";
+import {pageRoutes} from "@/shared/routes/pages.route";
+import {StatusCodes} from "@/shared/enums";
 
 interface IErrorResponse {
   code: number;
@@ -20,9 +22,9 @@ const globalAxiosInstance = axios.create({
 
 globalAxiosInstance.interceptors.request.use(
   async (config) => {
-    const session = await getSession();
-    if (session) {
-      config.headers.Authorization = `Bearer ${session?.session_id}`;
+    const token = await getToken();
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },

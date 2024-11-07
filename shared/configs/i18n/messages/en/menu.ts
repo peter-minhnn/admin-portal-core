@@ -1,4 +1,4 @@
-export const menuMessages = {
+export const MenuMessages = {
   dashboard: "Dashboard",
   products: "Products",
   productsList: "Products List",
@@ -10,4 +10,4 @@ export const menuMessages = {
   datePicker: "Date Picker",
 };
 
-export default menuMessages;
+export default MenuMessages;

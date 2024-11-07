@@ -8,6 +8,7 @@ export function useModal() {
 
   const openModal = ({
     title,
+      description,
     modalContent,
     modalButton,
     modalFooter,
@@ -16,6 +17,7 @@ export function useModal() {
     setModalOpen({
       isOpen: true,
       title,
+      description,
       customSize,
       modalContent,
       modalButton,

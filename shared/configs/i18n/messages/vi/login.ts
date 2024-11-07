@@ -1,20 +1,22 @@
-const loginMessages = {
+const LoginMessages = {
   webName: "freshphởbún",
   title: "Trang đăng nhập",
   description: "Authentication forms built using the components.",
   welcome: "Chào mừng quay trở lại!",
-  hint: "Nhập số điện thoại để đăng nhập vào tài khoản",
+  hint: "Nhập tài khoản để đăng nhập",
   form: {
     phone: "Số điện thoại",
+    username: "Tên đăng nhập",
     password: "Mật khẩu",
     submit: "Đăng nhập",
     logout: "Đăng xuất",
   },
   errors: {
     phone: "Vui lòng nhập số điện thoại",
+    username: "Vui lòng nhập tên đăng nhập",
     password: "Vui lòng nhập mật khẩu",
     invalid: "Số điện thoại hoặc mật khẩu không chính xác",
   },
 };
 
-export default loginMessages;
+export default LoginMessages;

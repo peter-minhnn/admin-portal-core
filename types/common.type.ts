@@ -1,4 +1,4 @@
-export type BaseResponseType<T> = {
+export type BaseResponseType<T = any> = {
   status: boolean;
   message: string;
   statusCode: number;
@@ -8,6 +8,17 @@ export type BaseResponseType<T> = {
 export type ListResponseType<T> = {
   data: T[];
   meta: MetaType;
+};
+
+export type ErrorResponseType = {
+  data: any;
+  message: string;
+  code: number;
+};
+
+export type ResultType<T = any> = {
+  type: "success" | "error";
+  result: T;
 };
 
 export interface PaginationState {
@@ -30,3 +41,9 @@ export type CommonType = {
   updatedBy: string;
   updatedDate: string;
 };
+
+export type CommonCodeType = {
+  code: string;
+  name: string;
+  isActive: boolean;
+}

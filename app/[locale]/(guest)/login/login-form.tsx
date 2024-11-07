@@ -1,14 +1,16 @@
 "use client";
 
 import { HTMLAttributes, useActionState, useEffect } from "react";
+import Form from "next/form";
 import { useFormStatus } from "react-dom";
+import get from "lodash/get";
+import toast from "react-hot-toast";
+import { useTranslations } from "next-intl";
 import { cn } from "@/shared/lib";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { login } from "@/actions/login.action";
-import get from "lodash/get";
-import { useTranslations } from "next-intl";
 
 export function LoginForm({
   className,
@@ -16,7 +18,7 @@ export function LoginForm({
 }: Readonly<HTMLAttributes<HTMLDivElement>>) {
   const { pending } = useFormStatus();
   const [state, loginAction] = useActionState(login, undefined);
-  const t = useTranslations("loginMessages");
+  const t = useTranslations("LoginMessages");
 
   useEffect(() => {
     document.body.classList.add("overflow-hidden");
@@ -25,23 +27,29 @@ export function LoginForm({
     };
   });
 
+  useEffect(() => {
+    if (state?.errors?.unauthorized) {
+      toast.error(String(state?.errors?.unauthorized));
+    }
+  }, [state]);
+
   return (
     <div className={cn("grid gap-6", className)} {...props}>
-      <form action={loginAction}>
+      <Form action={loginAction}>
         <div className="grid gap-4">
           <div className="grid gap-4">
-            <Label className="sr-only" htmlFor="phone">
-              {t("form.phone")}
+            <Label className="sr-only" htmlFor="userName">
+              {t("form.username")}
             </Label>
             <Input
-              id="phone"
-              name="phone"
-              placeholder={t("form.phone")}
+              id="userName"
+              name="userName"
+              placeholder={t("form.username")}
               type="text"
               autoCapitalize="none"
               autoCorrect="off"
               disabled={pending}
-              errorMessage={get(state?.errors, "phone", "")}
+              errorMessage={get(state?.errors, "userName", "")}
             />
             <Input
               id="password"
@@ -58,7 +66,7 @@ export function LoginForm({
             {t("form.submit")}
           </Button>
         </div>
-      </form>
+      </Form>
     </div>
   );
 }

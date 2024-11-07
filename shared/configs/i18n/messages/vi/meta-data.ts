@@ -1,5 +1,8 @@
-const metaDataMessages = {
+const MetaDataMessages = {
   loginTitle: "Đăng nhập",
+  maintenance: "Bảo trì",
+  settingsTitle: "Cài đặt",
+  productsTitle: "Danh sách sản phẩm",
 };
 
-export default metaDataMessages;
+export default MetaDataMessages;

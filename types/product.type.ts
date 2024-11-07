@@ -1,12 +1,20 @@
-import { CommonType } from "@/types/common.type";
-
 export type ProductType = {
-  id: number;
-  productCode: string;
-  productName: string;
-  productDesc: number;
-  productImage: string;
-  isActive: boolean;
-  isDeleted: boolean;
-  companyId: number;
-} & CommonType;
+    productCode: string;
+    productName: string;
+    productDesc: number;
+    productImage: string;
+    productType: string;
+    unitCode: string;
+    productPrice: number;
+    productMinQty: number;
+    productMaxQty: number;
+    companyId: number;
+};
+
+export type UnitType = {
+    unitCode: string;
+    unitName: string;
+    isActive: boolean;
+    isDeleted: boolean;
+    companyId: number;
+}

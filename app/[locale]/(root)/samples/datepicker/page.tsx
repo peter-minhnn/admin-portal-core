@@ -22,7 +22,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import {formatDate} from "date-fns";
+import { formatDate } from "date-fns";
 
 const FormDatePickerSchema = z.object({
   selectedDate: z.date({ required_error: "Please select a date" }),
@@ -59,7 +59,7 @@ export default function DatePickerPage() {
                 <DateTimePicker
                   value={selectedDate}
                   onChange={(date) => setSelectedDate(date ?? new Date())}
-                  displayFormat={{ hour24: 'yyyy/MM/dd' }}
+                  displayFormat={{ hour24: "yyyy/MM/dd" }}
                   className="w-[240px]"
                 />
                 <Separator />
@@ -72,17 +72,17 @@ export default function DatePickerPage() {
                       control={form.control}
                       name="selectedDate"
                       render={({ field }) => (
-                          <FormItem className="flex flex-col w-[240px]">
-                              <FormLabel>Form Date Picker</FormLabel>
-                              <DateTimePicker
-                                  value={field.value}
-                                  onChange={field.onChange}
-                                  granularity="day"
-                                  displayFormat={{ hour24: 'yyyy/MM/dd' }}
-                                  hasError={!!form.formState.errors.selectedDate}
-                              />
-                              <FormMessage />
-                          </FormItem>
+                        <FormItem className="flex flex-col w-[240px]">
+                          <FormLabel>Form Date Picker</FormLabel>
+                          <DateTimePicker
+                            value={field.value}
+                            onChange={field.onChange}
+                            granularity="day"
+                            displayFormat={{ hour24: "yyyy/MM/dd" }}
+                            hasError={!!form.formState.errors.selectedDate}
+                          />
+                          <FormMessage />
+                        </FormItem>
                       )}
                     />
                     <Button

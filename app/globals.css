@@ -138,8 +138,28 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
+}
 
-  .faded-bottom {
-    @apply after:pointer-events-none after:absolute after:bottom-0 after:left-0 after:hidden after:h-32 after:w-full after:bg-[linear-gradient(180deg, _transparent_10%,_hsl(var(--background))_70%)] after:md:block;
+/* In your CSS file */
+.gradient-overlay::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 8rem; /* Equivalent to h-32 */
+  width: 100%;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent 10%,
+    hsl(var(--background)) 70%
+  );
+  display: none; /* Hidden by default */
+}
+
+@media (min-width: 768px) {
+  /* Apply display:block at the md breakpoint */
+  .gradient-overlay::after {
+    display: block;
   }
 }

@@ -24,7 +24,7 @@ export default function Sidebar({
   isCollapsed,
   setIsCollapsed,
 }: Readonly<SidebarProps>) {
-  const t = useTranslations("menuMessages");
+  const t = useTranslations("MenuMessages");
   const [navOpened, setNavOpened] = useState(false);
 
   /* Make body not scrollable when navBar is opened */
