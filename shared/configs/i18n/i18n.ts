@@ -11,7 +11,7 @@ const localeToTimeZone: Record<Locale, string> = {
 export default getRequestConfig(async ({ requestLocale }) => {
   // Validate that the incoming `locale` parameter is valid
   let locale = await requestLocale;
-  console.log(locale);
+
   if (!locale || !routing.locales.includes(locale as Locale)) {
     locale = routing.defaultLocale;
   }

@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Toaster } from 'sonner';
+import { Toaster } from "sonner";
 
 import "react-day-picker/style.css";
 import "./globals.css";
@@ -42,7 +42,7 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         {children}
-        <Toaster richColors/>
+        <Toaster richColors position="top-right" />
       </body>
     </html>
   );

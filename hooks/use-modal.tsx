@@ -8,7 +8,7 @@ export function useModal() {
 
   const openModal = ({
     title,
-      description,
+    description,
     modalContent,
     modalButton,
     modalFooter,

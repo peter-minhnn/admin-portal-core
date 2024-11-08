@@ -3,7 +3,9 @@ export const apiRoutes = {
   products: {
     productUnits: "/unit?order=ASC&page=1&take=50",
     productTypes: "/productType?order=ASC&page=1&take=50",
-    addProduct: "/product",
-    getProducts: (page: number = 1, take: number = 50) => `/product?order=DESC&page=${page}&take=${take}`
-  }
+    product: "/product",
+    deleteProduct: (productCode: string) => `/product/${productCode}`,
+    getProducts: (page: number = 1, take: number = 50) =>
+      `/product?order=DESC&page=${page}&take=${take}`,
+  },
 };

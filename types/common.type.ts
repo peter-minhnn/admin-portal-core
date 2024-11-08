@@ -46,4 +46,4 @@ export type CommonCodeType = {
   code: string;
   name: string;
   isActive: boolean;
-}
+};

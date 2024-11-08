@@ -14,5 +14,5 @@ export default {
   ErrorMessages,
   SettingsMessages,
   ProductMessages,
-  CommonMessages
+  CommonMessages,
 };

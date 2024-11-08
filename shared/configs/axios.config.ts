@@ -1,7 +1,5 @@
 import axios, { AxiosResponse } from "axios";
 import { getToken } from "@/actions/cookies.action";
-import {pageRoutes} from "@/shared/routes/pages.route";
-import {StatusCodes} from "@/shared/enums";
 
 interface IErrorResponse {
   code: number;
@@ -20,18 +18,13 @@ const globalAxiosInstance = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_BASE_API_URL}`,
 });
 
-globalAxiosInstance.interceptors.request.use(
-  async (config) => {
-    const token = await getToken();
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  },
-);
+globalAxiosInstance.interceptors.request.use(async (config) => {
+  const token = await getToken();
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
 globalAxiosInstance.interceptors.response.use(function (
   response: AxiosResponse,

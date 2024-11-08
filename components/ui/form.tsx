@@ -14,6 +14,7 @@ import {
 
 import { cn } from "@/shared/lib";
 import { Label } from "@/components/ui/label";
+import {useId, useMemo} from "react";
 
 const Form = FormProvider;
 
@@ -34,8 +35,12 @@ const FormField = <
 >({
   ...props
 }: ControllerProps<TFieldValues, TName>) => {
+  const contextProps = useMemo(() => {
+    return { name: props.name };
+  }, [props]);
+
   return (
-    <FormFieldContext.Provider value={{ name: props.name }}>
+    <FormFieldContext.Provider value={contextProps}>
       <Controller {...props} />
     </FormFieldContext.Provider>
   );
@@ -76,7 +81,7 @@ const FormItem = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => {
-  const id = React.useId();
+  const id = useId();
 
   return (
     <FormItemContext.Provider value={{ id }}>
@@ -88,7 +93,9 @@ FormItem.displayName = "FormItem";
 
 const FormLabel = React.forwardRef<
   React.ElementRef<typeof LabelPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> & {required?: boolean}
+  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> & {
+    required?: boolean;
+  }
 >(({ className, required, ...props }, ref) => {
   const { error, formItemId } = useFormField();
 
@@ -100,7 +107,7 @@ const FormLabel = React.forwardRef<
       {...props}
     >
       {props.children}
-      {required && (<span className="text-red-500">*</span>)}
+      {required && <span className="text-red-500">*</span>}
     </Label>
   );
 });
