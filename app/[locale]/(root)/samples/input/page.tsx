@@ -42,6 +42,7 @@ export default function InputExamplePage() {
     openModal({
       isOpen: false,
       title: "Form Input Data",
+      description: "This is the data from the form input",
       modalContent: <h1>{data.inputExample}</h1>,
     });
   };
