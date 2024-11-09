@@ -1,11 +1,10 @@
 import React from "react";
-import { Button } from '@/components/ui/button'
 import { cn } from '@/shared/lib'
-import {useRouter} from "next/navigation";
 import {pageRoutes} from "@/shared/routes/pages.route";
 import {useTranslations} from "next-intl";
 import {getTranslations} from "next-intl/server";
 import {metaObject} from "@/shared/configs";
+import {Link} from "@/shared/configs/i18n/routing";
 
 export async function generateMetadata() {
     "use server";
@@ -17,7 +16,6 @@ export async function generateMetadata() {
 }
 
 export default function InternalServerError() {
-    const router = useRouter();
     const t = useTranslations('CommonMessages');
 
     return (
@@ -29,12 +27,9 @@ export default function InternalServerError() {
                    dangerouslySetInnerHTML={{__html: t("pageErrorDescription", {br: "<br/>"})}}>
                 </p>
                 <div className='mt-6 flex gap-4'>
-                    <Button variant='outline' onClick={() => router.back()}>
-                        {t("goBack")}
-                    </Button>
-                    <Button onClick={() => router.push(pageRoutes.dashboard)} variant="destructive">
+                    <Link href={pageRoutes.dashboard} title={t("backToHome")}>
                         {t("backToHome")}
-                    </Button>
+                    </Link>
                 </div>
             </div>
         </div>
