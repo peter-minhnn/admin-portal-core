@@ -55,15 +55,6 @@ export const login = async (prevState: unknown, formData: FormData) => {
     const response = (await loginService({ userName, password })) as ResultType;
     const data = get(response, "result", null);
 
-    if (
-      [
-        StatusCodes.INTERNAL_SERVER_ERROR,
-        StatusCodes.SERVICE_UNAVAILABLE,
-      ].includes(data.code)
-    ) {
-      redirect(pageRoutes.maintenance);
-    }
-
     if (response.type === "error") {
       if (data.code === StatusCodes.UNAUTHORIZED) {
         return {
@@ -92,4 +83,14 @@ export const login = async (prevState: unknown, formData: FormData) => {
 export const logout = async () => {
   await deleteSession();
   redirect(pageRoutes.auth.login);
+};
+
+export const redirectPageErrors = async (e: any) => {
+  if (e?.status === StatusCodes.SERVICE_UNAVAILABLE) {
+    redirect(pageRoutes.maintenance);
+  }
+
+  if (e?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
+    redirect(pageRoutes.internalServerError);
+  }
 };

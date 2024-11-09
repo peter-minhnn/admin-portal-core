@@ -43,6 +43,10 @@ const CommonMessages = {
   toggleVisibility: "Chuyển trạng thái hiển thị",
   rowActions: "Hành động dòng",
   pin: "Ghim",
+  goBack: "Quay lại",
+  backToHome: "Trở về trang chủ",
+  pageErrorTitle: "Ồ! Có gì đó không ổn",
+    pageErrorDescription: "Chúng tôi xin lỗi vì sự bất tiện này. {br} Vui lòng thử lại sau.",
 };
 
 export default CommonMessages;

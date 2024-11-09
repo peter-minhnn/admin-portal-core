@@ -7,6 +7,7 @@ export const pageRoutes = {
   comingSoon: "/coming-soon",
   accessDenied: "/access-denied",
   notFound: "/not-found",
+  internalServerError: "/server-error",
   maintenance: "/maintenance",
   blank: "/blank",
   settings: "/settings",

@@ -1,7 +1,7 @@
 import { BaseResponseType, ResultType } from "@/types/common.type";
 import get from "lodash/get";
 import { StatusCodes } from "@/shared/enums";
-import { logout } from "@/actions/login.action";
+import {logout, redirectPageErrors} from "@/actions/login.action";
 
 export function handleApiResponse<T>(response: BaseResponseType) {
   const errorResponse = get(response, "data.code", null);
@@ -22,10 +22,12 @@ export function handleApiResponse<T>(response: BaseResponseType) {
   };
 }
 
-export function handleApiCatchResponse(e: any): ResultType {
+export async function handleApiCatchResponse(e: any): Promise<ResultType> {
   if (e?.status === StatusCodes.UNAUTHORIZED) {
-    logout();
+    await logout();
   }
+  await redirectPageErrors(e);
+
   const messageError = get(e.response, "data.message", "");
   return {
     type: "error",
