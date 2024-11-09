@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { MRT_Row as RowCell } from "material-react-table";
@@ -76,7 +77,11 @@ export default function ProductForm({
           productImage: rowData.original.productImage,
           companyId: rowData.original.companyId,
         }
-      : defaultProductData,
+      : {
+            ...defaultProductData,
+            productType: productTypes[0]?.code,
+            unitCode: units[0]?.unitCode,
+        },
   });
 
   const { mutateAsync: addProduct, status: addMutateStatus } = useAddProduct(
@@ -108,6 +113,13 @@ export default function ProductForm({
     }
     await addProduct(obj);
   };
+
+    const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        const key = event.key;
+        if (!/^\d$/.test(key)) {
+            event.preventDefault();
+        }
+    };
 
   return (
     <Form {...form}>
@@ -185,6 +197,7 @@ export default function ProductForm({
                     type="text"
                     value={field.value ?? ""}
                     onChange={field.onChange}
+                    onKeyDown={handleKeyPress}
                     placeholder={t("productPrice")}
                     hasError={!!form.formState.errors.productPrice}
                   />
@@ -229,6 +242,7 @@ export default function ProductForm({
                     type="text"
                     value={field.value ?? ""}
                     onChange={field.onChange}
+                    onKeyDown={handleKeyPress}
                     placeholder={t("productMinQty")}
                     hasError={!!form.formState.errors.productMinQty}
                   />
@@ -245,6 +259,7 @@ export default function ProductForm({
                     type="text"
                     value={field.value ?? ""}
                     onChange={field.onChange}
+                    onKeyDown={handleKeyPress}
                     placeholder={t("productMaxQty")}
                     hasError={!!form.formState.errors.productMaxQty}
                   />

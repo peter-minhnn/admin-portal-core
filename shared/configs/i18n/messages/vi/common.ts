@@ -42,6 +42,7 @@ const CommonMessages = {
   downloadBtn: "Tải xuống",
   toggleVisibility: "Chuyển trạng thái hiển thị",
   rowActions: "Hành động dòng",
+  pin: "Ghim",
 };
 
 export default CommonMessages;

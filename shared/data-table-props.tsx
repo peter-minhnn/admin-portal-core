@@ -48,6 +48,7 @@ export const DataTableProps = <TData extends MRT_RowData>(t: any) => {
       toggleFullScreen: t("toggleFullScreen"),
       toggleVisibility: t("toggleVisibility"),
       rowActions: t("rowActions"),
+      pin: t("pin"),
     },
   } as Omit<MRT_TableOptions<TData>, any>;
 };

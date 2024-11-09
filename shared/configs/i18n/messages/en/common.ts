@@ -8,17 +8,17 @@ const CommonMessages = {
   searchNoDataSuggestion: "Hãy thử tìm kiếm với từ khóa khác",
   searchNoDataCreate: "Tạo mới",
   searchNoDataCreateDescription:
-    "Không có dữ liệu để hiển thị, bạn có muốn tạo mới không?",
+      "Không có dữ liệu để hiển thị, bạn có muốn tạo mới không?",
   searchNoDataCreateSuggestion:
-    "Hãy thử tạo mới bằng cách nhấn vào nút bên dưới",
+      "Hãy thử tạo mới bằng cách nhấn vào nút bên dưới",
   searchNoDataCreateButton: "Tạo mới",
   searchNoDataCreateButtonDescription: "Nhấn vào đây để tạo mới",
   searchNoDataCreateButtonSuggestion:
-    "Hãy thử tạo mới bằng cách nhấn vào nút bên dưới",
+      "Hãy thử tạo mới bằng cách nhấn vào nút bên dưới",
   searchNoDataCreateButtonTitle: "Tạo mới",
   searchNoDataCreateButtonTitleDescription: "Nhấn vào đây để tạo mới",
   searchNoDataCreateButtonTitleSuggestion:
-    "Hãy thử tạo mới bằng cách nhấn vào nút bên dưới",
+      "Hãy thử tạo mới bằng cách nhấn vào nút bên dưới",
   clickToUpload: "Bấm để tải lên",
   orDragAndDrop: "hoặc kéo và thả",
   actions: "Hành động",
@@ -42,6 +42,7 @@ const CommonMessages = {
   downloadBtn: "Tải xuống",
   toggleVisibility: "Chuyển trạng thái hiển thị",
   rowActions: "Hành động dòng",
+  pin: "Ghim",
 };
 
 export default CommonMessages;
