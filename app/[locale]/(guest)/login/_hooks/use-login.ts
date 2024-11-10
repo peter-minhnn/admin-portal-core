@@ -3,10 +3,8 @@ import { toast } from "sonner";
 import { LoginType } from "@/types/login.type";
 import { login } from "@/services/login.service";
 import get from "lodash/get";
-import { createSession } from "@/shared/lib/session";
 import { LoginResponseType } from "@/types/user.type";
-import { redirect } from "next/navigation";
-import { pageRoutes } from "@/shared/routes/pages.route";
+import {loginAction} from "@/actions/login.action";
 
 export const useLogin = (t: any) => {
   return useMutation({
@@ -20,8 +18,7 @@ export const useLogin = (t: any) => {
 
       toast.success(t("loginSuccess"));
       const userLoginInfo = get(response, "result", null) as LoginResponseType;
-      await createSession(userLoginInfo);
-      redirect(pageRoutes.dashboard);
+      await loginAction(userLoginInfo);
     },
     onError: () => toast.error(t("somethingWentWrong")),
   });
