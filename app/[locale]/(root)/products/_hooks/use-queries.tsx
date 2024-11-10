@@ -47,8 +47,7 @@ export const useAddProduct = (t: any, handleClose: () => void) => {
   return useMutation({
     mutationFn: async (product: ProductType) => await addProduct(product),
     onSettled: async () => {
-      handleClose();
-      await queryClient.invalidateQueries({ queryKey: ["products"] });
+      await queryClient.invalidateQueries({ queryKey: ["products"] }).finally(() => handleClose());
     },
     onSuccess: () => toast.success(t("notifications.addProductSuccess")),
     onError: () => toast.error(t("notifications.addProductError")),
@@ -61,8 +60,7 @@ export const useUpdateProduct = (t: any, handleClose: () => void) => {
   return useMutation({
     mutationFn: async (product: ProductType) => await updateProduct(product),
     onSettled: async () => {
-      handleClose();
-      await queryClient.invalidateQueries({ queryKey: ["products"] });
+      await queryClient.invalidateQueries({ queryKey: ["products"] }).finally(() => handleClose());
     },
     onSuccess: () => toast.success(t("notifications.updateProductSuccess")),
     onError: () => toast.error(t("notifications.updateProductError")),
@@ -75,8 +73,7 @@ export const useDeleteProduct = (t: any, handleClose: () => void) => {
   return useMutation({
     mutationFn: async (productCode: string) => await deleteProduct(productCode),
     onSettled: async () => {
-      handleClose();
-      await queryClient.invalidateQueries({ queryKey: ["products"] });
+      await queryClient.invalidateQueries({ queryKey: ["products"] }).finally(() => handleClose());
     },
     onSuccess: () => toast.success(t("notifications.deleteProductSuccess")),
     onError: () => toast.error(t("notifications.deleteProductError")),

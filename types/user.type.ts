@@ -4,11 +4,10 @@ export type UserType = {
   lastName?: string;
   userName?: string;
   email?: string;
-  phoneNumber: string;
+  phoneNumber?: string;
   roleCode?: string;
-  isActive?: boolean;
-  isDeleted?: boolean;
   companyId?: number;
+  rolePages: RolePageType[];
 };
 
 export type UserLoginType = {
@@ -21,7 +20,7 @@ export type LoginResponseType = {
   userName: string;
   roleCode: string;
   companyId?: number;
-  rolePages?: RolePageType[];
+  rolePages: RolePageType[];
 };
 
 type RolePageType = {

@@ -2,26 +2,31 @@
 
 import { redirect } from "next/navigation";
 import { pageRoutes } from "@/shared/routes/pages.route";
-import {createSession, deleteSession} from "@/shared/lib/session";
+import { createSession, deleteSession } from "@/shared/lib/session";
 import { StatusCodes } from "@/shared/enums";
-import {LoginResponseType} from "@/types/user.type";
+import { LoginResponseType } from "@/types/user.type";
 
 export const loginAction = async (user: LoginResponseType) => {
-    await createSession(user);
-    redirect(pageRoutes.dashboard);
+  await createSession(user);
 };
 
 export const logout = async () => {
-    await deleteSession();
-    redirect(pageRoutes.auth.login);
+  await deleteSession();
+  redirect(pageRoutes.auth.login);
 };
 
 export const redirectPageErrors = async (e: any) => {
-    if (e?.status === StatusCodes.SERVICE_UNAVAILABLE) {
-        redirect(pageRoutes.maintenance);
-    }
-
-    if (e?.status === StatusCodes.INTERNAL_SERVER_ERROR) {
-        redirect(pageRoutes.internalServerError);
-    }
+  switch (e?.status) {
+    case StatusCodes.NOT_FOUND:
+      return redirect(pageRoutes.notFound);
+    case StatusCodes.UNAUTHORIZED:
+      await logout();
+      break;
+    case StatusCodes.SERVICE_UNAVAILABLE:
+      return redirect(pageRoutes.maintenance);
+    case StatusCodes.INTERNAL_SERVER_ERROR:
+      return redirect(pageRoutes.internalServerError);
+    default:
+      break;
+  }
 };

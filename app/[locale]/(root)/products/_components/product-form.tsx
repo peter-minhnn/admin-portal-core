@@ -34,6 +34,7 @@ import {
   useUpdateProduct,
 } from "@/app/[locale]/(root)/products/_hooks/use-queries";
 import { generateUniqueId } from "@/shared/lib";
+import { useUserStore } from "@/states/common.state";
 
 type ProductFormProps = {
   units: UnitType[];
@@ -61,6 +62,7 @@ export default function ProductForm({
 }: Readonly<ProductFormProps>) {
   const t = useTranslations("ProductMessages");
   const { closeModal } = useModal();
+  const { userInfo } = useUserStore();
   const modalType = rowData?.id ? "edit" : "add";
   const form = useForm<ProductFormData>({
     resolver: zodResolver(ProductFormSchema),
@@ -105,7 +107,7 @@ export default function ProductForm({
           ? data.productCode
           : generateUniqueId(data.productType),
       productImage: data.productImage ?? "",
-      companyId: 1,
+      companyId: userInfo?.companyId ?? 1,
     };
     if (modalType === "edit") {
       await updateProduct(obj);
@@ -116,7 +118,7 @@ export default function ProductForm({
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     const key = event.key;
-    if (!/^\d$/.test(key)) {
+    if (!/^\d$/.test(key) && !["Backspace"].includes(key)) {
       event.preventDefault();
     }
   };

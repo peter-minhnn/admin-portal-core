@@ -23,9 +23,6 @@ export function handleApiResponse<T>(response: BaseResponseType) {
 }
 
 export async function handleApiCatchResponse(e: any): Promise<ResultType> {
-  if (e?.status === StatusCodes.UNAUTHORIZED) {
-    await logout();
-  }
   await redirectPageErrors(e);
 
   const messageError = get(e.response, "data.message", "");

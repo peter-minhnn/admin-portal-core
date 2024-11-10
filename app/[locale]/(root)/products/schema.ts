@@ -4,8 +4,8 @@ export const ProductFormSchema = z.object({
   productCode: z.string(),
   productType: z.string().min(1, { message: "Vui lòng chọn loại sản phẩm" }),
   productName: z.string().min(1, { message: "Vui lòng nhập tên sản phẩm" }),
-  productDesc: z.string().optional(),
-  productImage: z.string().optional(),
+  productDesc: z.string().or(z.null()).optional(),
+  productImage: z.string().or(z.null()).optional(),
   unitCode: z.string().min(1, { message: "Vui lòng nhập giá sản phẩm" }),
   productPrice: z
     .string()
@@ -25,5 +25,5 @@ export const ProductFormSchema = z.object({
     .regex(/^\d+$/, {
       message: "Input must contain only numbers",
     }),
-  companyId: z.number().optional(),
+  companyId: z.number().or(z.null()).optional(),
 });

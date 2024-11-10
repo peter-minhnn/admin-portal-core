@@ -24,6 +24,7 @@ export function LoginForm({
 }: Readonly<HTMLAttributes<HTMLDivElement>>) {
   const t = useTranslations("LoginMessages");
   const tCommon = useTranslations("CommonMessages");
+
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -53,7 +54,7 @@ export function LoginForm({
             <div className="grid gap-4">
               <FormField
                 name="userName"
-                render={(field) => (
+                render={({ field }) => (
                   <>
                     <FormItem>
                       <FormLabel>{t("form.username")}</FormLabel>
@@ -63,7 +64,7 @@ export function LoginForm({
                         type="text"
                         autoCapitalize="none"
                         autoCorrect="off"
-                        hasError={!!form.formState.errors.userName}
+                        hasError={!!form.formState?.errors.userName}
                         {...field}
                       />
                     </FormItem>
@@ -72,15 +73,15 @@ export function LoginForm({
                 )}
               />
               <FormField
-                name="userName"
-                render={(field) => (
+                name="password"
+                render={({ field }) => (
                   <>
                     <FormItem>
                       <FormLabel>{t("form.password")}</FormLabel>
                       <Input
                         id="password"
                         placeholder={t("form.password")}
-                        type="text"
+                        type="password"
                         autoCapitalize="none"
                         autoCorrect="off"
                         hasError={!!form.formState.errors.password}

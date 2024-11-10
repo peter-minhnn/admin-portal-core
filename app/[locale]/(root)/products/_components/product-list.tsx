@@ -221,7 +221,7 @@ export default function ProductListPage() {
   }, [pagination, refetchProducts]);
 
   return (
-    <LayoutContentSection title={t("title")} desc={"ddd"}>
+    <LayoutContentSection title={t("title")} desc={t("description")}>
       <DataTable table={table} />
     </LayoutContentSection>
   );

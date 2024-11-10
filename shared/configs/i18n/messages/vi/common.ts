@@ -50,6 +50,7 @@ const CommonMessages = {
     "Chúng tôi xin lỗi vì sự bất tiện này. {br} Vui lòng thử lại sau.",
   somethingWentWrong: "Có lỗi xảy ra. Vui lòng thử lại sau.",
   loginSuccess: "Đăng nhập thành công",
+  loginFailed: "Đăng nhập thất bại",
 };
 
 export default CommonMessages;
