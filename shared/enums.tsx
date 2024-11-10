@@ -7,6 +7,7 @@ export enum LocalStorageEnums {
 export enum CookieEnums {
   SESSION_ID = "session_id",
   TOKEN = "access_token",
+  NEXT_LOCALE = "NEXT_LOCALE",
 }
 
 export enum StatusCodes {

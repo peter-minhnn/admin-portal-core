@@ -12,3 +12,7 @@ export const getSession = async () => {
 export const getToken = async () => {
   return (await cookies()).get(CookieEnums.TOKEN)?.value;
 };
+
+export const getLocale = async () => {
+  return (await cookies()).get(CookieEnums.NEXT_LOCALE)?.value;
+};
