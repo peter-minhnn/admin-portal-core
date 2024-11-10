@@ -15,7 +15,7 @@ class CustomError extends Error {
 }
 
 const globalAxiosInstance = axios.create({
-  baseURL: `${process.env.NEXT_PUBLIC_BASE_API_URL}`,
+  baseURL: process.env.NEXT_PUBLIC_BASE_API_URL,
 });
 
 globalAxiosInstance.interceptors.request.use(async (config) => {

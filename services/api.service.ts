@@ -1,7 +1,7 @@
 import { BaseResponseType, ResultType } from "@/types/common.type";
 import get from "lodash/get";
 import { StatusCodes } from "@/shared/enums";
-import {logout, redirectPageErrors} from "@/actions/login.action";
+import { logout, redirectPageErrors } from "@/actions/login.action";
 
 export function handleApiResponse<T>(response: BaseResponseType) {
   const errorResponse = get(response, "data.code", null);

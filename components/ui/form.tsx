@@ -14,7 +14,7 @@ import {
 
 import { cn } from "@/shared/lib";
 import { Label } from "@/components/ui/label";
-import {useId, useMemo} from "react";
+import { useId, useMemo } from "react";
 
 const Form = FormProvider;
 

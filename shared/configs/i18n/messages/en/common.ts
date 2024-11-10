@@ -8,17 +8,17 @@ const CommonMessages = {
   searchNoDataSuggestion: "Hãy thử tìm kiếm với từ khóa khác",
   searchNoDataCreate: "Tạo mới",
   searchNoDataCreateDescription:
-      "Không có dữ liệu để hiển thị, bạn có muốn tạo mới không?",
+    "Không có dữ liệu để hiển thị, bạn có muốn tạo mới không?",
   searchNoDataCreateSuggestion:
-      "Hãy thử tạo mới bằng cách nhấn vào nút bên dưới",
+    "Hãy thử tạo mới bằng cách nhấn vào nút bên dưới",
   searchNoDataCreateButton: "Tạo mới",
   searchNoDataCreateButtonDescription: "Nhấn vào đây để tạo mới",
   searchNoDataCreateButtonSuggestion:
-      "Hãy thử tạo mới bằng cách nhấn vào nút bên dưới",
+    "Hãy thử tạo mới bằng cách nhấn vào nút bên dưới",
   searchNoDataCreateButtonTitle: "Tạo mới",
   searchNoDataCreateButtonTitleDescription: "Nhấn vào đây để tạo mới",
   searchNoDataCreateButtonTitleSuggestion:
-      "Hãy thử tạo mới bằng cách nhấn vào nút bên dưới",
+    "Hãy thử tạo mới bằng cách nhấn vào nút bên dưới",
   clickToUpload: "Bấm để tải lên",
   orDragAndDrop: "hoặc kéo và thả",
   actions: "Hành động",
@@ -43,6 +43,13 @@ const CommonMessages = {
   toggleVisibility: "Chuyển trạng thái hiển thị",
   rowActions: "Hành động dòng",
   pin: "Ghim",
+  goBack: "Quay lại",
+  backToHome: "Trở về trang chủ",
+  pageErrorTitle: "Ồ! Có gì đó không ổn",
+  pageErrorDescription:
+    "Chúng tôi xin lỗi vì sự bất tiện này. {br} Vui lòng thử lại sau.",
+  somethingWentWrong: "Có lỗi xảy ra. Vui lòng thử lại sau.",
+  loginSuccess: "Đăng nhập thành công",
 };
 
 export default CommonMessages;

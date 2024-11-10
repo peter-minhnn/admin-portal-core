@@ -3,7 +3,7 @@ const MetaDataMessages = {
   maintenance: "Maintenance",
   settingsTitle: "Settings",
   productsTitle: "Product list",
-    internalServerError: "Server error",
+  internalServerError: "Server error",
 };
 
 export default MetaDataMessages;

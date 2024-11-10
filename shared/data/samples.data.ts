@@ -128,7 +128,7 @@ const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
 />`;
 
 export const formMultipleSelectorCodes = `//Form Multiple Selector 
-import toast from "react-hot-toast";
+import {toast} from "sonner";
 import {z} from "zod"
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod"
@@ -203,7 +203,7 @@ const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
 />`;
 
 export const formDatePickerCodes = `//Form Date Picker 
-import toast from "react-hot-toast";
+import {toast} from "sonner";
 import {z} from "zod"
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod"

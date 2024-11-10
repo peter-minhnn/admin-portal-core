@@ -21,8 +21,8 @@ import {
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import { formatDate } from "date-fns";
+import { toast } from "sonner";
 
 const FormDatePickerSchema = z.object({
   selectedDate: z.date({ required_error: "Please select a date" }),

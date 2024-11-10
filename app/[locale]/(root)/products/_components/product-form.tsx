@@ -78,9 +78,9 @@ export default function ProductForm({
           companyId: rowData.original.companyId,
         }
       : {
-            ...defaultProductData,
-            productType: productTypes[0]?.code,
-            unitCode: units[0]?.unitCode,
+          ...defaultProductData,
+          productType: productTypes[0]?.code,
+          unitCode: units[0]?.unitCode,
         },
   });
 
@@ -114,12 +114,12 @@ export default function ProductForm({
     await addProduct(obj);
   };
 
-    const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        const key = event.key;
-        if (!/^\d$/.test(key)) {
-            event.preventDefault();
-        }
-    };
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const key = event.key;
+    if (!/^\d$/.test(key)) {
+      event.preventDefault();
+    }
+  };
 
   return (
     <Form {...form}>

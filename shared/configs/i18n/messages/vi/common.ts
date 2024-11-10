@@ -46,7 +46,10 @@ const CommonMessages = {
   goBack: "Quay lại",
   backToHome: "Trở về trang chủ",
   pageErrorTitle: "Ồ! Có gì đó không ổn",
-    pageErrorDescription: "Chúng tôi xin lỗi vì sự bất tiện này. {br} Vui lòng thử lại sau.",
+  pageErrorDescription:
+    "Chúng tôi xin lỗi vì sự bất tiện này. {br} Vui lòng thử lại sau.",
+  somethingWentWrong: "Có lỗi xảy ra. Vui lòng thử lại sau.",
+  loginSuccess: "Đăng nhập thành công",
 };
 
 export default CommonMessages;

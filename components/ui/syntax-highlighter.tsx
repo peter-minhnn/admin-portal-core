@@ -1,4 +1,4 @@
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { IconClipboardCopy } from "@tabler/icons-react";
 import { Prism } from "react-syntax-highlighter";
 import { nord } from "react-syntax-highlighter/dist/esm/styles/prism";

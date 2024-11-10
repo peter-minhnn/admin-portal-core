@@ -1,4 +1,4 @@
-import { LoginForm } from "@/app/[locale]/(guest)/login/login-form";
+import { LoginForm } from "@/app/[locale]/(guest)/login/_components/login-form";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
