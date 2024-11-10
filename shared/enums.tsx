@@ -1,5 +1,9 @@
 export const PAGE_SIZE = 50;
 
+export enum LocalStorageEnums {
+  LOCALE = "locale",
+}
+
 export enum CookieEnums {
   SESSION_ID = "session_id",
   TOKEN = "access_token",

@@ -3,6 +3,7 @@ import { getSession, getToken } from "@/actions/cookies.action";
 import { pageRoutes } from "@/shared/routes/pages.route";
 import createMiddleware from "next-intl/middleware";
 import { routing } from "@/shared/configs/i18n/routing";
+import {UserType} from "@/types/user.type";
 
 const publicRoutes = [pageRoutes.auth.login];
 const errorRoutes = [pageRoutes.maintenance];
@@ -28,16 +29,17 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL(pageRoutes.dashboard, req.nextUrl));
   }
 
+  const user = session?.user as UserType ?? null;
   if (
     [
       pageRoutes.settings,
-      pageRoutes.sample.input,
-      pageRoutes.sample.grid,
-      pageRoutes.sample.multipleSelector,
-      pageRoutes.sample.datePicker,
+      // pageRoutes.sample.input,
+      // pageRoutes.sample.grid,
+      // pageRoutes.sample.multipleSelector,
+      // pageRoutes.sample.datePicker,
     ].includes(path) &&
     token &&
-    session?.username !== "minhnn"
+      user?.userName !== "minhnn"
   ) {
     return NextResponse.redirect(new URL(pageRoutes.dashboard, req.nextUrl));
   }
@@ -47,7 +49,7 @@ export default async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    "/(en|vi)/:path*",
+    "/(en|vi|ko)/:path*",
     "/((?!api|_next/static|_next/image|images|favicon.ico).*)",
   ],
 };

@@ -2,7 +2,6 @@
 
 import { FC, ReactNode, useEffect } from "react";
 import dynamic from "next/dynamic";
-import { TopNav } from "@/components/layouts/top-nav";
 import { UserNav } from "@/components/layouts/user-nav";
 import { Layout } from "@/components/layouts/layout";
 import Sidebar from "@/components/layouts/sidebar";
@@ -12,7 +11,9 @@ import useIsCollapsed from "@/hooks/use-is-collapsed";
 import { getSession } from "@/actions/cookies.action";
 import { useUserStore } from "@/states/common.state";
 import QueryProvider from "@/components/providers/query-provider";
-import {UserType} from "@/types/user.type";
+import { UserType } from "@/types/user.type";
+import get from "lodash/get";
+import LocaleSwitcher from "@/components/layouts/locale-switcher";
 
 const NextProgress = dynamic(
   () => import("@/components/layouts/next-progress"),
@@ -31,8 +32,9 @@ export const AdminLayout: FC<Props> = ({ children }) => {
 
   useEffect(() => {
     getSession().then((session) => {
-      if (session?.user) {
-        setUserInfo(session.user as UserType);
+      const userInfo = get(session, "user", null) as UserType;
+      if (userInfo) {
+        setUserInfo(userInfo);
       }
     });
   }, [setUserInfo]);
@@ -48,10 +50,11 @@ export const AdminLayout: FC<Props> = ({ children }) => {
           <Layout>
             {/* ===== Top Heading ===== */}
             <Layout.Header>
-              <TopNav links={topNav} />
+              {/*<TopNav links={topNav} />*/}
               <div className="ml-auto flex items-center space-x-4">
                 {/*<Search />*/}
                 {/*<ThemeSwitch />*/}
+                <LocaleSwitcher />
                 <UserNav />
               </div>
             </Layout.Header>
@@ -73,26 +76,26 @@ export const AdminLayout: FC<Props> = ({ children }) => {
 };
 
 export default AdminLayout;
-
-const topNav = [
-  {
-    title: "Overview",
-    href: "dashboard/overview",
-    isActive: true,
-  },
-  {
-    title: "Customers",
-    href: "dashboard/customers",
-    isActive: false,
-  },
-  {
-    title: "Products",
-    href: "dashboard/products",
-    isActive: false,
-  },
-  {
-    title: "Settings",
-    href: "dashboard/settings",
-    isActive: false,
-  },
-];
+//
+// const topNav = [
+//   {
+//     title: "Overview",
+//     href: "dashboard/overview",
+//     isActive: true,
+//   },
+//   {
+//     title: "Customers",
+//     href: "dashboard/customers",
+//     isActive: false,
+//   },
+//   {
+//     title: "Products",
+//     href: "dashboard/products",
+//     isActive: false,
+//   },
+//   {
+//     title: "Settings",
+//     href: "dashboard/settings",
+//     isActive: false,
+//   },
+// ];

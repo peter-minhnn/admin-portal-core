@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { UserType } from "@/types/user.type";
 import { ModalType } from "@/types/modal.type";
+import { Locale } from "@/shared/configs/i18n/config";
 
 /*
  *  USER STORE
@@ -34,4 +35,17 @@ export const useModalStore = create<ModalStore>((set) => ({
     modalButton: null,
   },
   setModalOpen: (modalProps?: ModalType) => set({ modalProps }),
+}));
+
+/*
+ *  LOCALE STORE
+ */
+type LocaleStore = {
+  locale: Locale;
+  setLocaleStore: (locale: Locale) => void;
+};
+
+export const useLocaleStore = create<LocaleStore>((set) => ({
+  locale: "vi",
+  setLocaleStore: (locale) => set({ locale }),
 }));

@@ -23,12 +23,9 @@ export type LoginResponseType = {
   rolePages: RolePageType[];
 };
 
-type RolePageType = {
+export type RolePageType = {
   roleCode: string;
   pageCode: string;
   pageName: string;
-  canView?: boolean;
-  canAdd?: boolean;
-  canEdit?: boolean;
-  canDelete?: boolean;
+  pageUrl: string;
 };

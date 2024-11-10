@@ -2,7 +2,7 @@ import "server-only";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { CookieEnums } from "@/shared/enums";
-import {LoginResponseType, UserType} from "@/types/user.type";
+import { LoginResponseType, UserType } from "@/types/user.type";
 
 const secretKey = process.env.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
@@ -11,12 +11,12 @@ export async function createSession(user: LoginResponseType) {
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
   const session = await encrypt({
     user: {
-        userName: user.userName,
-        roleCode: user.roleCode,
-        companyId: user.companyId,
-        rolePages: user.rolePages,
+      userName: user.userName,
+      roleCode: user.roleCode,
+      companyId: user.companyId,
+      rolePages: user.rolePages,
     },
-    expiresAt
+    expiresAt,
   });
 
   (await cookies()).set(CookieEnums.SESSION_ID, session, {

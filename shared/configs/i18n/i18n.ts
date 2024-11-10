@@ -6,6 +6,7 @@ import { Locale } from "@/shared/configs/i18n/config";
 const localeToTimeZone: Record<Locale, string> = {
   en: "America/New_York",
   vi: "Asia/Ho_Chi_Minh",
+  ko: "Asia/Seoul",
 };
 
 export default getRequestConfig(async ({ requestLocale }) => {

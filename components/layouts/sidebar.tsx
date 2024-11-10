@@ -8,11 +8,12 @@ import {
 import { IconChevronsLeft, IconMenu2, IconX } from "@tabler/icons-react";
 import Nav from "./nav";
 import { cn } from "@/shared/lib";
-import { sideLinks } from "@/shared/data/side-links";
 import { Layout } from "@/components/layouts/layout";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { sideLinks } from "@/shared/data/side-links";
+// import useSideLinks from "@/hooks/use-side-links";
 
 interface SidebarProps extends HTMLAttributes<HTMLElement> {
   isCollapsed: boolean;
@@ -26,6 +27,7 @@ export default function Sidebar({
 }: Readonly<SidebarProps>) {
   const t = useTranslations("MenuMessages");
   const [navOpened, setNavOpened] = useState(false);
+  // const sideLinks = useSideLinks();
 
   /* Make body not scrollable when navBar is opened */
   useEffect(() => {

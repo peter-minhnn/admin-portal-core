@@ -1,6 +1,7 @@
 export const ProductMessages = {
   title: "Danh sách sản phẩm",
-  description: "Một trang sản phẩm là một thành phần quan trọng của một trang web thương mại điện tử, được thiết kế để cung cấp thông tin chi tiết về một sản phẩm cụ thể.",
+  description:
+    "Một trang sản phẩm là một thành phần quan trọng của một trang web thương mại điện tử, được thiết kế để cung cấp thông tin chi tiết về một sản phẩm cụ thể.",
   productCode: "Mã sản phẩm",
   productName: "Tên sản phẩm",
   productDesc: "Mô tả sản phẩm",
