@@ -22,24 +22,25 @@ export interface SideLink extends NavLink {
   sub?: NavLink[];
 }
 
-export const sideLinks = (t: any): SideLink[] => {
+export const sideLinks = (t: any, locale: string): SideLink[] => {
+  const path = `/${locale}`;
   return [
     {
       title: t("dashboard"),
       label: "",
-      href: pageRoutes.dashboard,
+      href: path + pageRoutes.dashboard,
       icon: <IconLayoutDashboard size={18} />,
     },
     {
       title: t("products"),
       label: "",
-      href: pageRoutes.products,
+      href: path + pageRoutes.products,
       icon: <IconPackages size={18} />,
     },
     {
       title: t("settings"),
       label: "",
-      href: pageRoutes.settings,
+      href: path + pageRoutes.settings,
       icon: <IconSettings size={18} />,
     },
     {
@@ -51,25 +52,25 @@ export const sideLinks = (t: any): SideLink[] => {
         {
           title: t("input"),
           label: "",
-          href: pageRoutes.sample.input,
+          href: path + pageRoutes.sample.input,
           icon: <IconInputAi size={18} />,
         },
         {
           title: t("grid"),
           label: "",
-          href: pageRoutes.sample.grid,
+          href: path + pageRoutes.sample.grid,
           icon: <IconTable size={18} />,
         },
         {
           title: t("multipleSelector"),
           label: "",
-          href: pageRoutes.sample.multipleSelector,
+          href: path + pageRoutes.sample.multipleSelector,
           icon: <IconBoxMultiple size={18} />,
         },
         {
           title: t("datePicker"),
           label: "",
-          href: pageRoutes.sample.datePicker,
+          href: path + pageRoutes.sample.datePicker,
           icon: <IconCalendar size={18} />,
         },
       ],

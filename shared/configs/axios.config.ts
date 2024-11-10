@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { getToken } from "@/actions/cookies.action";
+import {getLocale, getToken} from "@/actions/cookies.action";
 
 interface IErrorResponse {
   code: number;
@@ -20,9 +20,11 @@ const globalAxiosInstance = axios.create({
 
 globalAxiosInstance.interceptors.request.use(async (config) => {
   const token = await getToken();
+  const locale = await getLocale();
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+  config.headers["Accept-Language"] = locale;
   return config;
 });
 

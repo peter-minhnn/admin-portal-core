@@ -1,37 +1,39 @@
 "use client";
 
-import React, { startTransition, useCallback, useEffect } from "react";
-import { useLocale, useTranslations } from "next-intl";
+import React, {startTransition, useEffect} from "react";
+import {useTranslations} from "next-intl";
+import {useParams} from "next/navigation";
+import { getCookie } from 'cookies-next/client';
 import {
   DropdownMenu,
-  DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
+import {Button} from "@/components/ui/button";
 import {
   Drawer,
-  DrawerTrigger,
-  DrawerContent,
   DrawerClose,
-  DrawerTitle,
+  DrawerContent,
   DrawerDescription,
+  DrawerTitle,
+  DrawerTrigger,
 } from "@/components/ui/drawer";
-import { routing, usePathname, useRouter } from "@/shared/configs/i18n/routing";
-import { Locale } from "@/shared/configs/i18n/config";
-import { useParams } from "next/navigation";
-import { useLocaleStore } from "@/states/common.state";
+import {routing, usePathname, useRouter} from "@/shared/configs/i18n/routing";
+import {Locale} from "@/shared/configs/i18n/config";
+import {useLocaleStore} from "@/states/common.state";
+import {CookieEnums} from "@/shared/enums";
+import {setCookie} from "cookies-next";
 
 export default function LocaleSwitcher() {
   const t = useTranslations("LocaleSwitcherMessages");
   const router = useRouter();
   const pathname = usePathname();
   const params = useParams();
-  const locale = useLocale();
   const { locale: localeStore, setLocaleStore } = useLocaleStore();
 
-  const onSelectChange = useCallback(
+  const onSelectChange = (
     (locale: Locale) => {
       setLocaleStore(locale);
       startTransition(() => {
@@ -43,14 +45,18 @@ export default function LocaleSwitcher() {
           { locale: locale },
         );
       });
-    },
-    [router, pathname, params, setLocaleStore],
-  );
+    });
 
   useEffect(() => {
-    if (locale === localeStore) return;
-    setLocaleStore(locale as any);
-  }, [locale, localeStore, setLocaleStore]);
+    const getLocaleCookie = getCookie(CookieEnums.NEXT_LOCALE);
+    if (!getLocaleCookie) {
+      setCookie(CookieEnums.NEXT_LOCALE, routing.defaultLocale);
+      onSelectChange(routing.defaultLocale);
+      return;
+    }
+    onSelectChange(getLocaleCookie as any);
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <React.Fragment>
