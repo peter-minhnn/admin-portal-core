@@ -1,4 +1,4 @@
-import {usePathname} from "next/navigation";
+import { usePathname } from "next/navigation";
 
 export default function useCheckActiveNav() {
   const pathname = usePathname();

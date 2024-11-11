@@ -1,4 +1,4 @@
-import {useLocale, useTranslations} from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useUserStore } from "@/states/common.state";
 import { SideLink, sideLinks } from "@/shared/data/side-links";
 

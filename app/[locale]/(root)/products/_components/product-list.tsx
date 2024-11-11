@@ -18,12 +18,8 @@ import {
   useGetProductTypes,
   useGetUnits,
 } from "@/app/[locale]/(root)/products/_hooks/use-queries";
-import { ProductFormData, UnitType } from "@/types/product.type";
-import {
-  CommonCodeType,
-  ListResponseType,
-  PaginationState,
-} from "@/types/common.type";
+import { ProductFormData } from "@/types/product.type";
+import { ListResponseType, PaginationState } from "@/types/common.type";
 import { PAGE_SIZE } from "@/shared/enums";
 import DataTable from "@/components/data-table";
 import useProductColumns from "@/app/[locale]/(root)/products/_hooks/use-product-columns";
@@ -36,13 +32,12 @@ import {
 } from "@/components/ui/tooltip";
 import { EditIcon, PlusIcon, TrashIcon } from "lucide-react";
 import { DataTableProps } from "@/shared/data-table-props";
+import { useWindowSize } from "@/hooks/use-window-size";
 
 export default function ProductListPage() {
   const t = useTranslations("ProductMessages");
   const tCommon = useTranslations("CommonMessages");
   const { openModal, closeModal } = useModal();
-  const [units, setUnits] = useState<UnitType[]>([]);
-  const [productTypes, setProductTypes] = useState<CommonCodeType[]>([]);
   const [products, setProducts] = useState<ListResponseType<ProductFormData>>({
     data: [],
     meta: {
@@ -56,9 +51,10 @@ export default function ProductListPage() {
     pageSize: PAGE_SIZE,
   });
 
-  const { isFetching: isFetchingUnits, data: unitsData } = useGetUnits();
-  const { isFetching: isFetchingProductTypes, data: productTypesData } =
-    useGetProductTypes();
+  const { width } = useWindowSize();
+
+  const { data: unitsData } = useGetUnits();
+  const { data: productTypesData } = useGetProductTypes();
   const {
     isFetching: isFetchingProducts,
     data: productsData,
@@ -86,9 +82,6 @@ export default function ProductListPage() {
     enableRowPinning: true,
     initialState: {
       columnSizing: { "mrt-row-actions": 120 },
-      columnPinning: {
-        left: ["mrt-row-pin", "mrt-row-actions", "productCode"],
-      },
     },
     renderRowActionMenuItems: ({ row, table, closeMenu }) => [
       <ActionMenuItem
@@ -139,7 +132,9 @@ export default function ProductListPage() {
       isOpen: true,
       title: t("addProductModalTitle"),
       description: "",
-      modalContent: <ProductForm units={units} productTypes={productTypes} />,
+      modalContent: (
+        <ProductForm units={unitsData} productTypes={productTypesData} />
+      ),
       customSize: "lg:!min-w-[800px]",
     });
   };
@@ -150,7 +145,11 @@ export default function ProductListPage() {
       title: t("editProductModalTitle"),
       description: "",
       modalContent: (
-        <ProductForm units={units} productTypes={productTypes} rowData={row} />
+        <ProductForm
+          units={unitsData}
+          productTypes={productTypesData}
+          rowData={row}
+        />
       ),
       customSize: "lg:!min-w-[800px]",
     });
@@ -202,16 +201,6 @@ export default function ProductListPage() {
   };
 
   useEffect(() => {
-    if (isFetchingUnits || !unitsData?.length) return;
-    setUnits(unitsData);
-  }, [unitsData, isFetchingUnits]);
-
-  useEffect(() => {
-    if (isFetchingProductTypes || !productTypesData?.length) return;
-    setProductTypes(productTypesData);
-  }, [productTypesData, isFetchingProductTypes]);
-
-  useEffect(() => {
     if (isFetchingProducts || productsData?.type === "error") return;
     setProducts(productsData?.result);
   }, [productsData, isFetchingProducts]);
@@ -219,6 +208,16 @@ export default function ProductListPage() {
   useEffect(() => {
     refetchProducts();
   }, [pagination, refetchProducts]);
+
+  useEffect(() => {
+    if (width > 1280) {
+      table.initialState.columnPinning = {
+        left: ["mrt-row-pin", "mrt-row-actions", "productCode"],
+      };
+    } else {
+      table.initialState.columnPinning = {};
+    }
+  }, [width, table]);
 
   return (
     <LayoutContentSection title={t("title")} desc={t("description")}>

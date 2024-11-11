@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import {getLocale, getToken} from "@/actions/cookies.action";
+import { getLocale, getToken } from "@/actions/cookies.action";
 
 interface IErrorResponse {
   code: number;

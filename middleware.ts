@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import {getLocale, getToken} from "@/actions/cookies.action";
+import { getLocale, getToken } from "@/actions/cookies.action";
 import { pageRoutes } from "@/shared/routes/pages.route";
 import createMiddleware from "next-intl/middleware";
 import { routing } from "@/shared/configs/i18n/routing";
@@ -21,11 +21,15 @@ export default async function middleware(req: NextRequest) {
   }
 
   if (!isPublicRoute && !token) {
-    return NextResponse.redirect(new URL(`${defaultLocale}${pageRoutes.auth.login}`, req.nextUrl));
+    return NextResponse.redirect(
+      new URL(`${defaultLocale}${pageRoutes.auth.login}`, req.nextUrl),
+    );
   }
   //
   if (path === "/" && token) {
-    return NextResponse.redirect(new URL(`${defaultLocale}${pageRoutes.dashboard}`, req.nextUrl));
+    return NextResponse.redirect(
+      new URL(`${defaultLocale}${pageRoutes.dashboard}`, req.nextUrl),
+    );
   }
 
   return handleI18nRouting(req);

@@ -1,9 +1,9 @@
 const MetaDataMessages = {
-  loginTitle: "Đăng nhập",
-  maintenance: "Bảo trì",
-  settingsTitle: "Cài đặt",
-  productsTitle: "Danh sách sản phẩm",
-  internalServerError: "Lỗi máy chủ",
+  loginTitle: "Đăng Nhập",
+  maintenance: "Bảo Trì",
+  settingsTitle: "Cài Đặt",
+  productsTitle: "Danh Sách Sản Phẩm",
+  internalServerError: "Lỗi Máy Chủ",
 };
 
 export default MetaDataMessages;

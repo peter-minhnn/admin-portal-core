@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { MRT_Row as RowCell } from "material-react-table";
@@ -85,6 +85,7 @@ export default function ProductForm({
           unitCode: units[0]?.unitCode,
         },
   });
+  const [files, setFiles] = useState<File[] | null>(null);
 
   const { mutateAsync: addProduct, status: addMutateStatus } = useAddProduct(
     t,
@@ -291,7 +292,14 @@ export default function ProductForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t("productDesc")}</FormLabel>
-              <FileUpload files={field.value} onValueChange={field.onChange} />
+              <FileUpload
+                files={files}
+                onValueChange={(e) => {
+                  console.log(e);
+                  setFiles(e);
+                  field.onChange("/images/products/bun-han-the.jpg");
+                }}
+              />
               <FormMessage />
             </FormItem>
           )}

@@ -163,3 +163,25 @@
     display: block;
   }
 }
+
+.img-size {
+  display: block;
+  height: auto;
+
+  img {
+    display: block;
+  }
+
+  img {
+    height: 100%;
+  }
+
+  img {
+    width: 100%;
+  }
+
+  img {
+    -o-object-fit: cover;
+    object-fit: cover;
+  }
+}

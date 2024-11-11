@@ -359,6 +359,7 @@ export const FileInput = forwardRef<
         {children}
       </div>
       <Input
+        multiple={false}
         ref={dropzoneState.inputRef}
         disabled={isLOF}
         {...dropzoneState.getInputProps()}

@@ -1,9 +1,9 @@
 "use client";
 
-import React, {startTransition, useEffect} from "react";
-import {useTranslations} from "next-intl";
-import {useParams} from "next/navigation";
-import { getCookie } from 'cookies-next/client';
+import React, { startTransition, useEffect } from "react";
+import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
+import { getCookie } from "cookies-next/client";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,7 +11,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {Button} from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Drawer,
   DrawerClose,
@@ -20,11 +20,11 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import {routing, usePathname, useRouter} from "@/shared/configs/i18n/routing";
-import {Locale} from "@/shared/configs/i18n/config";
-import {useLocaleStore} from "@/states/common.state";
-import {CookieEnums} from "@/shared/enums";
-import {setCookie} from "cookies-next";
+import { routing, usePathname, useRouter } from "@/shared/configs/i18n/routing";
+import { Locale } from "@/shared/configs/i18n/config";
+import { useLocaleStore } from "@/states/common.state";
+import { CookieEnums } from "@/shared/enums";
+import { setCookie } from "cookies-next";
 
 export default function LocaleSwitcher() {
   const t = useTranslations("LocaleSwitcherMessages");
@@ -33,19 +33,18 @@ export default function LocaleSwitcher() {
   const params = useParams();
   const { locale: localeStore, setLocaleStore } = useLocaleStore();
 
-  const onSelectChange = (
-    (locale: Locale) => {
-      setLocaleStore(locale);
-      startTransition(() => {
-        router.replace(
-          // @ts-expect-error -- TypeScript will validate that only known `params`
-          // are used in combination with a given `pathname`. Since the two will
-          // always match for the current route, we can skip runtime checks.
-          { pathname, params },
-          { locale: locale },
-        );
-      });
+  const onSelectChange = (locale: Locale) => {
+    setLocaleStore(locale);
+    startTransition(() => {
+      router.replace(
+        // @ts-expect-error -- TypeScript will validate that only known `params`
+        // are used in combination with a given `pathname`. Since the two will
+        // always match for the current route, we can skip runtime checks.
+        { pathname, params },
+        { locale: locale },
+      );
     });
+  };
 
   useEffect(() => {
     const getLocaleCookie = getCookie(CookieEnums.NEXT_LOCALE);

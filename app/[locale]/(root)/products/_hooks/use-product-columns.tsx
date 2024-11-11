@@ -1,12 +1,26 @@
 import type { MRT_ColumnDef } from "material-react-table";
 import { ProductFormData } from "@/types/product.type";
 import { formatCurrency, formatNumber } from "@/shared/lib";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
 export default function useProductColumns(t: any) {
   return [
     {
       accessorKey: "productCode", //access nested data with dot notation
       header: t("productCode"),
+    },
+    {
+      accessorKey: "productImage",
+      header: t("productImage"),
+      accessorFn: (dataRow) => (
+        <Avatar className="w-16 h-16">
+          <AvatarImage
+            src={dataRow.productImage || "/images/placeholder.png"}
+            alt={dataRow.productName || "Product Image"}
+            className="size-full rounded-[inherit] object-cover"
+          />
+        </Avatar>
+      ),
     },
     {
       accessorKey: "productName",
@@ -39,10 +53,6 @@ export default function useProductColumns(t: any) {
     {
       accessorKey: "productDesc",
       header: t("productDesc"),
-    },
-    {
-      accessorKey: "productImage",
-      header: t("productImage"),
     },
   ] as MRT_ColumnDef<ProductFormData, any>[];
 }

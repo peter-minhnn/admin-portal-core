@@ -11,7 +11,7 @@ import { cn } from "@/shared/lib";
 import { Layout } from "@/components/layouts/layout";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import {useLocale, useTranslations} from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { sideLinks } from "@/shared/data/side-links";
 // import useSideLinks from "@/hooks/use-side-links";
 

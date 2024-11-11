@@ -1,21 +1,21 @@
 [
   {
-    "code": "en",
-    "localName": "English",
-    "name": "English",
-    "langDir": "ltr",
-    "dateFormat": "MM.DD.YYYY",
-    "hrefLang": "en-US",
-    "enabled": true,
-    "default": true
-  },
-  {
     "code": "vi",
     "localName": "Tiếng Việt",
     "name": "Vietnamese",
     "langDir": "ltr",
     "dateFormat": "YYYY.MM.DD",
     "hrefLang": "vi",
+    "enabled": true,
+    "default": true
+  },
+  {
+    "code": "ko",
+    "localName": "한국어",
+    "name": "Korean",
+    "langDir": "ltr",
+    "dateFormat": "YYYY.MM.DD",
+    "hrefLang": "ko",
     "enabled": false,
     "default": false
   }

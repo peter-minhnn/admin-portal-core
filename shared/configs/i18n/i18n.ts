@@ -4,7 +4,7 @@ import { Locale } from "@/shared/configs/i18n/config";
 
 // Mapping of locales to timezones
 const localeToTimeZone: Record<Locale, string> = {
-  en: "America/New_York",
+  // en: "America/New_York",
   vi: "Asia/Ho_Chi_Minh",
   ko: "Asia/Seoul",
 };
