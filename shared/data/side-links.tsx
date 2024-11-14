@@ -7,6 +7,7 @@ import {
   IconCalendar,
   IconPackages,
   IconSettings,
+  IconShield,
 } from "@tabler/icons-react";
 import { ReactElement } from "react";
 import { pageRoutes } from "@/shared/routes/pages.route";
@@ -36,6 +37,12 @@ export const sideLinks = (t: any, locale: string): SideLink[] => {
       label: "",
       href: path + pageRoutes.products,
       icon: <IconPackages size={18} />,
+    },
+    {
+      title: t("rolesPermissions"),
+      label: "",
+      href: path + pageRoutes.rolesPermissions,
+      icon: <IconShield size={18} />,
     },
     {
       title: t("settings"),

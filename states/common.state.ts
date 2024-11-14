@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { UserType } from "@/types/user.type";
+import {AuthUserType} from "@/types/user.type";
 import { ModalType } from "@/types/modal.type";
 import { Locale } from "@/shared/configs/i18n/config";
 
@@ -7,8 +7,8 @@ import { Locale } from "@/shared/configs/i18n/config";
  *  USER STORE
  */
 type UserStore = {
-  userInfo?: UserType;
-  setUserInfo: (user?: UserType) => void;
+  userInfo?: AuthUserType;
+  setUserInfo: (user?: AuthUserType) => void;
 };
 
 export const useUserStore = create<UserStore>((set) => ({

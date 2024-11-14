@@ -49,6 +49,9 @@ const CommonMessages = {
   somethingWentWrong: "문제가 발생했습니다. 잠시 후 다시 시도해 주세요.",
   loginSuccess: "로그인 성공",
   loginFailed: "로그인 실패",
+  btnAdvancedFilters: "고급 필터",
+  btnReset: "재설정",
+  btnApply: "적용",
 };
 
 export default CommonMessages;

@@ -1,6 +1,8 @@
 import ProductListPage from "./_components/product-list";
 import { getTranslations } from "next-intl/server";
 import { metaObject } from "@/shared/configs";
+import {useTranslations} from "next-intl";
+import LayoutContentSection from "@/components/layouts/layout-section";
 
 export async function generateMetadata() {
   "use server";
@@ -11,5 +13,10 @@ export async function generateMetadata() {
 }
 
 export default function ProductPage() {
-  return <ProductListPage />;
+  const t = useTranslations("ProductMessages");
+  return (
+      <LayoutContentSection title={t("title")} desc={t("description")}>
+        <ProductListPage />
+      </LayoutContentSection>
+  );
 }

@@ -6,8 +6,8 @@ import { createSession, deleteSession } from "@/shared/lib/session";
 import { StatusCodes } from "@/shared/enums";
 import { LoginResponseType } from "@/types/user.type";
 
-export const loginAction = async (user: LoginResponseType) => {
-  await createSession(user);
+export const loginAction = async (result: LoginResponseType) => {
+  await createSession(result.access_token, result.user);
 };
 
 export const logout = async () => {

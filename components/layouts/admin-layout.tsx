@@ -11,7 +11,7 @@ import useIsCollapsed from "@/hooks/use-is-collapsed";
 import { getSession } from "@/actions/cookies.action";
 import { useUserStore } from "@/states/common.state";
 import QueryProvider from "@/components/providers/query-provider";
-import { UserType } from "@/types/user.type";
+import {AuthUserType} from "@/types/user.type";
 import get from "lodash/get";
 import LocaleSwitcher from "@/components/layouts/locale-switcher";
 
@@ -32,7 +32,7 @@ export const AdminLayout: FC<Props> = ({ children }) => {
 
   useEffect(() => {
     getSession().then((session) => {
-      const userInfo = get(session, "user", null) as UserType;
+      const userInfo = get(session, "user", null) as AuthUserType;
       if (userInfo) {
         setUserInfo(userInfo);
       }

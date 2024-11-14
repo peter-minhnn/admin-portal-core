@@ -2,11 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import { IconX } from "@tabler/icons-react";
-import { Button } from "@/components/ui/button";
-import LayoutContentSection from "@/components/layouts/layout-section";
-import ProductForm from "./product-form";
-import { useModal } from "@/hooks/use-modal";
+import {IconCoin, IconX} from "@tabler/icons-react";
 import {
   MRT_ActionMenuItem as ActionMenuItem,
   MRT_Row as RowCell,
@@ -17,22 +13,24 @@ import {
   useGetProducts,
   useGetProductTypes,
   useGetUnits,
-} from "@/app/[locale]/(root)/products/_hooks/use-queries";
-import { ProductFormData } from "@/types/product.type";
+} from "../_hooks/use-queries";
+import {useQueryClient} from "@tanstack/react-query";
+import { Box } from "@mui/material";
+import {EditIcon, FilterIcon, PlusIcon, TrashIcon} from "lucide-react";
+import {ProductFilterParams, ProductFormData} from "@/types/product.type";
 import { ListResponseType, PaginationState } from "@/types/common.type";
 import { PAGE_SIZE } from "@/shared/enums";
 import DataTable from "@/components/data-table";
-import useProductColumns from "@/app/[locale]/(root)/products/_hooks/use-product-columns";
-import { Box } from "@mui/material";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { EditIcon, PlusIcon, TrashIcon } from "lucide-react";
+import useProductColumns from "../_hooks/use-product-columns";
 import { DataTableProps } from "@/shared/data-table-props";
 import { useWindowSize } from "@/hooks/use-window-size";
+import DrawerLayout from "@/components/drawer-layout";
+import ProductFilters from "./product-filters";
+import {useIsMobile} from "@/hooks/use-mobile";
+import ProductPrice from "./product-price";
+import { Button } from "@/components/ui/button";
+import ProductForm from "./product-form";
+import { useModal } from "@/hooks/use-modal";
 
 export default function ProductListPage() {
   const t = useTranslations("ProductMessages");
@@ -50,8 +48,14 @@ export default function ProductListPage() {
     pageIndex: 0,
     pageSize: PAGE_SIZE,
   });
-
+  const [filterParams, setFilterParams] = useState<ProductFilterParams>({
+    content: "",
+    productType: "",
+  })
+  const [isFilterOpened, setIsFilterOpened] = useState(false);
+  const isMobile = useIsMobile();
   const { width } = useWindowSize();
+  const queryClient = useQueryClient();
 
   const { data: unitsData } = useGetUnits();
   const { data: productTypesData } = useGetProductTypes();
@@ -60,17 +64,19 @@ export default function ProductListPage() {
     data: productsData,
     refetch: refetchProducts,
     isRefetching: isRefetchingGetProducts,
-  } = useGetProducts(pagination);
+  } = useGetProducts(pagination, filterParams);
+
   const { mutateAsync: deleteProduct, status: deleteMutateStatus } =
-    useDeleteProduct(t, closeModal);
+    useDeleteProduct(t, closeModal, filterParams, pagination);
+
   const productColumns = useProductColumns(t);
 
   const table = useMaterialReactTable({
     ...DataTableProps(tCommon),
     columns: productColumns,
-    data: products.data,
-    rowCount: products.meta.itemCount ?? 0,
-    pageCount: products.meta.pageCount ?? 0,
+    data: products.data ?? [],
+    rowCount: products?.meta?.itemCount ?? 0,
+    pageCount: products?.meta?.pageCount ?? 0,
     getRowId: (row) => row.productCode,
     onPaginationChange: setPagination, //hoist pagination state to your state when it changes internally
     state: {
@@ -95,6 +101,16 @@ export default function ProductListPage() {
         table={table}
       />,
       <ActionMenuItem
+        icon={<IconCoin />}
+        key="updatePrice"
+        label={t("updateProductPrice")}
+        onClick={() => {
+          handleUpdateProductPrice(row);
+          closeMenu();
+        }}
+        table={table}
+      />,
+      <ActionMenuItem
         icon={<TrashIcon />}
         key="delete"
         label={t("deleteProductModalTitle")}
@@ -106,23 +122,26 @@ export default function ProductListPage() {
       />,
     ],
     renderTopToolbarCustomActions: () => (
-      <Box sx={{ display: "flex" }}>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                type="button"
-                size="sm"
-                title={t("addProductModalTitle")}
-                onClick={handleAddProduct}
-              >
-                <PlusIcon />
-                {t("addProductModalTitle")}
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>{t("addProductModalTitle")}</TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+      <Box sx={{ display: "flex", gap: "5px", width: "100%", justifyContent: "space-between" }}>
+        <Button
+            type="button"
+            size="sm"
+            title={t("addProductModalTitle")}
+            onClick={handleAddProduct}
+        >
+          <PlusIcon size={18}/>
+          {!isMobile ? t("addProductModalTitle") : ""}
+        </Button>
+        <DrawerLayout
+            headerTitle={tCommon("btnAdvancedFilters")}
+            openButtonLabel={!isMobile ? tCommon("btnAdvancedFilters") : ""}
+            openButtonIcon={<FilterIcon size={18} />}
+            openButtonClassName="flex flex-row gap-1"
+            open={isFilterOpened}
+            setOpen={setIsFilterOpened}
+        >
+          <ProductFilters productTypes={productTypesData} onFilters={onFilters} initialFilters={filterParams}/>
+        </DrawerLayout>
       </Box>
     ),
   });
@@ -133,7 +152,12 @@ export default function ProductListPage() {
       title: t("addProductModalTitle"),
       description: "",
       modalContent: (
-        <ProductForm units={unitsData} productTypes={productTypesData} />
+        <ProductForm
+            units={unitsData}
+            productTypes={productTypesData}
+            filterParams={filterParams}
+            pagination={pagination
+        }/>
       ),
       customSize: "lg:!min-w-[800px]",
     });
@@ -149,6 +173,8 @@ export default function ProductListPage() {
           units={unitsData}
           productTypes={productTypesData}
           rowData={row}
+          filterParams={filterParams}
+          pagination={pagination}
         />
       ),
       customSize: "lg:!min-w-[800px]",
@@ -200,6 +226,25 @@ export default function ProductListPage() {
     });
   };
 
+  const handleUpdateProductPrice = (row: RowCell<ProductFormData>) => {
+    openModal({
+      isOpen: true,
+      title: t("editProductModalTitle"),
+      description: "",
+      modalContent: (
+          <ProductPrice row={row}/>
+      ),
+      customSize: "lg:!min-w-[800px]",
+    });
+  };
+
+  const onFilters = async (data: ProductFilterParams) => {
+    console.log(data);
+    setIsFilterOpened(false);
+    setFilterParams({...data});
+    await queryClient.invalidateQueries({ queryKey: ["products"] });
+  };
+
   useEffect(() => {
     if (isFetchingProducts || productsData?.type === "error") return;
     setProducts(productsData?.result);
@@ -220,8 +265,6 @@ export default function ProductListPage() {
   }, [width, table]);
 
   return (
-    <LayoutContentSection title={t("title")} desc={t("description")}>
       <DataTable table={table} />
-    </LayoutContentSection>
   );
 }

@@ -11,7 +11,7 @@ import {
   handleApiCatchResponse,
   handleApiResponse,
 } from "@/services/api.service";
-import { ProductFormData, ProductType, UnitType } from "@/types/product.type";
+import {ProductFilterParams, ProductFormData, ProductType, UnitType} from "@/types/product.type";
 
 export const getUnits = async () => {
   try {
@@ -35,10 +35,10 @@ export const getProductTypes = async () => {
   }
 };
 
-export const getProducts = async (pages: PaginationState) => {
+export const getProducts = async (pages: PaginationState, params: ProductFilterParams) => {
   try {
     const response = await globalAxiosInstance.get<null, BaseResponseType>(
-      apiRoutes.products.getProducts(pages.pageIndex + 1, pages.pageSize),
+      apiRoutes.products.getProducts(pages.pageIndex + 1, pages.pageSize, params),
     );
     return handleApiResponse<ListResponseType<ProductFormData>>(response);
   } catch (e) {

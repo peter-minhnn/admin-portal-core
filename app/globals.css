@@ -185,3 +185,28 @@
     object-fit: cover;
   }
 }
+
+/* invoice builder custom styles  */
+@media print {
+  @page {
+    size: auto;
+    margin: 0mm;
+  }
+  html,
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .print-container .invoice-print-table-header {
+    @apply !rounded-t-md !bg-gray-100;
+    print-color-adjust: exact;
+  }
+
+  .print-container table thead {
+    display: table-header-group;
+  }
+  .print-container table tfoot {
+    display: table-footer-group;
+  }
+}

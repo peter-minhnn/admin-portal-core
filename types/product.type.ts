@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ProductFormSchema } from "@/app/[locale]/(root)/products/schema";
+import {ProductFilterFormSchema, ProductFormSchema} from "@/app/[locale]/(root)/products/schema";
 
 export type ProductType = {
   productCode: string;
@@ -22,4 +22,10 @@ export type UnitType = {
   companyId: number;
 };
 
+export type ProductFilterParams = {
+  content: string;
+  productType: string;
+}
+
 export type ProductFormData = z.infer<typeof ProductFormSchema>;
+export type ProductFilterFormData = z.infer<typeof ProductFilterFormSchema>;

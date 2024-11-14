@@ -68,7 +68,7 @@ export function LoginForm({
                         {...field}
                       />
                     </FormItem>
-                    <FormMessage />
+                    <FormMessage namespace={"LoginMessages"}/>
                   </>
                 )}
               />
@@ -88,7 +88,7 @@ export function LoginForm({
                         {...field}
                       />
                     </FormItem>
-                    <FormMessage />
+                    <FormMessage namespace={"LoginMessages"}/>
                   </>
                 )}
               />
@@ -97,6 +97,7 @@ export function LoginForm({
               disabled={status === "pending"}
               loading={status === "pending"}
               type="submit"
+              variant="ringHover"
             >
               {t("form.submit")}
             </Button>

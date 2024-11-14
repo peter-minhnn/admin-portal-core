@@ -11,6 +11,7 @@ export const pageRoutes = {
   maintenance: "/maintenance",
   blank: "/blank",
   settings: "/settings",
+  rolesPermissions: "/roles-permissions",
   settingsAccount: "/settings/account",
   sample: {
     input: "/samples/input",

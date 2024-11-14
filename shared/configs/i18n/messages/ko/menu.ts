@@ -3,6 +3,7 @@ export const MenuMessages = {
   products: "제품",
   productsList: "제품 목록",
   settings: "설정",
+  rolesPermissions: "역할 및 권한 관리",
   samplePages: "샘플 페이지",
   input: "입력",
   grid: "그리드",

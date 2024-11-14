@@ -51,6 +51,9 @@ const CommonMessages = {
   somethingWentWrong: "Có lỗi xảy ra. Vui lòng thử lại sau.",
   loginSuccess: "Đăng nhập thành công",
   loginFailed: "Đăng nhập thất bại",
+  btnAdvancedFilters: "Bộ lọc nâng cao",
+  btnReset: "Đặt lại",
+  btnApply: "Áp dụng",
 };
 
 export default CommonMessages;

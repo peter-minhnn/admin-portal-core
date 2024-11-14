@@ -1,4 +1,5 @@
-import { z } from "zod";
+import {z, ZodObject} from "zod";
+import {ProductFilterParams} from "@/types/product.type";
 
 export const ProductFormSchema = z.object({
   productCode: z.string(),
@@ -26,4 +27,9 @@ export const ProductFormSchema = z.object({
       message: "Input must contain only numbers",
     }),
   companyId: z.number().or(z.null()).optional(),
+});
+
+export const ProductFilterFormSchema = z.object({
+    content: z.string().optional(),
+    productType: z.string().optional(),
 });

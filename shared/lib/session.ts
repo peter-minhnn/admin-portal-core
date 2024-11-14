@@ -2,34 +2,33 @@ import "server-only";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { CookieEnums } from "@/shared/enums";
-import { LoginResponseType, UserType } from "@/types/user.type";
+import {AuthUserType} from "@/types/user.type";
 
 const secretKey = process.env.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
 
-export async function createSession(user: LoginResponseType) {
+export async function createSession(accessToken: string, user: AuthUserType) {
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
   const session = await encrypt({
     user: {
       userName: user.userName,
       roleCode: user.roleCode,
       companyId: user.companyId,
-      rolePages: user.rolePages,
+      role: user.role,
     },
     expiresAt,
   });
 
+  console.log("user", user);
   (await cookies()).set(CookieEnums.SESSION_ID, session, {
     httpOnly: true,
     secure: true,
-    sameSite: "lax",
     expires: expiresAt,
   });
 
-  (await cookies()).set(CookieEnums.TOKEN, user.access_token, {
+  (await cookies()).set(CookieEnums.TOKEN, accessToken, {
     httpOnly: true,
     secure: true,
-    sameSite: "lax",
     expires: expiresAt,
   });
 }
@@ -40,8 +39,8 @@ export async function deleteSession() {
 }
 
 type SessionPayload = {
-  user: UserType;
-  token?: string;
+  user: AuthUserType;
+  access_token?: string;
   expiresAt: Date;
 };
 

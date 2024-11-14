@@ -8,11 +8,11 @@ export const DataTableProps = <TData extends MRT_RowData>(t: any) => {
       showRowsPerPage: false,
       variant: "outlined",
     },
-    muiTableContainerProps: {
-      sx: {
-        minHeight: "500px",
-      },
-    },
+    // muiTableContainerProps: {
+    //   sx: {
+    //     minHeight: "500px",
+    //   },
+    // },
     muiTablePaperProps: {
       sx: {
         border: "1px solid #e0e0e0",

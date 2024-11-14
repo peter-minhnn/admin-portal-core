@@ -15,6 +15,7 @@ import {
 import { cn } from "@/shared/lib";
 import { Label } from "@/components/ui/label";
 import { useId, useMemo } from "react";
+import {NamespaceKeys, useTranslations} from "next-intl";
 
 const Form = FormProvider;
 
@@ -155,10 +156,11 @@ FormDescription.displayName = "FormDescription";
 
 const FormMessage = React.forwardRef<
   HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
->(({ className, children, ...props }, ref) => {
+  React.HTMLAttributes<HTMLParagraphElement> & {namespace: string}
+>(({ className, children, namespace, ...props }, ref) => {
   const { error, formMessageId } = useFormField();
-  const body = error ? String(error?.message) : children;
+  const t = useTranslations(namespace as never);
+  const body = error ? t(String(error?.message) as never) : children;
 
   if (!body) {
     return null;

@@ -8,7 +8,7 @@ import {
   getUnits,
   updateProduct,
 } from "@/services/product.service";
-import { ProductType } from "@/types/product.type";
+import {ProductFilterParams, ProductType} from "@/types/product.type";
 import get from "lodash/get";
 import { toast } from "sonner";
 
@@ -19,6 +19,7 @@ export const useGetUnits = () => {
     queryFn: async () => await getUnits(),
     select: (data) => get(data, "result.data", []),
     refetchOnWindowFocus: false,
+    refetchOnMount: true,
   });
 };
 
@@ -33,22 +34,22 @@ export const useGetProductTypes = () => {
 };
 
 //-------------------------------------PRODUCT HOOKS-------------------------------------
-export const useGetProducts = (pagination: PaginationState) => {
+export const useGetProducts = (pagination: PaginationState, params: ProductFilterParams) => {
   return useQuery({
-    queryKey: ["products"],
-    queryFn: async () => await getProducts(pagination),
+    queryKey: ["products", pagination, params],
+    queryFn: async () => await getProducts(pagination, params),
     refetchOnWindowFocus: false,
   });
 };
 
 //ADD hook (put product in api)
-export const useAddProduct = (t: any, handleClose: () => void) => {
+export const useAddProduct = (t: any, handleClose: () => void, params: ProductFilterParams, pagination: PaginationState) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (product: ProductType) => await addProduct(product),
     onSettled: async () => {
       await queryClient
-        .invalidateQueries({ queryKey: ["products"] })
+        .invalidateQueries({ queryKey: ["products", pagination, params] })
         .finally(() => handleClose());
     },
     onSuccess: () => toast.success(t("notifications.addProductSuccess")),
@@ -57,13 +58,13 @@ export const useAddProduct = (t: any, handleClose: () => void) => {
 };
 
 //UPDATE hook (put product in api)
-export const useUpdateProduct = (t: any, handleClose: () => void) => {
+export const useUpdateProduct = (t: any, handleClose: () => void, params: ProductFilterParams, pagination: PaginationState) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (product: ProductType) => await updateProduct(product),
     onSettled: async () => {
       await queryClient
-        .invalidateQueries({ queryKey: ["products"] })
+        .invalidateQueries({ queryKey: ["products", pagination, params] })
         .finally(() => handleClose());
     },
     onSuccess: () => toast.success(t("notifications.updateProductSuccess")),
@@ -72,13 +73,13 @@ export const useUpdateProduct = (t: any, handleClose: () => void) => {
 };
 
 //DELETE hook (delete product in api)
-export const useDeleteProduct = (t: any, handleClose: () => void) => {
+export const useDeleteProduct = (t: any, handleClose: () => void, params: ProductFilterParams, pagination: PaginationState) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (productCode: string) => await deleteProduct(productCode),
     onSettled: async () => {
       await queryClient
-        .invalidateQueries({ queryKey: ["products"] })
+        .invalidateQueries({ queryKey: ["products", pagination, params] })
         .finally(() => handleClose());
     },
     onSuccess: () => toast.success(t("notifications.deleteProductSuccess")),

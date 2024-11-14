@@ -25,6 +25,10 @@ export const ProductMessages = {
   deleteProductModalContent: "{productName} 제품을 삭제하고 있습니다",
   modalDeleteBtn: "삭제",
   editProductModalTitle: "제품 수정",
+  advancedFilters: "고급 필터",
+  content: "내용",
+  productPriceTab: "제품 가격",
+  updateProductPrice: "제품 가격 업데이트",
 };
 
 export default ProductMessages;
