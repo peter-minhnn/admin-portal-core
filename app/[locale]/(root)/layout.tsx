@@ -1,31 +1,31 @@
-import { ReactNode } from "react";
-import AdminLayout from "@/components/layouts/admin-layout";
-import { Locale, locales } from "@/shared/configs/i18n/config";
-import { notFound } from "next/navigation";
-import { LocalesProvider } from "@/components/providers/locale-provider";
-import { setRequestLocale } from "next-intl/server";
-import { useLocale } from "next-intl";
+import { ReactNode } from 'react'
+import AdminLayout from '@/components/layouts/admin-layout'
+import { Locale, locales } from '@/shared/configs/i18n/config'
+import { notFound } from 'next/navigation'
+import { LocalesProvider } from '@/components/providers/locale-provider'
+import { setRequestLocale } from 'next-intl/server'
+import { useLocale } from 'next-intl'
 
 export function generateStaticParams() {
-  return locales.map((locale) => ({ locale }));
+    return locales.map((locale) => ({ locale }))
 }
 
 export default function AuthorizationLayout({
-  children,
+    children,
 }: Readonly<{
-  children: ReactNode;
+    children: ReactNode
 }>) {
-  const locale = useLocale();
+    const locale = useLocale()
 
-  if (!locales.includes(locale as Locale)) {
-    return notFound();
-  }
+    if (!locales.includes(locale as Locale)) {
+        return notFound()
+    }
 
-  setRequestLocale(locale);
+    setRequestLocale(locale)
 
-  return (
-    <LocalesProvider locale={locale as Locale}>
-      <AdminLayout>{children}</AdminLayout>
-    </LocalesProvider>
-  );
+    return (
+        <LocalesProvider locale={locale as Locale}>
+            <AdminLayout>{children}</AdminLayout>
+        </LocalesProvider>
+    )
 }

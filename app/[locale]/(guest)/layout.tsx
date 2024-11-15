@@ -1,31 +1,31 @@
-import { ReactNode } from "react";
-import { LocalesProvider } from "@/components/providers/locale-provider";
-import { useLocale } from "next-intl";
-import { Locale, locales } from "@/shared/configs/i18n/config";
-import { notFound } from "next/navigation";
-import { setRequestLocale } from "next-intl/server";
-import QueryProvider from "@/components/providers/query-provider";
+import { ReactNode } from 'react'
+import { LocalesProvider } from '@/components/providers/locale-provider'
+import { useLocale } from 'next-intl'
+import { Locale, locales } from '@/shared/configs/i18n/config'
+import { notFound } from 'next/navigation'
+import { setRequestLocale } from 'next-intl/server'
+import QueryProvider from '@/components/providers/query-provider'
 
 export function generateStaticParams() {
-  return locales.map((locale) => ({ locale }));
+    return locales.map((locale) => ({ locale }))
 }
 
 export default function GuestLayout({
-  children,
+    children,
 }: Readonly<{
-  children: ReactNode;
+    children: ReactNode
 }>) {
-  const locale = useLocale();
+    const locale = useLocale()
 
-  if (!locales.includes(locale as Locale)) {
-    return notFound();
-  }
+    if (!locales.includes(locale as Locale)) {
+        return notFound()
+    }
 
-  setRequestLocale(locale);
+    setRequestLocale(locale)
 
-  return (
-    <LocalesProvider locale={"vi"}>
-      <QueryProvider>{children}</QueryProvider>
-    </LocalesProvider>
-  );
+    return (
+        <LocalesProvider locale={'vi'}>
+            <QueryProvider>{children}</QueryProvider>
+        </LocalesProvider>
+    )
 }

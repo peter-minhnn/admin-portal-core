@@ -1,7 +1,7 @@
-import {Dispatch, ReactNode, SetStateAction, useState} from "react";
-import {Button} from "@/components/ui/button"
-import {Input} from "@/components/ui/input"
-import {Label} from "@/components/ui/label"
+import { Dispatch, ReactNode, SetStateAction, useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import {
     Sheet,
     SheetClose,
@@ -11,7 +11,7 @@ import {
     SheetHeader,
     SheetTitle,
     SheetTrigger,
-} from "@/components/ui/sheet"
+} from '@/components/ui/sheet'
 import {
     Drawer,
     DrawerClose,
@@ -21,34 +21,34 @@ import {
     DrawerHeader,
     DrawerTitle,
     DrawerTrigger,
-} from "@/components/ui/drawer"
-import {cn} from "@/shared/lib";
-import {useIsMobile} from "@/hooks/use-mobile";
+} from '@/components/ui/drawer'
+import { cn } from '@/shared/lib'
+import { useIsMobile } from '@/hooks/use-mobile'
 
 type DrawerLayoutProps = {
-    children: ReactNode;
-    openButtonLabel: string;
-    openButtonIcon?: ReactNode;
-    openButtonClassName?: string;
-    headerTitle: string;
-    headerDescription?: string;
-    footerContents?: ReactNode;
-    setOpen: Dispatch<SetStateAction<boolean>>;
-    open: boolean;
-};
+    children: ReactNode
+    openButtonLabel: string
+    openButtonIcon?: ReactNode
+    openButtonClassName?: string
+    headerTitle: string
+    headerDescription?: string
+    footerContents?: ReactNode
+    setOpen: Dispatch<SetStateAction<boolean>>
+    open: boolean
+}
 
 export default function DrawerLayout({
-                                         children,
-                                         openButtonLabel,
-                                         openButtonIcon,
-                                         openButtonClassName,
-                                         headerTitle,
-                                         headerDescription = "",
-                                         footerContents,
-                                         setOpen,
-                                         open
-                                     }: DrawerLayoutProps) {
-    const isMobile = useIsMobile();
+    children,
+    openButtonLabel,
+    openButtonIcon,
+    openButtonClassName,
+    headerTitle,
+    headerDescription = '',
+    footerContents,
+    setOpen,
+    open,
+}: DrawerLayoutProps) {
+    const isMobile = useIsMobile()
 
     return (
         <>
@@ -59,7 +59,7 @@ export default function DrawerLayout({
                             <Button
                                 variant="outline"
                                 size="sm"
-                                className={cn("w-fit", openButtonClassName)}
+                                className={cn('w-fit', openButtonClassName)}
                             >
                                 {openButtonIcon}
                                 {openButtonLabel}
@@ -86,7 +86,11 @@ export default function DrawerLayout({
                 {isMobile && (
                     <Drawer open={open} onOpenChange={setOpen}>
                         <DrawerTrigger asChild>
-                            <Button variant="outline" size="sm" className={cn("w-fit", openButtonClassName)}>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                className={cn('w-fit', openButtonClassName)}
+                            >
                                 {openButtonIcon}
                                 {openButtonLabel}
                             </Button>
@@ -95,7 +99,9 @@ export default function DrawerLayout({
                             <div className="mx-auto w-full max-w-sm min-h-[300px]">
                                 <DrawerHeader>
                                     <DrawerTitle>{headerTitle}</DrawerTitle>
-                                    <DrawerDescription>{headerDescription}</DrawerDescription>
+                                    <DrawerDescription>
+                                        {headerDescription}
+                                    </DrawerDescription>
                                 </DrawerHeader>
                                 {children}
                                 {footerContents && (
@@ -103,7 +109,9 @@ export default function DrawerLayout({
                                         <div className="flex flex-row gap-2">
                                             {footerContents}
                                             <DrawerClose asChild>
-                                                <Button variant="outline">Cancel</Button>
+                                                <Button variant="outline">
+                                                    Cancel
+                                                </Button>
                                             </DrawerClose>
                                         </div>
                                     </DrawerFooter>
@@ -114,5 +122,5 @@ export default function DrawerLayout({
                 )}
             </div>
         </>
-    );
+    )
 }

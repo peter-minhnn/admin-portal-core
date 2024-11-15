@@ -1,18 +1,18 @@
-"use server";
+'use server'
 
-import { cookies } from "next/headers";
-import { decrypt } from "@/shared/lib/session";
-import { CookieEnums } from "@/shared/enums";
+import { cookies } from 'next/headers'
+import { decrypt } from '@/shared/lib/session'
+import { CookieEnums } from '@/shared/enums'
 
 export const getSession = async () => {
-  const cookie = (await cookies()).get(CookieEnums.SESSION_ID)?.value;
-  return await decrypt(cookie);
-};
+    const cookie = (await cookies()).get(CookieEnums.SESSION_ID)?.value
+    return await decrypt(cookie)
+}
 
 export const getToken = async () => {
-  return (await cookies()).get(CookieEnums.TOKEN)?.value;
-};
+    return (await cookies()).get(CookieEnums.TOKEN)?.value
+}
 
 export const getLocale = async () => {
-  return (await cookies()).get(CookieEnums.NEXT_LOCALE)?.value;
-};
+    return (await cookies()).get(CookieEnums.NEXT_LOCALE)?.value
+}
