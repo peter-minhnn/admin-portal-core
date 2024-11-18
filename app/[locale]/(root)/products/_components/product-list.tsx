@@ -81,6 +81,8 @@ export default function ProductList() {
     rowCount: products?.meta?.itemCount ?? 0,
     pageCount: products?.meta?.pageCount ?? 0,
     getRowId: (row) => row.productCode,
+    enableColumnPinning: true,
+    enableRowPinning: true,
     onPaginationChange: setPagination, //hoist pagination state to your state when it changes internally
     state: {
       pagination,
@@ -217,7 +219,6 @@ export default function ProductList() {
   };
 
   const handleActionClick = useCallback(() => {
-    console.log(actionType);
     switch (actionType.type) {
       case 'delete':
         openDeleteConfirmModal(actionType.row as ProductFormData);
@@ -250,7 +251,8 @@ export default function ProductList() {
   useEffect(() => {
     if (width > 1280) {
       table.initialState.columnPinning = {
-        left: ['mrt-row-pin', 'mrt-row-actions', 'productCode'],
+        left: ['mrt-row-pin', 'productCode'],
+        right: ['actions'],
       };
     } else {
       table.initialState.columnPinning = {};

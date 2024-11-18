@@ -118,13 +118,15 @@ export default function useProductColumns({
     {
       accessorKey: 'actions',
       header: t('actions'),
+      maxSize: 80,
+      size: 80,
       accessorFn: (row) => (
-        <div className="flex flex-row justify-center items-center w-full gap-2">
+        <div className="flex flex-row justify-center items-center gap-2">
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
                 <EditIcon
-                  size={18}
+                  size={25}
                   onClick={() => setActionType({ type: 'edit', row })}
                 />
               </TooltipTrigger>
@@ -133,7 +135,7 @@ export default function useProductColumns({
             <Tooltip>
               <TooltipTrigger>
                 <IconCoin
-                  size={18}
+                  size={25}
                   onClick={() => setActionType({ type: 'updatePrice', row })}
                 />
               </TooltipTrigger>
@@ -142,7 +144,7 @@ export default function useProductColumns({
             <Tooltip>
               <TooltipTrigger>
                 <TrashIcon
-                  size={18}
+                  size={25}
                   onClick={() => setActionType({ type: 'delete', row })}
                 />
               </TooltipTrigger>
