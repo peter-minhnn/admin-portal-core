@@ -3,7 +3,7 @@ import get from 'lodash/get';
 import { StatusCodes } from '@/shared/enums';
 import { redirectPageErrors } from '@/actions/login.action';
 
-export function handleApiResponse<T>(response: BaseResponseType) {
+export function handleApiResponse<T>(response: BaseResponseType<T>) {
   const isSuccess = get(response, 'isSuccess', null);
   if (!isSuccess) {
     return {
@@ -15,15 +15,15 @@ export function handleApiResponse<T>(response: BaseResponseType) {
   return {
     type: 'error',
     result: {
-      data: null,
+      data: {} as T,
       isSuccess: false,
       messages: get(response, 'data.messages', []),
-      statusCode: response.data?.statusCode ?? StatusCodes.BAD_REQUEST,
-    },
+      statusCode: response?.statusCode ?? StatusCodes.BAD_REQUEST,
+    } as BaseResponseType<T>,
   };
 }
 
-export async function handleApiCatchResponse(e: any): Promise<ResultType> {
+export async function handleApiCatchResponse<T>(e: any): Promise<ResultType> {
   await redirectPageErrors(e);
 
   const messageError = get(e.response, 'data.messages', []);
@@ -34,6 +34,6 @@ export async function handleApiCatchResponse(e: any): Promise<ResultType> {
       messages: messageError ?? ['Something went wrong'],
       statusCode: e?.status ?? StatusCodes.INTERNAL_SERVER_ERROR,
       data: null,
-    },
+    } as BaseResponseType<T>,
   };
 }

@@ -3,32 +3,35 @@
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { login } from '@/services/login.service';
-import get from 'lodash/get';
 import { LoginResponseType, UserLoginRequestType } from '@/types/user.type';
 import { loginAction } from '@/actions/login.action';
 import { pageRoutes } from '@/shared/routes/pages.route';
 import { useRouter } from '@/shared/configs/i18n/routing';
 import { useUserStore } from '@/states/common.state';
-import { RESPONSE_OBJ_KEY } from '@/shared/constants';
+import { useAxios } from '@/hooks/use-axios';
+import { BaseResponseType } from '@/types/common.type';
 
 export const useLogin = (t: any) => {
   const router = useRouter();
   const { setUserInfo } = useUserStore();
   return useMutation({
     mutationFn: async (loginInfo: UserLoginRequestType) =>
-      await login(loginInfo),
+      await login<LoginResponseType>(loginInfo),
     onSuccess: async (response) => {
       if (response.type === 'error') {
-        const message = get(response, 'result.messages[0]', t('loginFailed'));
-        toast.error(message);
-        return;
+        const result = useAxios.getResponse<LoginResponseType>(
+          response.result,
+          response.type
+        ) as BaseResponseType<LoginResponseType>;
+        if (!result.isSuccess) {
+          return;
+        }
       }
 
       toast.success(t('loginSuccess'));
-      const userLoginInfo = get(
-        response,
-        RESPONSE_OBJ_KEY,
-        null
+      const userLoginInfo = useAxios.getResponse<LoginResponseType>(
+        response.result,
+        'object'
       ) as LoginResponseType;
 
       await loginAction(userLoginInfo);
