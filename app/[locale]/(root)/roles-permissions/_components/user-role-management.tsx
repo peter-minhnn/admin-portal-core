@@ -1,77 +1,194 @@
-'use client'
+'use client';
 
-import { Fragment, useEffect, useState } from 'react'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { Separator } from '@/components/ui/separator'
-import { Button } from '@/components/ui/button'
-import { IconCheck, IconTrash } from '@tabler/icons-react'
+import React, { Fragment, useState } from 'react';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button';
+import { IconCheck, IconPencil, IconX } from '@tabler/icons-react';
+import { Role, UpdateRoleFormData } from '@/types/roles-permissions.type';
 import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from '@/components/ui/tooltip'
-import { User } from '@/types/user.type'
-
-const tags = Array.from({ length: 50 }).map(
-    (_, i, a) => `v1.2.0-beta.${a.length - i}`
-)
+  useGetUsersByRole,
+  useUpdateUserRole,
+} from '@/app/[locale]/(root)/roles-permissions/_hooks/use-users';
+import { useTranslations } from 'next-intl';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import { useForm } from 'react-hook-form';
+import { UpdateRoleFormSchema } from '@/app/[locale]/(root)/roles-permissions/schema';
+import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from '@/components/ui/form';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { FilterIcon } from 'lucide-react';
 
 type UserRoleManagementProps = {
-    users: User[]
-}
+  roles: Role[];
+  role: Role;
+};
 
-export default function UserRoleManagement({ users }: UserRoleManagementProps) {
-    return (
-        <ScrollArea className="w-full h-[600px] rounded-md border p-4">
-            {tags.map((tag) => (
-                <Fragment key={tag}>
-                    <div className="flex flex-row justify-between items-center min-h-14">
-                        <span className="text-md font-semibold">{tag}</span>
-                        <div className="flex flex-row gap-2">
-                            <Button
-                                variant="outline"
+export default function UserRoleManagement({
+  role,
+  roles,
+}: Readonly<UserRoleManagementProps>) {
+  const t = useTranslations('RoleMessages');
+  const tCommon = useTranslations('CommonMessages');
+  const [editRoleOpen, setEditRoleOpen] = useState<boolean>(false);
+
+  const form = useForm<UpdateRoleFormData>({
+    resolver: zodResolver(UpdateRoleFormSchema),
+    defaultValues: {
+      role: {
+        roleCode: '',
+      },
+    },
+  });
+
+  const { data: users } = useGetUsersByRole(role.roleCode);
+  const { status } = useUpdateUserRole(t);
+
+  const onSubmidEditUserRole = async (data: UpdateRoleFormData) => {
+    console.log(data);
+  };
+
+  return (
+    <ScrollArea className="w-full h-[600px] rounded-md border p-4">
+      {users?.map((user) => (
+        <Fragment key={user.userName}>
+          <div className="flex flex-row justify-between items-center min-h-14">
+            <span className="text-md font-semibold">
+              {user.firstName} {user.lastName}
+            </span>
+            <div className="flex flex-row gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="btn btn-sm btn-primary"
+              >
+                {user.isActive && (
+                  <IconCheck className="mr-1" size={16} color="#1e40af" />
+                )}
+                {t('active')}
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="btn btn-sm btn-danger"
+              >
+                {!user.isActive && (
+                  <IconCheck className="mr-1" size={16} color="#1e40af" />
+                )}
+                {t('inactive')}
+              </Button>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Popover open={editRoleOpen} onOpenChange={setEditRoleOpen}>
+                      <PopoverTrigger>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="btn btn-sm btn-danger"
+                        >
+                          <IconPencil size={16} />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent>
+                        <Form {...form}>
+                          <form
+                            id="update-user-role"
+                            onSubmit={form.handleSubmit(onSubmidEditUserRole)}
+                            className="h-full flex flex-col justify-between gap-2"
+                          >
+                            <div className="mb-4">
+                              <FormField
+                                name="roleCode"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel htmlFor="roleCode">
+                                      {t('roleCode')}
+                                    </FormLabel>
+                                    <Select
+                                      onValueChange={field.onChange}
+                                      defaultValue={field.value}
+                                    >
+                                      <FormControl>
+                                        <SelectTrigger>
+                                          <SelectValue
+                                            placeholder={t('selectRoleCode')}
+                                          />
+                                        </SelectTrigger>
+                                      </FormControl>
+                                      <SelectContent>
+                                        {roles.map((role) => (
+                                          <SelectItem
+                                            key={role.roleCode}
+                                            value={role.roleCode}
+                                          >
+                                            {role.roleName}
+                                          </SelectItem>
+                                        ))}
+                                      </SelectContent>
+                                    </Select>
+                                  </FormItem>
+                                )}
+                              />
+                            </div>
+                            <div className="flex flex-row gap-2 w-full">
+                              <Button
                                 size="sm"
-                                className="btn btn-sm btn-primary"
-                            >
-                                <IconCheck
-                                    className="mr-1"
-                                    size={16}
-                                    color="#1e40af"
-                                />
-                                Active
-                            </Button>
-                            <Button
-                                variant="outline"
+                                variant="ringHover"
+                                className="w-full"
+                                onClick={() => setEditRoleOpen(false)}
+                              >
+                                <IconX size={16} className="mr-2" />
+                                {tCommon('btnCancel')}
+                              </Button>
+                              <Button
                                 size="sm"
-                                className="btn btn-sm btn-danger"
-                            >
-                                IsActive
-                            </Button>
-                            <TooltipProvider>
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                        <Button
-                                            size="sm"
-                                            className="bg-transparent hover:bg-transparent"
-                                        >
-                                            <IconTrash
-                                                className="mr-1"
-                                                size={16}
-                                                color="#a11821"
-                                            />
-                                        </Button>
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                        Remove User Role
-                                    </TooltipContent>
-                                </Tooltip>
-                            </TooltipProvider>
-                        </div>
-                    </div>
-                    <Separator className="my-2" />
-                </Fragment>
-            ))}
-        </ScrollArea>
-    )
+                                variant="ringHover"
+                                className="w-full"
+                                form="update-user-role"
+                                type="submit"
+                                disabled={status === 'pending'}
+                                loading={status === 'pending'}
+                              >
+                                <FilterIcon size={16} className="mr-2" />
+                                {tCommon('btnSave')}
+                              </Button>
+                            </div>
+                          </form>
+                        </Form>
+                      </PopoverContent>
+                    </Popover>
+                  </TooltipTrigger>
+                  <TooltipContent>{t('editRole')}</TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+          </div>
+          <Separator className="my-2" />
+        </Fragment>
+      ))}
+    </ScrollArea>
+  );
 }

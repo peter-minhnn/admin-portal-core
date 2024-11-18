@@ -18,4 +18,4 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 
 To learn more about react-use, take a look at the following resources:
 
--   [react-use Documentation](https://streamich.github.io/react-use/?path=/story/state-usemap--docs)
+- [react-use Documentation](https://streamich.github.io/react-use/?path=/story/state-usemap--docs)

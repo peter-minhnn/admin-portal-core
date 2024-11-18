@@ -1,98 +1,154 @@
-import type { MRT_ColumnDef } from 'material-react-table'
-import { ProductFormData } from '@/types/product.type'
-import { formatCurrency, formatNumber } from '@/shared/lib'
-import { Avatar, AvatarImage } from '@/components/ui/avatar'
+import { MRT_ColumnDef } from 'material-react-table';
+import { ProductFormData } from '@/types/product.type';
+import { formatCurrency, formatNumber } from '@/shared/lib';
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
+import { EditIcon, TrashIcon } from 'lucide-react';
+import { IconCoin } from '@tabler/icons-react';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { Dispatch, SetStateAction } from 'react';
 
-export default function useProductColumns(t: any) {
-    return [
-        {
-            accessorKey: 'productCode', //access nested data with dot notation
-            header: t('productCode'),
-            muiTableBodyCellProps: {
-                sx: {
-                    textAlign: 'center',
-                },
-            },
+type ProductColumnProps = {
+  t: any;
+  setActionType: Dispatch<
+    SetStateAction<{
+      type: 'edit' | 'delete' | 'updatePrice' | '';
+      row: ProductFormData;
+    }>
+  >;
+};
+
+export default function useProductColumns({
+  t,
+  setActionType,
+}: ProductColumnProps) {
+  return [
+    {
+      accessorKey: 'productCode', //access nested data with dot notation
+      header: t('productCode'),
+      muiTableBodyCellProps: {
+        sx: {
+          textAlign: 'center',
         },
-        {
-            accessorKey: 'productImage',
-            header: t('productImage'),
-            accessorFn: (dataRow) => (
-                <Avatar className="w-16 h-16">
-                    <AvatarImage
-                        src={
-                            String(dataRow.productImage) ||
-                            '/images/placeholder.png'
-                        }
-                        alt={String(dataRow.productName) || 'Product Image'}
-                        className="size-full rounded-[inherit] object-cover"
-                    />
-                </Avatar>
-            ),
+      },
+    },
+    {
+      accessorKey: 'productImage',
+      header: t('productImage'),
+      accessorFn: (dataRow) => (
+        <Avatar className="w-16 h-16">
+          <AvatarImage
+            src={String(dataRow.productImage) || '/images/placeholder.png'}
+            alt={String(dataRow.productName) || 'Product Image'}
+            className="size-full rounded-[inherit] object-cover"
+          />
+        </Avatar>
+      ),
+    },
+    {
+      accessorKey: 'productName',
+      header: t('productName'),
+      muiTableBodyCellProps: {
+        sx: {
+          textAlign: 'left',
         },
-        {
-            accessorKey: 'productName',
-            header: t('productName'),
-            muiTableBodyCellProps: {
-                sx: {
-                    textAlign: 'left',
-                },
-            },
+      },
+    },
+    {
+      accessorKey: 'productPrice',
+      header: t('productPrice'),
+      muiTableBodyCellProps: {
+        sx: {
+          textAlign: 'right',
         },
-        {
-            accessorKey: 'productPrice',
-            header: t('productPrice'),
-            muiTableBodyCellProps: {
-                sx: {
-                    textAlign: 'right',
-                },
-            },
-            accessorFn: (dataRow) =>
-                formatCurrency(dataRow.productPrice, 'vi-VN', 'VND'),
+      },
+      accessorFn: (dataRow) =>
+        formatCurrency(dataRow.productPrice, 'vi-VN', 'VND'),
+    },
+    {
+      accessorKey: 'productMinQty',
+      header: t('productMinQty'),
+      accessorFn: (dataRow) => formatNumber(dataRow.productMinQty),
+      muiTableBodyCellProps: {
+        sx: {
+          textAlign: 'right',
         },
-        {
-            accessorKey: 'productMinQty',
-            header: t('productMinQty'),
-            accessorFn: (dataRow) => formatNumber(dataRow.productMinQty),
-            muiTableBodyCellProps: {
-                sx: {
-                    textAlign: 'right',
-                },
-            },
+      },
+    },
+    {
+      accessorKey: 'productMaxQty',
+      header: t('productMaxQty'),
+      accessorFn: (dataRow) => formatNumber(dataRow.productMaxQty),
+      muiTableBodyCellProps: {
+        sx: {
+          textAlign: 'right',
         },
-        {
-            accessorKey: 'productMaxQty',
-            header: t('productMaxQty'),
-            accessorFn: (dataRow) => formatNumber(dataRow.productMaxQty),
-            muiTableBodyCellProps: {
-                sx: {
-                    textAlign: 'right',
-                },
-            },
+      },
+    },
+    {
+      accessorKey: 'productType',
+      header: t('productType'),
+      muiTableBodyCellProps: {
+        sx: {
+          textAlign: 'center',
         },
-        {
-            accessorKey: 'productType',
-            header: t('productType'),
-            muiTableBodyCellProps: {
-                sx: {
-                    textAlign: 'center',
-                },
-            },
+      },
+    },
+    {
+      accessorKey: 'unitCode',
+      header: t('unitCode'),
+      muiTableBodyCellProps: {
+        sx: {
+          textAlign: 'center',
         },
-        {
-            accessorKey: 'unitCode',
-            header: t('unitCode'),
-            muiTableBodyCellProps: {
-                sx: {
-                    textAlign: 'center',
-                },
-            },
-        },
-        {
-            accessorKey: 'productDesc',
-            header: t('productDesc'),
-            grow: true,
-            minSize: 400,
-        },
-    ] as MRT_ColumnDef<ProductFormData, any>[]
+      },
+    },
+    {
+      accessorKey: 'productDesc',
+      header: t('productDesc'),
+      grow: true,
+      minSize: 400,
+    },
+    {
+      accessorKey: 'actions',
+      header: t('actions'),
+      accessorFn: (row) => (
+        <div className="flex flex-row justify-center items-center w-full gap-2">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <EditIcon
+                  size={18}
+                  onClick={() => setActionType({ type: 'edit', row })}
+                />
+              </TooltipTrigger>
+              <TooltipContent>{t('editProductModalTitle')}</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger>
+                <IconCoin
+                  size={18}
+                  onClick={() => setActionType({ type: 'updatePrice', row })}
+                />
+              </TooltipTrigger>
+              <TooltipContent>{t('updateProductPrice')}</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger>
+                <TrashIcon
+                  size={18}
+                  onClick={() => setActionType({ type: 'delete', row })}
+                />
+              </TooltipTrigger>
+              <TooltipContent>{t('deleteProductModalTitle')}</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+      ),
+    },
+  ] as MRT_ColumnDef<ProductFormData, any>[];
 }
