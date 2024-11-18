@@ -1,21 +1,21 @@
 /* INPUT SAMPLE*/
-import { FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { DateTimePicker } from '@/components/ui/datepicker'
+import { FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { DateTimePicker } from '@/components/ui/datepicker';
 
 export const controlledInputCodes = `//Controlled Input 
 import {Input} from "@/components/ui/input";
 const [value, setValue] = useState<string>('Input 1');
 <Input id="example1" value={value} onChange={(e) => setValue(e.target.value)}/>
-`
+`;
 
 export const disabledInputCodes = `//Disabled Input 
 import {Input} from "@/components/ui/input";
 const [value, setValue] = useState<string>('Input 1');
-<Input id="example1" value={value} onChange={(e) => setValue(e.target.value)} disabled/>`
+<Input id="example1" value={value} onChange={(e) => setValue(e.target.value)} disabled/>`;
 
 export const errorInlineInputCodes = `//Error Inline Input 
 import {Input} from "@/components/ui/input";
-<Input id="example3" errorMessage={"This is an error message"} />`
+<Input id="example3" errorMessage={"This is an error message"} />`;
 
 export const formInputCodes = `// Form Input 
 import { useForm } from "react-hook-form";
@@ -69,7 +69,7 @@ export default function InputPage() {
             </form>
         </Form>
     )
-`
+`;
 
 /* GRID SAMPLE*/
 export const paginationGridCodes = `// Pagination Grid
@@ -97,7 +97,7 @@ export default function PaginationGridPage() {
     return (
         <MaterialReactTable table={table} />
     )
-}`
+}`;
 
 /* MULTIPLE SELECTOR SAMPLE*/
 export const defaultMultipleSelectorCodes = `//Default Multiple Selector 
@@ -110,7 +110,7 @@ import MultipleSelector from "@/components/ui/multiple-selector";
       {label: 'Option 4', value: 'option4'},
       {label: 'Option 5', value: 'option5'}
   ]}
-/>`
+/>`;
 
 export const controlledMultipleSelectorCodes = `//Controlled Multiple Selector 
 import MultipleSelector, {Option} from "@/components/ui/multiple-selector";
@@ -125,7 +125,7 @@ const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
   ]}
   value={selectedOptions}
   onChange={(e) => setSelectedOptions(e)}
-/>`
+/>`;
 
 export const formMultipleSelectorCodes = `//Form Multiple Selector 
 import {toast} from "sonner";
@@ -190,7 +190,7 @@ export default function MultipleSelectorPage() {
             </form>
         </Form>
     )
-}`
+}`;
 
 /* DATE PICKER SAMPLE*/
 export const controlledDatePickerCodes = `//Controlled Date Picker 
@@ -200,7 +200,7 @@ const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   value={selectedDate}
   onChange={(date) => setSelectedDate(date ?? new Date())}
   displayFormat={{ hour24: 'yyyy/MM/dd' }}
-/>`
+/>`;
 
 export const formDatePickerCodes = `//Form Date Picker 
 import {toast} from "sonner";
@@ -254,4 +254,4 @@ export default function DatePickerPage() {
             </form>
         </Form>
     )
-}`
+}`;

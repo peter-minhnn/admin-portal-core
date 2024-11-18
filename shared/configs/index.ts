@@ -1,1 +1,1 @@
-export { metaObject, siteConfig } from './site.config'
+export { metaObject, siteConfig } from './site.config';
