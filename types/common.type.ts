@@ -1,7 +1,7 @@
 export type BaseResponseType<T = any> = {
-  status: boolean;
-  message: string;
+  messages: string[];
   statusCode: number;
+  isSuccess: boolean;
   data: T;
 };
 
@@ -10,15 +10,9 @@ export type ListResponseType<T> = {
   meta: MetaType;
 };
 
-export type ErrorResponseType = {
-  data: any;
-  message: string;
-  code: number;
-};
-
 export type ResultType<T = any> = {
   type: 'success' | 'error';
-  result: T;
+  result: BaseResponseType<T>;
 };
 
 export interface PaginationState {

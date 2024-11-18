@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { PaginationState } from '@/types/common.type';
 import {
   addProduct,
@@ -12,20 +12,21 @@ import {
 } from '@/services/product.service';
 import {
   ProductFilterParams,
+  ProductFormData,
   ProductPriceType,
   ProductType,
 } from '@/types/product.type';
 import get from 'lodash/get';
 import { toast } from 'sonner';
+import { DATA_KEY } from '@/shared/constants';
 
 //-------------------------------------UNIT HOOKS----------------------------------------
 export const useGetUnits = () => {
   return useQuery({
     queryKey: ['units'],
     queryFn: async () => await getUnits(),
-    select: (data) => get(data, 'result.data', []),
+    select: (data) => get(data, DATA_KEY, []),
     refetchOnWindowFocus: false,
-    refetchOnMount: true,
   });
 };
 
@@ -34,7 +35,7 @@ export const useGetProductTypes = () => {
   return useQuery({
     queryKey: ['productTypes'],
     queryFn: async () => await getProductTypes(),
-    select: (data) => get(data, 'result.data', []),
+    select: (data) => get(data, DATA_KEY, []),
     refetchOnWindowFocus: false,
   });
 };
@@ -52,100 +53,85 @@ export const useGetProducts = (
 };
 
 //ADD hook (post product in api)
-export const useAddProduct = (
-  t: any,
-  handleClose: () => void,
-  params: ProductFilterParams,
-  pagination: PaginationState
-) => {
-  const queryClient = useQueryClient();
+export const useAddProduct = (t: any) => {
   return useMutation({
     mutationFn: async (product: ProductType) => await addProduct(product),
-    onSettled: async () => {
-      await queryClient
-        .invalidateQueries({
-          queryKey: ['products', pagination, params],
-        })
-        .finally(() => handleClose());
+    onSuccess: (response) => {
+      const message = get(
+        response,
+        'result.messages[0]',
+        t('notifications.addProductSuccess')
+      );
+      toast.success(message);
     },
-    onSuccess: () => toast.success(t('notifications.addProductSuccess')),
     onError: () => toast.error(t('notifications.addProductError')),
   });
 };
 
 //UPDATE hook (put product in api)
-export const useUpdateProduct = (
-  t: any,
-  handleClose: () => void,
-  params: ProductFilterParams,
-  pagination: PaginationState
-) => {
-  const queryClient = useQueryClient();
+export const useUpdateProduct = (t: any) => {
   return useMutation({
     mutationFn: async (product: ProductType) => await updateProduct(product),
-    onSettled: async () => {
-      await queryClient
-        .invalidateQueries({
-          queryKey: ['products', pagination, params],
-        })
-        .finally(() => handleClose());
+    onSuccess: (response) => {
+      const message = get(
+        response,
+        'result.messages[0]',
+        t('notifications.updateProductSuccess')
+      );
+      toast.success(message);
     },
-    onSuccess: () => toast.success(t('notifications.updateProductSuccess')),
     onError: () => toast.error(t('notifications.updateProductError')),
   });
 };
 
 //DELETE hook (delete product in api)
-export const useDeleteProduct = (
-  t: any,
-  handleClose: () => void,
-  params: ProductFilterParams,
-  pagination: PaginationState
-) => {
-  const queryClient = useQueryClient();
+export const useDeleteProduct = (t: any) => {
   return useMutation({
     mutationFn: async (productCode: string) => await deleteProduct(productCode),
-    onSettled: async () => {
-      await queryClient
-        .invalidateQueries({
-          queryKey: ['products', pagination, params],
-        })
-        .finally(() => handleClose());
+    onSuccess: (response) => {
+      const message = get(
+        response,
+        'result.messages[0]',
+        t('notifications.deleteProductSuccess')
+      );
+      toast.success(message);
     },
-    onSuccess: () => toast.success(t('notifications.deleteProductSuccess')),
     onError: () => toast.error(t('notifications.deleteProductError')),
   });
 };
 
 //-------------------------------------PRODUCT PRICE HOOKS-------------------------------------
-export const useGetProductPrice = (productCode: string) => {
+export const useGetProductPrice = (product: ProductFormData) => {
   return useQuery({
-    queryKey: ['product-price', productCode],
-    queryFn: async () => await getProductPrice(productCode),
+    queryKey: ['product-price', product.productCode],
+    queryFn: async () => await getProductPrice(product),
+    select: (response) => {
+      const list = get(response, DATA_KEY, []) as ProductPriceType[];
+      return {
+        ...response,
+        result: {
+          data: list.find((v) => v.isActive),
+        },
+      };
+    },
     refetchOnWindowFocus: false,
+    refetchOnMount: true,
   });
 };
 
 //UPDATE hook (put product price in api)
-export const useUpdateProductPrice = (
-  t: any,
-  handleClose: () => void,
-  params: ProductFilterParams,
-  pagination: PaginationState
-) => {
-  const queryClient = useQueryClient();
+export const useUpdateProductPrice = (t: any) => {
   return useMutation({
     mutationFn: async (product: ProductPriceType) =>
       await updateProductPrice(product),
-    onSettled: async () => {
-      await queryClient
-        .invalidateQueries({
-          queryKey: ['products', pagination, params],
-        })
-        .finally(() => handleClose());
+    onSuccess: (response) => {
+      const message = get(
+        response,
+        'result.messages[0]',
+        t('notifications.updateProductPriceSuccess')
+      );
+      toast.success(message);
     },
-    onSuccess: () =>
-      toast.success(t('notifications.updateProductPriceSuccess')),
     onError: () => toast.error(t('notifications.updateProductPriceError')),
   });
 };

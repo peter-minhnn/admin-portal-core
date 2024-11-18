@@ -23,15 +23,11 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { ProductFormSchema } from '@/app/[locale]/(root)/products/schema';
-import {
-  ProductFilterParams,
-  ProductFormData,
-  UnitType,
-} from '@/types/product.type';
+import { ProductFormData, UnitType } from '@/types/product.type';
 import { useModal } from '@/hooks/use-modal';
 import { IconDeviceFloppy, IconX } from '@tabler/icons-react';
 import FileUpload from '@/components/upload';
-import { CommonCodeType, PaginationState } from '@/types/common.type';
+import { CommonCodeType } from '@/types/common.type';
 import {
   useAddProduct,
   useUpdateProduct,
@@ -43,8 +39,6 @@ type ProductFormProps = {
   units: UnitType[];
   productTypes: CommonCodeType[];
   rowData?: ProductFormData;
-  filterParams: ProductFilterParams;
-  pagination: PaginationState;
 };
 
 const defaultProductData = {
@@ -64,8 +58,6 @@ export default function ProductForm({
   units = [],
   productTypes = [],
   rowData,
-  filterParams,
-  pagination,
 }: Readonly<ProductFormProps>) {
   const t = useTranslations('ProductMessages');
   const { closeModal } = useModal();
@@ -94,14 +86,9 @@ export default function ProductForm({
   });
   const [files, setFiles] = useState<File[] | null>(null);
 
-  const { mutateAsync: addProduct, status: addMutateStatus } = useAddProduct(
-    t,
-    closeModal,
-    filterParams,
-    pagination
-  );
+  const { mutateAsync: addProduct, status: addMutateStatus } = useAddProduct(t);
   const { mutateAsync: updateProduct, status: updateMutateStatus } =
-    useUpdateProduct(t, closeModal, filterParams, pagination);
+    useUpdateProduct(t);
 
   const onSubmit = async (data: ProductFormData) => {
     const obj = {

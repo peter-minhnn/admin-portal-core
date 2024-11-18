@@ -1,5 +1,5 @@
 'use client';
-import { useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
 import {
   FormControl,
   FormField,
@@ -17,6 +17,7 @@ type TextInputProps = {
   placeholder: string;
   namespace: string;
   maxLength?: number;
+  reset?: boolean;
 };
 
 const NumberFormatter = {
@@ -43,6 +44,12 @@ export default function NumberInput(props: Readonly<TextInputProps>) {
     realChangeFn(Number(digits));
   }
 
+  useEffect(() => {
+    if (initialValue) {
+      setValue(initialValue);
+    }
+  }, [initialValue]);
+
   return (
     <FormField
       control={props.form.control}
@@ -62,7 +69,7 @@ export default function NumberInput(props: Readonly<TextInputProps>) {
                   setValue(ev.target.value);
                   handleChange(_change, ev.target.value);
                 }}
-                value={value}
+                value={value ?? initialValue}
                 hasError={Boolean(props.form.formState.errors[props.name])}
                 maxLength={props.maxLength}
               />

@@ -35,12 +35,12 @@ export const ProductFilterFormSchema = z.object({
 
 export const ProductPriceFormSchema = z
   .object({
-    productPrice: z.string().regex(/^\d+$/, { message: 'errors.onlyNumber' }),
+    originalPrice: z.number(),
     price: z
       .number({ message: 'errors.wrongInputNumberType' })
       .min(1, { message: 'errors.price' }),
   })
-  .refine((data) => data.price >= parseFloat(data.productPrice), {
+  .refine((data) => Number(data.price) <= Number(data.originalPrice), {
     message: 'errors.priceNotGreaterThanProductPrice',
     path: ['price'],
   });

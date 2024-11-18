@@ -40,7 +40,10 @@ export const getUserInfo = async (userName: string) => {
     const response = await globalAxiosInstance.get<null, BaseResponseType>(
       apiRoutes.users.getUserInfo(userName)
     );
-    return handleApiResponse<ResultType<User>>(response);
+    return {
+      type: 'success',
+      result: response.data.result as User,
+    };
   } catch {
     return {
       type: 'error',

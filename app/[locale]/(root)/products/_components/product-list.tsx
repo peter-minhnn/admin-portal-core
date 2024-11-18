@@ -30,7 +30,7 @@ import { useModal } from '@/hooks/use-modal';
 export default function ProductList() {
   const t = useTranslations('ProductMessages');
   const tCommon = useTranslations('CommonMessages');
-  const { openModal, closeModal } = useModal();
+  const { openModal, closeModal, isClosed } = useModal();
   const isMobile = useIsMobile();
   const { width } = useWindowSize();
   const queryClient = useQueryClient();
@@ -70,14 +70,14 @@ export default function ProductList() {
   } = useGetProducts(pagination, filterParams);
 
   const { mutateAsync: deleteProduct, status: deleteMutateStatus } =
-    useDeleteProduct(t, closeModal, filterParams, pagination);
+    useDeleteProduct(t);
 
   const productColumns = useProductColumns({ t, setActionType });
 
   const table = useMaterialReactTable({
     ...DataTableProps(tCommon),
     columns: productColumns,
-    data: products.data ?? [],
+    data: products?.data ?? [],
     rowCount: products?.meta?.itemCount ?? 0,
     pageCount: products?.meta?.pageCount ?? 0,
     getRowId: (row) => row.productCode,
@@ -125,12 +125,7 @@ export default function ProductList() {
       title: t('addProductModalTitle'),
       description: '',
       modalContent: (
-        <ProductForm
-          units={unitsData}
-          productTypes={productTypesData}
-          filterParams={filterParams}
-          pagination={pagination}
-        />
+        <ProductForm units={unitsData} productTypes={productTypesData} />
       ),
       customSize: 'lg:!min-w-[800px]',
     });
@@ -147,14 +142,12 @@ export default function ProductList() {
             units={unitsData}
             productTypes={productTypesData}
             rowData={row}
-            filterParams={filterParams}
-            pagination={pagination}
           />
         ),
         customSize: 'lg:!min-w-[800px]',
       });
     },
-    [filterParams, pagination, productTypesData, unitsData, openModal, t]
+    [productTypesData, unitsData, openModal, t]
   );
 
   const openDeleteConfirmModal = useCallback(
@@ -211,16 +204,10 @@ export default function ProductList() {
         isOpen: true,
         title: t('editProductModalTitle'),
         description: '',
-        modalContent: (
-          <ProductPrice
-            rowData={row}
-            filterParams={filterParams}
-            pagination={pagination}
-          />
-        ),
+        modalContent: <ProductPrice rowData={row} />,
       });
     },
-    [filterParams, pagination, openModal, t]
+    [openModal, t]
   );
 
   const onFilters = async (data: ProductFilterParams) => {
@@ -253,12 +240,12 @@ export default function ProductList() {
 
   useEffect(() => {
     if (isFetchingProducts || productsData?.type === 'error') return;
-    setProducts(productsData?.result);
+    setProducts(productsData?.result.data);
   }, [productsData, isFetchingProducts]);
 
   useEffect(() => {
     refetchProducts();
-  }, [pagination, refetchProducts]);
+  }, [pagination, isClosed, refetchProducts]);
 
   useEffect(() => {
     if (width > 1280) {

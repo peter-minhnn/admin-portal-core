@@ -5,7 +5,6 @@ import {
   CommonCodeType,
   ListResponseType,
   PaginationState,
-  ResultType,
 } from '@/types/common.type';
 import {
   handleApiCatchResponse,
@@ -65,7 +64,7 @@ export const addProduct = async (data: ProductType) => {
       apiRoutes.products.product,
       data
     );
-    return handleApiResponse<ResultType>(response);
+    return handleApiResponse<ProductType>(response);
   } catch (e) {
     return handleApiCatchResponse(e);
   }
@@ -77,7 +76,7 @@ export const updateProduct = async (data: ProductType) => {
       apiRoutes.products.product,
       data
     );
-    return handleApiResponse<ResultType>(response);
+    return handleApiResponse<ProductType>(response);
   } catch (e) {
     return handleApiCatchResponse(e);
   }
@@ -88,16 +87,16 @@ export const deleteProduct = async (productCode: string) => {
     const response = await globalAxiosInstance.delete<null, BaseResponseType>(
       apiRoutes.products.deleteProduct(productCode)
     );
-    return handleApiResponse<ResultType>(response);
+    return handleApiResponse<ProductType>(response);
   } catch (e) {
     return handleApiCatchResponse(e);
   }
 };
 
-export const getProductPrice = async (productCode: string) => {
+export const getProductPrice = async (product: ProductFormData) => {
   try {
     const response = await globalAxiosInstance.get<null, BaseResponseType>(
-      apiRoutes.products.getProductPrice(productCode)
+      apiRoutes.products.getProductPrice(product)
     );
     return handleApiResponse<ListResponseType<ProductPriceType>>(response);
   } catch (e) {
@@ -111,7 +110,7 @@ export const updateProductPrice = async (data: ProductPriceType) => {
       apiRoutes.products.productPrice,
       data
     );
-    return handleApiResponse<ResultType>(response);
+    return handleApiResponse<ProductPriceType>(response);
   } catch (e) {
     return handleApiCatchResponse(e);
   }

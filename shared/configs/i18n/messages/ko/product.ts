@@ -28,6 +28,7 @@ export const ProductMessages = {
   advancedFilters: '고급 필터',
   content: '내용',
   priceSell: '판매 가격',
+  originalPrice: '원래 가격',
   updateProductPrice: '제품 가격 업데이트',
   errors: {
     price: '제품 가격을 입력해주세요',

@@ -1,5 +1,5 @@
 import { createQueryParams } from '@/shared/lib';
-import { ProductFilterParams } from '@/types/product.type';
+import { ProductFilterParams, ProductFormData } from '@/types/product.type';
 
 export const apiRoutes = {
   login: '/auth/user',
@@ -14,8 +14,8 @@ export const apiRoutes = {
       take: number = 50
     ) =>
       `/product${createQueryParams({ ...params, order: 'DESC', page, take })}`,
-    getProductPrice: (productCode: string) =>
-      `/product-price?page=1&take=50&productCode=${productCode}`,
+    getProductPrice: (product: ProductFormData) =>
+      `/product-price?page=1&take=50&productCode=${product.productCode}`,
     productPrice: '/product-price',
   },
   rolesPermissions: {

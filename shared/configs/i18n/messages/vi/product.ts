@@ -34,6 +34,7 @@ export const ProductMessages = {
   advancedFilters: 'Bộ lọc nâng cao',
   content: 'Nội dung',
   priceSell: 'Giá Bán',
+  originalPrice: 'Giá Gốc',
   updateProductPrice: 'Cập Nhật Giá Bán',
   errors: {
     price: 'Vui lòng nhập giá sản phẩm',

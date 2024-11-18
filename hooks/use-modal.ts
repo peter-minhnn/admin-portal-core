@@ -16,6 +16,7 @@ export function useModal() {
   }: ModalType) => {
     setModalOpen({
       isOpen: true,
+      isClosed: false,
       title,
       description,
       customSize,
@@ -28,6 +29,7 @@ export function useModal() {
   const closeModal = () => {
     setModalOpen({
       ...modalProps,
+      isClosed: true,
       isOpen: false,
     });
   };

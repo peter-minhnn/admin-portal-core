@@ -8,4 +8,5 @@ export type ModalType = {
   modalButton?: ReactNode;
   customSize?: string;
   modalFooter?: ReactNode;
+  isClosed?: boolean;
 };

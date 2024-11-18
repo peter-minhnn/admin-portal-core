@@ -40,13 +40,15 @@ export default function useProductColumns({
       accessorKey: 'productImage',
       header: t('productImage'),
       accessorFn: (dataRow) => (
-        <Avatar className="w-16 h-16">
-          <AvatarImage
-            src={String(dataRow.productImage) || '/images/placeholder.png'}
-            alt={String(dataRow.productName) || 'Product Image'}
-            className="size-full rounded-[inherit] object-cover"
-          />
-        </Avatar>
+        <div className="w-full flex justify-center">
+          <Avatar className="w-16 h-16">
+            <AvatarImage
+              src={String(dataRow.productImage) || '/images/placeholder.png'}
+              alt={String(dataRow.productName) || 'Product Image'}
+              className="size-full rounded-[inherit] object-cover"
+            />
+          </Avatar>
+        </div>
       ),
     },
     {

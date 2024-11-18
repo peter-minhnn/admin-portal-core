@@ -36,6 +36,8 @@ export type ProductPriceType = {
   description?: string;
   unitCode: string;
   price: number;
+  originalPrice: number;
+  isActive?: boolean;
 };
 
 export type ProductFormData = z.infer<typeof ProductFormSchema>;

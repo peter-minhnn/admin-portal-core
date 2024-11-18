@@ -8,7 +8,7 @@ export function handleApiResponse<T>(response: BaseResponseType) {
   if (!errorResponse) {
     return {
       type: 'success',
-      result: response.data.data as T,
+      result: response.data as BaseResponseType<T>,
     };
   }
 
@@ -31,7 +31,7 @@ export async function handleApiCatchResponse(e: any): Promise<ResultType> {
     type: 'error',
     result: {
       isSuccess: false,
-      message: messageError?.join() ?? 'Something went wrong',
+      messages: messageError ?? ['Something went wrong'],
       statusCode: e?.status ?? StatusCodes.INTERNAL_SERVER_ERROR,
       data: null,
     },

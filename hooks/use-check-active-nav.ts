@@ -7,7 +7,6 @@ export default function useCheckActiveNav() {
     const pathArray = pathname.split('/').filter((item) => item !== '');
 
     if (nav === '/' && pathArray.length < 1) return true;
-    console.log('nav ', nav);
     if (typeof nav === 'object') return false;
 
     const navExacts = nav?.replace(/^\//, '') ?? '';
