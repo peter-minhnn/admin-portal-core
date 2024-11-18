@@ -9,6 +9,7 @@ import { loginAction } from '@/actions/login.action';
 import { pageRoutes } from '@/shared/routes/pages.route';
 import { useRouter } from '@/shared/configs/i18n/routing';
 import { useUserStore } from '@/states/common.state';
+import { RESPONSE_OBJ_KEY } from '@/shared/constants';
 
 export const useLogin = (t: any) => {
   const router = useRouter();
@@ -17,14 +18,18 @@ export const useLogin = (t: any) => {
     mutationFn: async (loginInfo: UserLoginRequestType) =>
       await login(loginInfo),
     onSuccess: async (response) => {
-      const data = get(response, 'result', null);
       if (response.type === 'error') {
-        toast.error(data.message);
+        const message = get(response, 'result.messages[0]', t('loginFailed'));
+        toast.error(message);
         return;
       }
 
       toast.success(t('loginSuccess'));
-      const userLoginInfo = get(response, 'result', null) as LoginResponseType;
+      const userLoginInfo = get(
+        response,
+        RESPONSE_OBJ_KEY,
+        null
+      ) as LoginResponseType;
 
       await loginAction(userLoginInfo);
       setUserInfo({

@@ -18,14 +18,14 @@ import {
 } from '@/types/product.type';
 import get from 'lodash/get';
 import { toast } from 'sonner';
-import { DATA_KEY } from '@/shared/constants';
+import { RESPONSE_LIST_KEY } from '@/shared/constants';
 
 //-------------------------------------UNIT HOOKS----------------------------------------
 export const useGetUnits = () => {
   return useQuery({
     queryKey: ['units'],
     queryFn: async () => await getUnits(),
-    select: (data) => get(data, DATA_KEY, []),
+    select: (data) => get(data, RESPONSE_LIST_KEY, []),
     refetchOnWindowFocus: false,
   });
 };
@@ -35,7 +35,7 @@ export const useGetProductTypes = () => {
   return useQuery({
     queryKey: ['productTypes'],
     queryFn: async () => await getProductTypes(),
-    select: (data) => get(data, DATA_KEY, []),
+    select: (data) => get(data, RESPONSE_LIST_KEY, []),
     refetchOnWindowFocus: false,
   });
 };
@@ -106,7 +106,7 @@ export const useGetProductPrice = (product: ProductFormData) => {
     queryKey: ['product-price', product.productCode],
     queryFn: async () => await getProductPrice(product),
     select: (response) => {
-      const list = get(response, DATA_KEY, []) as ProductPriceType[];
+      const list = get(response, RESPONSE_LIST_KEY, []) as ProductPriceType[];
       return {
         ...response,
         result: {

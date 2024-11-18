@@ -4,8 +4,8 @@ import { StatusCodes } from '@/shared/enums';
 import { redirectPageErrors } from '@/actions/login.action';
 
 export function handleApiResponse<T>(response: BaseResponseType) {
-  const errorResponse = get(response, 'data.code', null);
-  if (!errorResponse) {
+  const isSuccess = get(response, 'isSuccess', null);
+  if (!isSuccess) {
     return {
       type: 'success',
       result: response.data as BaseResponseType<T>,

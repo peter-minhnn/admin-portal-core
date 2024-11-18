@@ -1,7 +1,7 @@
 import { LoginResponseType, UserLoginRequestType } from '@/types/user.type';
 import axiosConfig from '@/shared/configs/axios.config';
 import { apiRoutes } from '@/shared/routes/api.route';
-import { BaseResponseType, ResultType } from '@/types/common.type';
+import { BaseResponseType } from '@/types/common.type';
 import {
   handleApiCatchResponse,
   handleApiResponse,
@@ -13,7 +13,7 @@ export const login = async (data: UserLoginRequestType) => {
       apiRoutes.login,
       data
     );
-    return handleApiResponse<ResultType<LoginResponseType>>(response);
+    return handleApiResponse<LoginResponseType>(response);
   } catch (e) {
     return handleApiCatchResponse(e);
   }

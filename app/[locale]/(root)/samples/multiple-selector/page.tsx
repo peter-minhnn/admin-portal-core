@@ -129,7 +129,7 @@ export default function ExampleMultipleSelectorPage() {
                             placeholder={'Select Options'}
                             hasError={!!errors.selectedOptions}
                           />
-                          <FormMessage />
+                          <FormMessage namespace="samples" />
                         </FormItem>
                       )}
                     />

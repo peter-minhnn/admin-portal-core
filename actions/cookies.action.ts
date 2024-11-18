@@ -3,8 +3,7 @@
 import { cookies } from 'next/headers';
 import { decrypt } from '@/shared/lib/session';
 import { CookieEnums } from '@/shared/enums';
-import { getUserInfo } from '@/services/user.service';
-import { User } from '@/types/user.type';
+import { getUserInfo } from '@/services/auth.service';
 
 export const getSession = async () => {
   const cookie = (await cookies()).get(CookieEnums.SESSION_ID)?.value;
@@ -25,6 +24,6 @@ export const getUserInfoLogin = async () => {
   if (response.type === 'error') {
     return false;
   }
-  const user = response.result as User;
+  const user = response.result;
   return user?.roleCode === session?.roleCode;
 };

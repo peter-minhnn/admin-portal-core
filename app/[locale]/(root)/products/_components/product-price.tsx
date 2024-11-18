@@ -14,7 +14,7 @@ import { ProductPriceFormSchema } from '../schema';
 import NumberInput from '@/components/number-input';
 import { Button } from '@/components/ui/button';
 import { IconDeviceFloppy, IconX } from '@tabler/icons-react';
-import { DATA_KEY } from '@/shared/constants';
+import { RESPONSE_LIST_KEY } from '@/shared/constants';
 
 type ProductPriceProps = {
   rowData: ProductFormData;
@@ -47,7 +47,7 @@ export default function ProductPrice({ rowData }: Readonly<ProductPriceProps>) {
 
   useEffect(() => {
     if (priceStatus === 'pending') return;
-    const productPriceData = get(data, DATA_KEY, {
+    const productPriceData = get(data, RESPONSE_LIST_KEY, {
       price: 0,
       originalPrice: 0,
     });

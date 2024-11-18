@@ -68,7 +68,7 @@ export default function ProfileForm() {
                 This is your public display name. It can be your real name or a
                 pseudonym. You can only change this once every 30 days.
               </FormDescription>
-              <FormMessage />
+              <FormMessage namespace="SettingsMessages" />
             </FormItem>
           )}
         />
@@ -83,7 +83,7 @@ export default function ProfileForm() {
                 {...field}
                 type="email"
               />
-              <FormMessage />
+              <FormMessage namespace="SettingsMessages" />
             </FormItem>
           )}
         />
@@ -100,7 +100,7 @@ export default function ProfileForm() {
                 You can <span>@mention</span> other users and organizations to
                 link to them.
               </FormDescription>
-              <FormMessage />
+              <FormMessage namespace="SettingsMessages" />
             </FormItem>
           )}
         />
@@ -113,7 +113,7 @@ export default function ProfileForm() {
               <FormControl>
                 <Input placeholder={t('formProfile.lastName')} {...field} />
               </FormControl>
-              <FormMessage />
+              <FormMessage namespace="SettingsMessages" />
             </FormItem>
           )}
         />

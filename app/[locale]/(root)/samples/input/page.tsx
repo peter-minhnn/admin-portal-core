@@ -102,7 +102,7 @@ export default function InputExamplePage() {
                             onChange={field.onChange}
                             hasError={!!errors.inputExample}
                           />
-                          <FormMessage />
+                          <FormMessage namespace="samples" />
                         </FormItem>
                       )}
                     />

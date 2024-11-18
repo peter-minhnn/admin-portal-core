@@ -83,7 +83,7 @@ export default function DatePickerPage() {
                             }}
                             hasError={!!form.formState.errors.selectedDate}
                           />
-                          <FormMessage />
+                          <FormMessage namespace="samples" />
                         </FormItem>
                       )}
                     />

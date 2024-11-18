@@ -34,22 +34,3 @@ export const updateUser = async (data: User) => {
     return handleApiCatchResponse(e);
   }
 };
-
-export const getUserInfo = async (userName: string) => {
-  try {
-    const response = await globalAxiosInstance.get<null, BaseResponseType>(
-      apiRoutes.users.getUserInfo(userName)
-    );
-    return {
-      type: 'success',
-      result: response.data.result as User,
-    };
-  } catch {
-    return {
-      type: 'error',
-      result: {
-        roleCode: '',
-      } as User,
-    };
-  }
-};
