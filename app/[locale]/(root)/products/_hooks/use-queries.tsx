@@ -25,7 +25,7 @@ export const useGetUnits = () => {
   return useQuery({
     queryKey: ['units'],
     queryFn: async () => await getUnits(),
-    select: (data) => get(data, RESPONSE_LIST_KEY, []),
+    select: (data) => get(data.result, RESPONSE_LIST_KEY, []),
     refetchOnWindowFocus: false,
   });
 };
@@ -35,7 +35,7 @@ export const useGetProductTypes = () => {
   return useQuery({
     queryKey: ['productTypes'],
     queryFn: async () => await getProductTypes(),
-    select: (data) => get(data, RESPONSE_LIST_KEY, []),
+    select: (data) => get(data.result, RESPONSE_LIST_KEY, []),
     refetchOnWindowFocus: false,
   });
 };
@@ -53,7 +53,7 @@ export const useGetProducts = (
 };
 
 //ADD hook (post product in api)
-export const useAddProduct = (t: any) => {
+export const useAddProduct = (t: any, closeModal: () => void) => {
   return useMutation({
     mutationFn: async (product: ProductType) => await addProduct(product),
     onSuccess: (response) => {
@@ -63,13 +63,14 @@ export const useAddProduct = (t: any) => {
         t('notifications.addProductSuccess')
       );
       toast.success(message);
+      closeModal();
     },
     onError: () => toast.error(t('notifications.addProductError')),
   });
 };
 
 //UPDATE hook (put product in api)
-export const useUpdateProduct = (t: any) => {
+export const useUpdateProduct = (t: any, closeModal: () => void) => {
   return useMutation({
     mutationFn: async (product: ProductType) => await updateProduct(product),
     onSuccess: (response) => {
@@ -79,6 +80,7 @@ export const useUpdateProduct = (t: any) => {
         t('notifications.updateProductSuccess')
       );
       toast.success(message);
+      closeModal();
     },
     onError: () => toast.error(t('notifications.updateProductError')),
   });

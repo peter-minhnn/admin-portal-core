@@ -10,3 +10,15 @@ export type ModalType = {
   modalFooter?: ReactNode;
   isClosed?: boolean;
 };
+
+export type AlertModalType = {
+  isOpen: boolean;
+  title: string;
+  message: string;
+  btnConfirmText?: string;
+  btnCancelText?: string;
+  customSize?: string;
+  onConfirm: () => any | Promise<any>;
+  onCancel: () => any | Promise<any>;
+  modalButton?: ReactNode;
+};

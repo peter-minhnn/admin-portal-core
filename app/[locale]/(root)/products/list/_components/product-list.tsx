@@ -2,38 +2,49 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { IconX } from '@tabler/icons-react';
 import { useMaterialReactTable } from 'material-react-table';
 import {
   useDeleteProduct,
   useGetProducts,
   useGetProductTypes,
   useGetUnits,
-} from '../_hooks/use-queries';
+} from '../../_hooks/use-queries';
 import { useQueryClient } from '@tanstack/react-query';
-import { FilterIcon, PlusIcon, TrashIcon } from 'lucide-react';
-import { ProductFilterParams, ProductFormData } from '@/types/product.type';
-import { ListResponseType, PaginationState } from '@/types/common.type';
+import { FilterIcon, PlusIcon } from 'lucide-react';
+import {
+  ProductFilterParams,
+  ProductFormData,
+  UnitType,
+} from '@/types/product.type';
+import {
+  CommonCodeType,
+  ListResponseType,
+  PaginationState,
+} from '@/types/common.type';
 import { PAGE_SIZE } from '@/shared/enums';
 import DataTable from '@/components/data-table';
-import useProductColumns from '../_hooks/use-product-columns';
+import useProductColumns from '../../_hooks/use-product-columns';
 import { DataTableProps } from '@/shared/data-table-props';
 import { useWindowSize } from '@/hooks/use-window-size';
 import DrawerLayout from '@/components/drawer-layout';
 import ProductFilters from './product-filters';
 import { useIsMobile } from '@/hooks/use-mobile';
-import ProductPrice from './product-price';
+import ProductPriceForm from '../../_components/product-price-form';
 import { Button } from '@/components/ui/button';
 import ProductForm from './product-form';
 import { useModal } from '@/hooks/use-modal';
+import { useAlertModal } from '@/hooks/use-alert-modal';
+import { useActionsButtonStore } from '@/states/common.state';
 
 export default function ProductList() {
   const t = useTranslations('ProductMessages');
   const tCommon = useTranslations('CommonMessages');
-  const { openModal, closeModal, isClosed } = useModal();
+  const { openModal, isClosed } = useModal();
+  const { openAlertModal, closeAlertModal } = useAlertModal();
   const isMobile = useIsMobile();
   const { width } = useWindowSize();
   const queryClient = useQueryClient();
+  const { actionType, actionData, setActionType } = useActionsButtonStore();
 
   const [products, setProducts] = useState<ListResponseType<ProductFormData>>({
     data: [],
@@ -52,13 +63,6 @@ export default function ProductList() {
     productType: '',
   });
   const [isFilterOpened, setIsFilterOpened] = useState(false);
-  const [actionType, setActionType] = useState<{
-    type: 'edit' | 'delete' | 'updatePrice' | '';
-    row: ProductFormData;
-  }>({
-    type: '',
-    row: {} as ProductFormData,
-  });
 
   const { data: unitsData } = useGetUnits();
   const { data: productTypesData } = useGetProductTypes();
@@ -72,7 +76,7 @@ export default function ProductList() {
   const { mutateAsync: deleteProduct, status: deleteMutateStatus } =
     useDeleteProduct(t);
 
-  const productColumns = useProductColumns({ t, setActionType });
+  const productColumns = useProductColumns({ t });
 
   const table = useMaterialReactTable({
     ...DataTableProps(tCommon),
@@ -112,7 +116,7 @@ export default function ProductList() {
           setOpen={setIsFilterOpened}
         >
           <ProductFilters
-            productTypes={productTypesData}
+            productTypes={(productTypesData as CommonCodeType[]) ?? []}
             onFilters={onFilters}
             initialFilters={filterParams}
           />
@@ -127,7 +131,10 @@ export default function ProductList() {
       title: t('addProductModalTitle'),
       description: '',
       modalContent: (
-        <ProductForm units={unitsData} productTypes={productTypesData} />
+        <ProductForm
+          units={(unitsData as UnitType[]) ?? []}
+          productTypes={(productTypesData as CommonCodeType[]) ?? []}
+        />
       ),
       customSize: 'lg:!min-w-[800px]',
     });
@@ -141,8 +148,8 @@ export default function ProductList() {
         description: '',
         modalContent: (
           <ProductForm
-            units={unitsData}
-            productTypes={productTypesData}
+            units={(unitsData as UnitType[]) ?? []}
+            productTypes={(productTypesData as CommonCodeType[]) ?? []}
             rowData={row}
           />
         ),
@@ -154,50 +161,20 @@ export default function ProductList() {
 
   const openDeleteConfirmModal = useCallback(
     (rows: ProductFormData) => {
-      openModal({
+      openAlertModal({
         isOpen: true,
         title: t('deleteProductModalTitle'),
-        description: t('deleteProductModalContent', {
+        message: t('deleteProductModalContent', {
           productName: rows.productName,
         }),
-        modalContent: (
-          <div className="flex flex-col gap-4">
-            <p className="text-sm text-muted-foreground">
-              {t('deleteProductModalDesc')}
-            </p>
-            <div className="flex justify-end gap-2">
-              <Button
-                type="button"
-                title={t('modalCancelBtn')}
-                size="sm"
-                variant="secondary"
-                onClick={closeModal}
-                disabled={deleteMutateStatus === 'pending'}
-                loading={deleteMutateStatus === 'pending'}
-              >
-                <IconX size={16} />
-                {t('modalCancelBtn')}
-              </Button>
-              <Button
-                type="button"
-                variant="destructive"
-                size="sm"
-                title={t('modalDeleteBtn')}
-                onClick={async () => {
-                  await deleteProduct(rows.productCode);
-                }}
-                disabled={deleteMutateStatus === 'pending'}
-                loading={deleteMutateStatus === 'pending'}
-              >
-                <TrashIcon size={16} />
-                {t('modalDeleteBtn')}
-              </Button>
-            </div>
-          </div>
-        ),
+        onConfirm: async () => {
+          await deleteProduct(rows.productCode);
+          closeAlertModal();
+        },
+        onCancel: closeAlertModal,
       });
     },
-    [openModal, t, closeModal, deleteMutateStatus, deleteProduct]
+    [openAlertModal, t, closeAlertModal, deleteProduct]
   );
 
   const handleUpdateProductPrice = useCallback(
@@ -206,7 +183,7 @@ export default function ProductList() {
         isOpen: true,
         title: t('editProductModalTitle'),
         description: '',
-        modalContent: <ProductPrice rowData={row} />,
+        modalContent: <ProductPriceForm rowData={row} />,
       });
     },
     [openModal, t]
@@ -219,21 +196,22 @@ export default function ProductList() {
   };
 
   const handleActionClick = useCallback(() => {
-    switch (actionType.type) {
+    switch (actionType) {
       case 'delete':
-        openDeleteConfirmModal(actionType.row as ProductFormData);
+        openDeleteConfirmModal(actionData as ProductFormData);
         break;
       case 'edit':
-        handleEditProduct(actionType.row as ProductFormData);
+        handleEditProduct(actionData as ProductFormData);
         break;
       case 'updatePrice':
-        handleUpdateProductPrice(actionType.row as ProductFormData);
+        handleUpdateProductPrice(actionData as ProductFormData);
         break;
       default:
         break;
     }
   }, [
     actionType,
+    actionData,
     handleEditProduct,
     handleUpdateProductPrice,
     openDeleteConfirmModal,
@@ -245,8 +223,9 @@ export default function ProductList() {
   }, [productsData, isFetchingProducts]);
 
   useEffect(() => {
+    if (deleteMutateStatus === 'pending') return;
     refetchProducts();
-  }, [pagination, isClosed, refetchProducts]);
+  }, [pagination, isClosed, refetchProducts, deleteMutateStatus]);
 
   useEffect(() => {
     if (width > 1280) {
@@ -260,11 +239,11 @@ export default function ProductList() {
   }, [width, table]);
 
   useEffect(() => {
-    if (actionType.type) {
+    if (actionType) {
       handleActionClick();
-      setActionType({ type: '', row: {} as ProductFormData });
+      setActionType('', null);
     }
-  }, [actionType, handleActionClick]);
+  }, [actionType, setActionType, handleActionClick]);
 
   return <DataTable table={table} />;
 }

@@ -14,6 +14,7 @@ import QueryProvider from '@/components/providers/query-provider';
 import { AuthUserType } from '@/types/user.type';
 import get from 'lodash/get';
 import LocaleSwitcher from '@/components/layouts/locale-switcher';
+import GlobalAlertModal from '@/components/layouts/global-alert-modal';
 
 const NextProgress = dynamic(
   () => import('@/components/layouts/next-progress'),
@@ -71,6 +72,7 @@ export const AdminLayout: FC<Props> = ({ children }) => {
       </div>
       <NextProgress />
       <GlobalModal />
+      <GlobalAlertModal />
     </QueryProvider>
   );
 };

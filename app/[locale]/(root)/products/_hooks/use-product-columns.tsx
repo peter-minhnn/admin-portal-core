@@ -1,7 +1,7 @@
 import { MRT_ColumnDef } from 'material-react-table';
 import { ProductFormData } from '@/types/product.type';
 import { formatCurrency, formatNumber } from '@/shared/lib';
-import { Avatar, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { EditIcon, TrashIcon } from 'lucide-react';
 import { IconCoin } from '@tabler/icons-react';
 import {
@@ -10,22 +10,15 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { Dispatch, SetStateAction } from 'react';
+import { useActionsButtonStore } from '@/states/common.state';
 
 type ProductColumnProps = {
   t: any;
-  setActionType: Dispatch<
-    SetStateAction<{
-      type: 'edit' | 'delete' | 'updatePrice' | '';
-      row: ProductFormData;
-    }>
-  >;
 };
 
-export default function useProductColumns({
-  t,
-  setActionType,
-}: ProductColumnProps) {
+export default function useProductColumns({ t }: ProductColumnProps) {
+  const { setActionType } = useActionsButtonStore();
+
   return [
     {
       accessorKey: 'productCode', //access nested data with dot notation
@@ -44,9 +37,17 @@ export default function useProductColumns({
           <Avatar className="w-16 h-16">
             <AvatarImage
               src={String(dataRow.productImage) || '/images/placeholder.png'}
+              srcSet={String(dataRow.productImage) || '/images/placeholder.png'}
               alt={String(dataRow.productName) || 'Product Image'}
               className="size-full rounded-[inherit] object-cover"
             />
+            <AvatarFallback>
+              <AvatarImage
+                src={'/images/placeholder.png'}
+                alt={String(dataRow.productName) || 'Product Image'}
+                className="size-full rounded-[inherit] object-cover"
+              />
+            </AvatarFallback>
           </Avatar>
         </div>
       ),
@@ -127,7 +128,7 @@ export default function useProductColumns({
               <TooltipTrigger>
                 <EditIcon
                   size={25}
-                  onClick={() => setActionType({ type: 'edit', row })}
+                  onClick={() => setActionType('edit', row)}
                 />
               </TooltipTrigger>
               <TooltipContent>{t('editProductModalTitle')}</TooltipContent>
@@ -136,7 +137,7 @@ export default function useProductColumns({
               <TooltipTrigger>
                 <IconCoin
                   size={25}
-                  onClick={() => setActionType({ type: 'updatePrice', row })}
+                  onClick={() => setActionType('updatePrice', row)}
                 />
               </TooltipTrigger>
               <TooltipContent>{t('updateProductPrice')}</TooltipContent>
@@ -145,7 +146,7 @@ export default function useProductColumns({
               <TooltipTrigger>
                 <TrashIcon
                   size={25}
-                  onClick={() => setActionType({ type: 'delete', row })}
+                  onClick={() => setActionType('delete', row)}
                 />
               </TooltipTrigger>
               <TooltipContent>{t('deleteProductModalTitle')}</TooltipContent>

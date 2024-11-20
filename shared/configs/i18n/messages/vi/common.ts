@@ -56,6 +56,12 @@ const CommonMessages = {
   btnApply: 'Áp dụng',
   btnSave: 'Lưu',
   btnCancel: 'Hủy',
+  btnOk: 'Đồng ý',
+  btnClose: 'Đóng',
+  alertMessage: 'Thông báo',
+  alertTitle: 'Thông báo',
+  active: 'Kích hoạt',
+  inactive: 'Không kích hoạt',
 };
 
 export default CommonMessages;

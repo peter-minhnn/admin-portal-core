@@ -1,7 +1,8 @@
 import { create } from 'zustand';
 import { AuthUserType } from '@/types/user.type';
-import { ModalType } from '@/types/modal.type';
+import { AlertModalType, ModalType } from '@/types/modal.type';
 import { Locale } from '@/shared/configs/i18n/config';
+import { ActionType } from '@/types/common.type';
 
 /*
  *  USER STORE
@@ -48,4 +49,43 @@ type LocaleStore = {
 export const useLocaleStore = create<LocaleStore>((set) => ({
   locale: 'vi',
   setLocaleStore: (locale) => set({ locale }),
+}));
+
+/*
+ *  ALERT MODAL STORE
+ */
+export type AlertModalStore = {
+  modalProps: AlertModalType;
+  setAlertModalOpen: (props?: AlertModalType) => void;
+};
+
+export const useAlertModalStore = create<AlertModalStore>((set) => ({
+  modalProps: {
+    isOpen: false,
+    customSize: '',
+    title: '',
+    message: '',
+    btnConfirmText: '',
+    btnCancelText: '',
+    modalButton: null,
+    onConfirm: () => {},
+    onCancel: () => {},
+  },
+  setAlertModalOpen: (modalProps?: AlertModalType) => set({ modalProps }),
+}));
+
+/*
+ *  ACTIONS BUTTON STORE
+ */
+export type ActionsButtonStore<T = any> = {
+  actionType: ActionType;
+  actionData: T | any;
+  setActionType: (actionType: ActionType, actionData?: T | any) => void;
+};
+
+export const useActionsButtonStore = create<ActionsButtonStore>((set) => ({
+  actionType: '',
+  actionData: null,
+  setActionType: (actionType: ActionType, actionData?: any) =>
+    set({ actionType, actionData }),
 }));

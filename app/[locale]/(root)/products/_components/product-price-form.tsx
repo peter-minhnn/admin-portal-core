@@ -20,7 +20,9 @@ type ProductPriceProps = {
   rowData: ProductFormData;
 };
 
-export default function ProductPrice({ rowData }: Readonly<ProductPriceProps>) {
+export default function ProductPriceForm({
+  rowData,
+}: Readonly<ProductPriceProps>) {
   const t = useTranslations('ProductMessages');
   const tCommon = useTranslations('CommonMessages');
   const { closeModal } = useModal();

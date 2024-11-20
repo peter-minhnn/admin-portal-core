@@ -1,22 +1,16 @@
 'use client';
 
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
-import { IconCheck, IconPencil, IconX } from '@tabler/icons-react';
+import { IconCheck, IconPencil } from '@tabler/icons-react';
 import { Role, UpdateRoleFormData } from '@/types/roles-permissions.type';
 import {
   useGetUsersByRole,
   useUpdateUserRole,
 } from '@/app/[locale]/(root)/roles-permissions/_hooks/use-users';
 import { useTranslations } from 'next-intl';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
 import {
   Popover,
   PopoverContent,
@@ -52,7 +46,6 @@ export default function UserRoleManagement({
 }: Readonly<UserRoleManagementProps>) {
   const t = useTranslations('RoleMessages');
   const tCommon = useTranslations('CommonMessages');
-  const [editRoleOpen, setEditRoleOpen] = useState<boolean>(false);
 
   const form = useForm<UpdateRoleFormData>({
     resolver: zodResolver(UpdateRoleFormSchema),
@@ -99,91 +92,76 @@ export default function UserRoleManagement({
                 )}
                 {t('inactive')}
               </Button>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Popover open={editRoleOpen} onOpenChange={setEditRoleOpen}>
-                      <PopoverTrigger>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="btn btn-sm btn-danger"
-                        >
-                          <IconPencil size={16} />
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent>
-                        <Form {...form}>
-                          <form
-                            id="update-user-role"
-                            onSubmit={form.handleSubmit(onSubmidEditUserRole)}
-                            className="h-full flex flex-col justify-between gap-2"
-                          >
-                            <div className="mb-4">
-                              <FormField
-                                name="roleCode"
-                                render={({ field }) => (
-                                  <FormItem>
-                                    <FormLabel htmlFor="roleCode">
-                                      {t('roleCode')}
-                                    </FormLabel>
-                                    <Select
-                                      onValueChange={field.onChange}
-                                      defaultValue={field.value}
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="btn btn-sm btn-danger"
+                    type="button"
+                  >
+                    <IconPencil size={20} />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent>
+                  <Form {...form}>
+                    <form
+                      id="update-user-role"
+                      onSubmit={form.handleSubmit(onSubmidEditUserRole)}
+                      className="h-full flex flex-col justify-between gap-2"
+                    >
+                      <div className="mb-4">
+                        <FormField
+                          name="roleCode"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel htmlFor="roleCode">
+                                {t('roleCode')}
+                              </FormLabel>
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={field.value}
+                              >
+                                <FormControl>
+                                  <SelectTrigger>
+                                    <SelectValue
+                                      placeholder={t('selectRoleCode')}
+                                    />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {roles.map((role) => (
+                                    <SelectItem
+                                      key={role.roleCode}
+                                      value={role.roleCode}
                                     >
-                                      <FormControl>
-                                        <SelectTrigger>
-                                          <SelectValue
-                                            placeholder={t('selectRoleCode')}
-                                          />
-                                        </SelectTrigger>
-                                      </FormControl>
-                                      <SelectContent>
-                                        {roles.map((role) => (
-                                          <SelectItem
-                                            key={role.roleCode}
-                                            value={role.roleCode}
-                                          >
-                                            {role.roleName}
-                                          </SelectItem>
-                                        ))}
-                                      </SelectContent>
-                                    </Select>
-                                  </FormItem>
-                                )}
-                              />
-                            </div>
-                            <div className="flex flex-row gap-2 w-full">
-                              <Button
-                                size="sm"
-                                variant="ringHover"
-                                className="w-full"
-                                onClick={() => setEditRoleOpen(false)}
-                              >
-                                <IconX size={16} className="mr-2" />
-                                {tCommon('btnCancel')}
-                              </Button>
-                              <Button
-                                size="sm"
-                                variant="ringHover"
-                                className="w-full"
-                                form="update-user-role"
-                                type="submit"
-                                disabled={status === 'pending'}
-                                loading={status === 'pending'}
-                              >
-                                <FilterIcon size={16} className="mr-2" />
-                                {tCommon('btnSave')}
-                              </Button>
-                            </div>
-                          </form>
-                        </Form>
-                      </PopoverContent>
-                    </Popover>
-                  </TooltipTrigger>
-                  <TooltipContent>{t('editRole')}</TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+                                      {role.roleName}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div className="flex flex-row gap-2 w-full">
+                        <Button
+                          size="sm"
+                          variant="ringHover"
+                          className="w-full"
+                          form="update-user-role"
+                          type="submit"
+                          disabled={status === 'pending'}
+                          loading={status === 'pending'}
+                        >
+                          <FilterIcon size={16} className="mr-2" />
+                          {tCommon('btnSave')}
+                        </Button>
+                      </div>
+                    </form>
+                  </Form>
+                </PopoverContent>
+              </Popover>
             </div>
           </div>
           <Separator className="my-2" />

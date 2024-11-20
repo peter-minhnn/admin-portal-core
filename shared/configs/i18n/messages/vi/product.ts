@@ -49,6 +49,10 @@ export const ProductMessages = {
     priceNotGreaterThanProductPrice: 'Giá bán không được lớn hơn giá sản phẩm',
   },
   actions: 'Hành Động',
+  productPriceTitle: 'Danh Sách Giá Sản Phẩm',
+  editProductPrice: 'Chỉnh Sửa Giá Sản Phẩm',
+  productPriceDesc: 'Quản lý giá sản phẩm',
+  isActive: 'Kích hoạt',
 };
 
 export default ProductMessages;

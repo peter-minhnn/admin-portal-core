@@ -86,9 +86,12 @@ export default function ProductForm({
   });
   const [files, setFiles] = useState<File[] | null>(null);
 
-  const { mutateAsync: addProduct, status: addMutateStatus } = useAddProduct(t);
+  const { mutateAsync: addProduct, status: addMutateStatus } = useAddProduct(
+    t,
+    closeModal
+  );
   const { mutateAsync: updateProduct, status: updateMutateStatus } =
-    useUpdateProduct(t);
+    useUpdateProduct(t, closeModal);
 
   const onSubmit = async (data: ProductFormData) => {
     const obj = {

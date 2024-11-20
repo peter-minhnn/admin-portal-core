@@ -54,6 +54,12 @@ const CommonMessages = {
   btnApply: '적용',
   btnSave: '저장',
   btnCancel: '취소',
+  btnOk: '확인',
+  btnClose: '닫기',
+  alertMessage: '알림 메시지',
+  alertTitle: '알림',
+  active: '활성화',
+  inactive: '비활성화',
 };
 
 export default CommonMessages;

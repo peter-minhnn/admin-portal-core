@@ -41,3 +41,5 @@ export type CommonCodeType = {
   name: string;
   isActive: boolean;
 };
+
+export type ActionType = 'edit' | 'delete' | 'updatePrice' | '';
