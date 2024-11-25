@@ -3,7 +3,10 @@ import { PaginationState } from '@/types/common.type';
 import {
   addProduct,
   deleteProduct,
-  getProductPrice,
+  getOrders,
+  getProductPriceDetail,
+  getProductPriceListDetail,
+  getProductPrices,
   getProducts,
   getProductTypes,
   getUnits,
@@ -12,13 +15,14 @@ import {
 } from '@/services/product.service';
 import {
   ProductFilterParams,
-  ProductFormData,
+  ProductPriceFilterParams,
   ProductPriceType,
   ProductType,
 } from '@/types/product.type';
 import get from 'lodash/get';
 import { toast } from 'sonner';
 import { RESPONSE_LIST_KEY } from '@/shared/constants';
+import { ProductOrderFilterParams } from '@/types/order.type';
 
 //-------------------------------------UNIT HOOKS----------------------------------------
 export const useGetUnits = () => {
@@ -87,7 +91,7 @@ export const useUpdateProduct = (t: any, closeModal: () => void) => {
 };
 
 //DELETE hook (delete product in api)
-export const useDeleteProduct = (t: any) => {
+export const useDeleteProduct = (t: any, closeModal: () => void) => {
   return useMutation({
     mutationFn: async (productCode: string) => await deleteProduct(productCode),
     onSuccess: (response) => {
@@ -97,18 +101,59 @@ export const useDeleteProduct = (t: any) => {
         t('notifications.deleteProductSuccess')
       );
       toast.success(message);
+      closeModal();
     },
     onError: () => toast.error(t('notifications.deleteProductError')),
   });
 };
 
 //-------------------------------------PRODUCT PRICE HOOKS-------------------------------------
-export const useGetProductPrice = (product: ProductFormData) => {
+export const useGetProductPrices = (params: ProductPriceFilterParams) => {
   return useQuery({
-    queryKey: ['product-price', product.productCode],
-    queryFn: async () => await getProductPrice(product),
+    queryKey: ['product-price', params],
+    queryFn: async () => await getProductPrices(params),
+    refetchOnWindowFocus: false,
+    refetchOnMount: true,
+  });
+};
+
+export const useGetProductPriceListDetail = (
+  productCode: string,
+  unitCode: string,
+  page: number
+) => {
+  return useQuery({
+    queryKey: ['product-price-list', productCode, unitCode, page],
+    queryFn: async () =>
+      await getProductPriceListDetail(productCode, unitCode, page),
     select: (response) => {
-      const list = get(response, RESPONSE_LIST_KEY, []) as ProductPriceType[];
+      const list = get(
+        response.result,
+        RESPONSE_LIST_KEY,
+        []
+      ) as ProductPriceType[];
+      return {
+        ...response,
+        result: {
+          data: list,
+        },
+      };
+    },
+    refetchOnWindowFocus: false,
+    refetchOnMount: true,
+  });
+};
+
+export const useGetProductPriceDetail = (productCode: string) => {
+  return useQuery({
+    queryKey: ['product-price', productCode],
+    queryFn: async () => await getProductPriceDetail(productCode),
+    select: (response) => {
+      const list = get(
+        response.result,
+        RESPONSE_LIST_KEY,
+        []
+      ) as ProductPriceType[];
       return {
         ...response,
         result: {
@@ -122,7 +167,7 @@ export const useGetProductPrice = (product: ProductFormData) => {
 };
 
 //UPDATE hook (put product price in api)
-export const useUpdateProductPrice = (t: any) => {
+export const useUpdateProductPrice = (t: any, closeModal: any) => {
   return useMutation({
     mutationFn: async (product: ProductPriceType) =>
       await updateProductPrice(product),
@@ -133,7 +178,21 @@ export const useUpdateProductPrice = (t: any) => {
         t('notifications.updateProductPriceSuccess')
       );
       toast.success(message);
+      closeModal();
     },
     onError: () => toast.error(t('notifications.updateProductPriceError')),
+  });
+};
+
+//-------------------------------------PRODUCT ORDER HOOKS-------------------------------------
+export const useGetOrders = (
+  pagination: PaginationState,
+  params: ProductOrderFilterParams
+) => {
+  return useQuery({
+    queryKey: ['orders', pagination, params],
+    queryFn: async () => await getOrders(params, pagination),
+    refetchOnWindowFocus: false,
+    refetchOnMount: true,
   });
 };

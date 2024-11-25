@@ -13,10 +13,13 @@ import {
 import {
   ProductFilterParams,
   ProductFormData,
+  ProductPriceFilterParams,
   ProductPriceType,
   ProductType,
   UnitType,
 } from '@/types/product.type';
+import { useAxios } from '@/hooks/use-axios';
+import { ProductOrderType, ProductOrderFilterParams } from '@/types/order.type';
 
 export const getUnits = async () => {
   try {
@@ -93,10 +96,38 @@ export const deleteProduct = async (productCode: string) => {
   }
 };
 
-export const getProductPrice = async (product: ProductFormData) => {
+export const getProductPrices = async (params: ProductPriceFilterParams) => {
+  try {
+    const response = await useAxios.get<
+      null,
+      BaseResponseType,
+      ProductPriceType
+    >(apiRoutes.products.getProductPrices(params));
+    return handleApiResponse<ListResponseType<ProductPriceType>>(response);
+  } catch (e) {
+    return handleApiCatchResponse(e);
+  }
+};
+
+export const getProductPriceDetail = async (productCode: string) => {
   try {
     const response = await globalAxiosInstance.get<null, BaseResponseType>(
-      apiRoutes.products.getProductPrice(product)
+      apiRoutes.products.getProductPriceDetail(productCode)
+    );
+    return handleApiResponse<ListResponseType<ProductPriceType>>(response);
+  } catch (e) {
+    return handleApiCatchResponse(e);
+  }
+};
+
+export const getProductPriceListDetail = async (
+  productCode: string,
+  unitCode: string,
+  page: number
+) => {
+  try {
+    const response = await globalAxiosInstance.get<null, BaseResponseType>(
+      apiRoutes.products.getProductPriceListDetail(productCode, unitCode, page)
     );
     return handleApiResponse<ListResponseType<ProductPriceType>>(response);
   } catch (e) {
@@ -111,6 +142,28 @@ export const updateProductPrice = async (data: ProductPriceType) => {
       data
     );
     return handleApiResponse<ProductPriceType>(response);
+  } catch (e) {
+    return handleApiCatchResponse(e);
+  }
+};
+
+export const getOrders = async (
+  params: ProductOrderFilterParams,
+  pagination: PaginationState
+) => {
+  try {
+    const response = await useAxios.get<
+      null,
+      BaseResponseType,
+      ProductOrderType
+    >(
+      apiRoutes.orders.getOrders(
+        params,
+        pagination.pageIndex + 1,
+        pagination.pageSize
+      )
+    );
+    return handleApiResponse<ListResponseType<ProductOrderType>>(response);
   } catch (e) {
     return handleApiCatchResponse(e);
   }

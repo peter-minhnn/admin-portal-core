@@ -1,6 +1,10 @@
 import { createQueryParams } from '@/shared/lib';
-import { ProductFilterParams, ProductFormData } from '@/types/product.type';
-import { OrderFilterParams } from '@/types/order.type';
+import {
+  ProductFilterParams,
+  ProductPriceFilterParams,
+} from '@/types/product.type';
+import { ProductOrderFilterParams } from '@/types/order.type';
+import { PAGE_SIZE } from '@/shared/enums';
 
 export const apiRoutes = {
   login: '/auth/user',
@@ -15,8 +19,21 @@ export const apiRoutes = {
       take: number = 50
     ) =>
       `/product${createQueryParams({ ...params, order: 'DESC', page, take })}`,
-    getProductPrice: (product: ProductFormData) =>
-      `/product-price?page=1&take=50&productCode=${product.productCode}`,
+    getProductPrices: (product: ProductPriceFilterParams) =>
+      `/product-price${createQueryParams({ ...product })}`,
+    getProductPriceDetail: (
+      productCode: string,
+      page: number = 1,
+      take: number = PAGE_SIZE
+    ) =>
+      `/product-price${createQueryParams({ productCode, order: 'DESC', page, take })}`,
+    getProductPriceListDetail: (
+      productCode: string,
+      unitCode: string,
+      page: number = 1,
+      take: number = PAGE_SIZE
+    ) =>
+      `/product-price/detail${createQueryParams({ productCode, unitCode, order: 'DESC', page, take })}`,
     productPrice: '/product-price',
   },
   rolesPermissions: {
@@ -27,8 +44,9 @@ export const apiRoutes = {
     getUserInfo: (userName: string) => `/user?userName=${userName}`,
   },
   orders: {
+    order: '/order',
     getOrders: (
-      params: OrderFilterParams,
+      params: ProductOrderFilterParams,
       page: number = 1,
       take: number = 50
     ) => `/order${createQueryParams({ ...params, order: 'DESC', page, take })}`,

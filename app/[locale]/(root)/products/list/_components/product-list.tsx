@@ -39,7 +39,7 @@ import { useActionsButtonStore } from '@/states/common.state';
 export default function ProductList() {
   const t = useTranslations('ProductMessages');
   const tCommon = useTranslations('CommonMessages');
-  const { openModal, isClosed } = useModal();
+  const { openModal, closeModal, isClosed } = useModal();
   const { openAlertModal, closeAlertModal } = useAlertModal();
   const isMobile = useIsMobile();
   const { width } = useWindowSize();
@@ -74,8 +74,7 @@ export default function ProductList() {
   } = useGetProducts(pagination, filterParams);
 
   const { mutateAsync: deleteProduct, status: deleteMutateStatus } =
-    useDeleteProduct(t);
-
+    useDeleteProduct(t, closeModal);
   const productColumns = useProductColumns({ t });
 
   const table = useMaterialReactTable({

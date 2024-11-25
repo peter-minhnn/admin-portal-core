@@ -45,7 +45,7 @@ export default function DrawerLayout({
   footerContents,
   setOpen,
   open,
-}: DrawerLayoutProps) {
+}: Readonly<DrawerLayoutProps>) {
   const isMobile = useIsMobile();
 
   return (

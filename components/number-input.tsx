@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import {
   FormControl,
   FormField,
@@ -18,6 +18,7 @@ type TextInputProps = {
   namespace: string;
   maxLength?: number;
   reset?: boolean;
+  editInline?: boolean;
 };
 
 const NumberFormatter = {
@@ -60,20 +61,42 @@ export default function NumberInput(props: Readonly<TextInputProps>) {
 
         return (
           <FormItem>
-            <FormLabel>{props.label}</FormLabel>
-            <FormControl>
-              <Input
-                placeholder={props.placeholder}
-                type="text"
-                onChange={(ev) => {
-                  setValue(ev.target.value);
-                  handleChange(_change, ev.target.value);
-                }}
-                value={value ?? initialValue}
-                hasError={Boolean(props.form.formState.errors[props.name])}
-                maxLength={props.maxLength}
-              />
-            </FormControl>
+            {props.editInline && (
+              <div className="flex flex-row items-center gap-2">
+                <FormLabel>{props.label}</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder={props.placeholder}
+                    type="text"
+                    onChange={(ev) => {
+                      setValue(ev.target.value);
+                      handleChange(_change, ev.target.value);
+                    }}
+                    value={value ?? initialValue}
+                    hasError={Boolean(props.form.formState.errors[props.name])}
+                    maxLength={props.maxLength}
+                  />
+                </FormControl>
+              </div>
+            )}
+            {!props.editInline && (
+              <>
+                <FormLabel>{props.label}</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder={props.placeholder}
+                    type="text"
+                    onChange={(ev) => {
+                      setValue(ev.target.value);
+                      handleChange(_change, ev.target.value);
+                    }}
+                    value={value ?? initialValue}
+                    hasError={Boolean(props.form.formState.errors[props.name])}
+                    maxLength={props.maxLength}
+                  />
+                </FormControl>
+              </>
+            )}
             <FormMessage namespace={props.namespace} />
           </FormItem>
         );

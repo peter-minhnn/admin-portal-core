@@ -32,12 +32,20 @@ export type ProductFilterParams = {
 };
 
 export type ProductPriceType = {
+  id?: string;
   productCode: string;
   description?: string;
   unitCode: string;
   price: number;
   originalPrice: number;
   isActive?: boolean;
+  createdAt?: Date | null;
+};
+
+export type ProductPriceFilterParams = {
+  productCode: string;
+  page?: number;
+  take?: number;
 };
 
 export type ProductFormData = z.infer<typeof ProductFormSchema>;

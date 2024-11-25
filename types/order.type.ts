@@ -1,13 +1,15 @@
-export type DeliveryType = 'COD' | 'PICKUP';
+export type DeliveryType = 'COD' | 'PICKUP' | '';
 export type OrderStatus =
+  | ''
   | 'NEW'
   | 'APPROVED'
   | 'DELIVERED'
   | 'CANCELLED'
   | 'REJECTED';
-export type PaymentStatus = 'PENDING' | 'PAID';
+export type PaymentStatus = '' | 'PENDING' | 'PAID';
 
-export type OrderType = {
+export type ProductOrderType = {
+  id: number;
   isActive: boolean;
   createdAt: Date | null;
   companyId: number;
@@ -25,13 +27,13 @@ export type OrderType = {
   approvedAt: Date | null; // Allow null if not set.
 };
 
-export type OrderFilterParams = {
-  orderCode: string;
-  customerId: string;
+export type ProductOrderFilterParams = {
+  orderCode?: string;
+  customerId?: string;
   fromDate: string;
   toDate: string;
-  deliveryType: DeliveryType;
-  orderStatus: OrderStatus;
-  paymentStatus: PaymentStatus;
+  deliveryType?: DeliveryType;
+  orderStatus?: OrderStatus;
+  paymentStatus?: PaymentStatus;
   isExport?: boolean;
 };

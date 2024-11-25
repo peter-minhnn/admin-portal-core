@@ -60,6 +60,8 @@ const CommonMessages = {
   alertTitle: '알림',
   active: '활성화',
   inactive: '비활성화',
+  using: '사용 중',
+  notUsing: '사용 중지',
 };
 
 export default CommonMessages;

@@ -28,6 +28,7 @@ export type ModalStore = {
 export const useModalStore = create<ModalStore>((set) => ({
   modalProps: {
     isOpen: false,
+    isClosed: false,
     description: '',
     customSize: '',
     title: '',

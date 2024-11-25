@@ -183,8 +183,8 @@ export const formatNumber = (
 
 export const formatCurrency = (
   value: number | string,
-  locale: string = 'en-US',
-  currency: string = 'USD'
+  locale: 'vi-VN' | 'ko-KR' = 'vi-VN',
+  currency: 'VND' | 'KRW' = 'VND'
 ): string => {
   return new Intl.NumberFormat(locale, {
     style: 'currency',

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import get from 'lodash/get';
 import { ProductFormData, ProductPriceFormData } from '@/types/product.type';
 import {
-  useGetProductPrice,
+  useGetProductPriceDetail,
   useUpdateProductPrice,
 } from '../_hooks/use-queries';
 import { useTranslations } from 'next-intl';
@@ -14,7 +14,6 @@ import { ProductPriceFormSchema } from '../schema';
 import NumberInput from '@/components/number-input';
 import { Button } from '@/components/ui/button';
 import { IconDeviceFloppy, IconX } from '@tabler/icons-react';
-import { RESPONSE_LIST_KEY } from '@/shared/constants';
 
 type ProductPriceProps = {
   rowData: ProductFormData;
@@ -27,8 +26,10 @@ export default function ProductPriceForm({
   const tCommon = useTranslations('CommonMessages');
   const { closeModal } = useModal();
 
-  const { data, status: priceStatus } = useGetProductPrice(rowData);
-  const { mutateAsync, status } = useUpdateProductPrice(t);
+  const { data, status: priceStatus } = useGetProductPriceDetail(
+    rowData.productCode
+  );
+  const { mutateAsync, status } = useUpdateProductPrice(t, closeModal);
 
   const form = useForm<ProductPriceFormData>({
     resolver: zodResolver(ProductPriceFormSchema),
@@ -49,7 +50,7 @@ export default function ProductPriceForm({
 
   useEffect(() => {
     if (priceStatus === 'pending') return;
-    const productPriceData = get(data, RESPONSE_LIST_KEY, {
+    const productPriceData = get(data?.result, 'data', {
       price: 0,
       originalPrice: 0,
     });

@@ -21,7 +21,7 @@ export const pageRoutes = {
   },
   products: {
     list: '/products/list',
-    price: '/products/price',
-    order: '/products/order',
+    price: '/products/prices',
+    order: '/products/orders',
   },
 };

@@ -6,6 +6,7 @@ const MetaDataMessages = {
   internalServerError: 'Lỗi Máy Chủ',
   rolePermissionTitle: 'Quản Lý Vai Trò & Quyền',
   productPriceTitle: 'Danh Sách Giá Sản Phẩm',
+  productOrderTitle: 'Danh Sách Đơn Hàng',
 };
 
 export default MetaDataMessages;

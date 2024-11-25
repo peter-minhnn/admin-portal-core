@@ -17,7 +17,7 @@ export default function ProductPrice() {
   return (
     <LayoutContentSection
       title={t('productPriceTitle')}
-      desc={t('productPriceDesc')}
+      desc={t('productPriceDescTitle')}
     >
       <ProductPriceList />
     </LayoutContentSection>

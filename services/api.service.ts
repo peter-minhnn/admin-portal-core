@@ -1,3 +1,5 @@
+'use client';
+
 import { BaseResponseType, ResultType } from '@/types/common.type';
 import get from 'lodash/get';
 import { StatusCodes } from '@/shared/enums';
