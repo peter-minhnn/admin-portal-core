@@ -33,6 +33,7 @@ type DrawerLayoutProps = {
   footerContents?: ReactNode;
   setOpen: Dispatch<SetStateAction<boolean>>;
   open: boolean;
+  bodyClassName?: string;
 };
 
 export default function DrawerLayout({
@@ -45,6 +46,7 @@ export default function DrawerLayout({
   footerContents,
   setOpen,
   open,
+  bodyClassName
 }: Readonly<DrawerLayoutProps>) {
   const isMobile = useIsMobile();
 
@@ -63,7 +65,7 @@ export default function DrawerLayout({
                 {openButtonLabel}
               </Button>
             </SheetTrigger>
-            <SheetContent className="gap-4 flex flex-col">
+            <SheetContent className={cn('gap-4 flex flex-col', bodyClassName)}>
               <SheetHeader>
                 <SheetTitle>{headerTitle}</SheetTitle>
                 <SheetDescription>{headerDescription}</SheetDescription>

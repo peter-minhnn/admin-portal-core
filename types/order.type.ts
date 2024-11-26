@@ -1,3 +1,6 @@
+import { ProductOrderFilterFormSchema } from "@/app/[locale]/(root)/products/schema";
+import { z } from "zod";
+
 export type DeliveryType = 'COD' | 'PICKUP' | '';
 export type OrderStatus =
   | ''
@@ -37,3 +40,11 @@ export type ProductOrderFilterParams = {
   paymentStatus?: PaymentStatus;
   isExport?: boolean;
 };
+
+export type CustomerType = {
+  id: number;
+  firstName: string;
+  lastName: string;
+};
+
+export type ProductOrderFilterFormData = z.infer<typeof ProductOrderFilterFormSchema>;

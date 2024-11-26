@@ -3,6 +3,7 @@ import { PaginationState } from '@/types/common.type';
 import {
   addProduct,
   deleteProduct,
+  getCustomers,
   getOrders,
   getProductPriceDetail,
   getProductPriceListDetail,
@@ -22,7 +23,7 @@ import {
 import get from 'lodash/get';
 import { toast } from 'sonner';
 import { RESPONSE_LIST_KEY } from '@/shared/constants';
-import { ProductOrderFilterParams } from '@/types/order.type';
+import { ProductOrderFilterFormData } from '@/types/order.type';
 
 //-------------------------------------UNIT HOOKS----------------------------------------
 export const useGetUnits = () => {
@@ -187,11 +188,20 @@ export const useUpdateProductPrice = (t: any, closeModal: any) => {
 //-------------------------------------PRODUCT ORDER HOOKS-------------------------------------
 export const useGetOrders = (
   pagination: PaginationState,
-  params: ProductOrderFilterParams
+  params: ProductOrderFilterFormData
 ) => {
   return useQuery({
     queryKey: ['orders', pagination, params],
     queryFn: async () => await getOrders(params, pagination),
+    refetchOnWindowFocus: false,
+    refetchOnMount: true,
+  });
+};
+
+export const useGetCustomers = (pagination: PaginationState) => {
+  return useQuery({
+    queryKey: ['customers', pagination],
+    queryFn: async () => await getCustomers(pagination),
     refetchOnWindowFocus: false,
     refetchOnMount: true,
   });

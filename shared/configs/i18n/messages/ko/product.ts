@@ -72,6 +72,8 @@ export const ProductMessages = {
     approveAt: '승인 시간',
     approvedDesc: '승인 설명',
     deliveryAddress: '배송 주소',
+    selectFromDate: '시작 날짜 선택',
+    selectToDate: '종료 날짜 선택'
   },
 };
 

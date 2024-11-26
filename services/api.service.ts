@@ -26,6 +26,18 @@ export function handleApiResponse<T>(response: BaseResponseType<T>) {
 }
 
 export async function handleApiCatchResponse<T>(e: any): Promise<ResultType> {
+  if (e?.code === 'ERR_NETWORK') {
+    return {
+      type: 'error',
+      result: {
+        isSuccess: false,
+        messages: ['Network error'],
+        statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
+        data: null,
+      } as BaseResponseType<T>,
+    };
+  }
+
   await redirectPageErrors(e);
 
   const messageError = get(e.response, 'data.messages', []);

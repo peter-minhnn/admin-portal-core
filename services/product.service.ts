@@ -19,7 +19,7 @@ import {
   UnitType,
 } from '@/types/product.type';
 import { useAxios } from '@/hooks/use-axios';
-import { ProductOrderType, ProductOrderFilterParams } from '@/types/order.type';
+import { ProductOrderType, ProductOrderFilterFormData, CustomerType } from '@/types/order.type';
 
 export const getUnits = async () => {
   try {
@@ -148,7 +148,7 @@ export const updateProductPrice = async (data: ProductPriceType) => {
 };
 
 export const getOrders = async (
-  params: ProductOrderFilterParams,
+  params: ProductOrderFilterFormData,
   pagination: PaginationState
 ) => {
   try {
@@ -164,6 +164,19 @@ export const getOrders = async (
       )
     );
     return handleApiResponse<ListResponseType<ProductOrderType>>(response);
+  } catch (e) {
+    return handleApiCatchResponse(e);
+  }
+};
+
+export const getCustomers = async (pagination: PaginationState) => {
+  try {
+    const response = await useAxios.get<
+      null,
+      BaseResponseType,
+      CustomerType
+    >(apiRoutes.orders.getCustomers(pagination));
+    return handleApiResponse<ListResponseType<CustomerType>>(response);
   } catch (e) {
     return handleApiCatchResponse(e);
   }

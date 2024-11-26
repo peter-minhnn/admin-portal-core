@@ -78,6 +78,8 @@ export const ProductMessages = {
     approveAt: 'Ngày Phê Duyệt',
     approvedDesc: 'Mô tả phê duyệt',
     deliveryAddress: 'Địa Chỉ Giao Hàng',
+    selectFromDate: 'Chọn ngày bắt đầu',
+    selectToDate: 'Chọn ngày kết thúc',
   },
 };
 

@@ -757,7 +757,9 @@ const DateTimePicker = React.forwardRef<
     };
 
     let loc = enUS;
+
     const { options, localize, formatLong } = locale;
+
     if (options && localize && formatLong) {
       loc = {
         ...enUS,
@@ -766,6 +768,8 @@ const DateTimePicker = React.forwardRef<
         formatLong,
       };
     }
+
+    const formatHourCycle = hourCycle === 24 ? initHourFormat.hour24 : initHourFormat.hour12;
 
     return (
       <Popover>
@@ -787,9 +791,7 @@ const DateTimePicker = React.forwardRef<
             {value ? (
               format(
                 value,
-                hourCycle === 24
-                  ? initHourFormat.hour24
-                  : initHourFormat.hour12,
+                formatHourCycle,
                 {
                   locale: loc,
                 }

@@ -11,7 +11,7 @@ globalAxiosInstance.interceptors.request.use(async (config) => {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
-  config.headers['Accept-Language'] = String(locale) || 'vi';
+  config.headers['Accept-Language'] = locale ?? 'vi';
   return config;
 });
 

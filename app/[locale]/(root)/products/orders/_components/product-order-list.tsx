@@ -12,7 +12,7 @@ import { useWindowSize } from '@/hooks/use-window-size';
 // import {useActionsButtonStore} from "@/states/common.state";
 import { ListResponseType, PaginationState } from '@/types/common.type';
 import { PAGE_SIZE } from '@/shared/enums';
-import { ProductOrderFilterParams, ProductOrderType } from '@/types/order.type';
+import { ProductOrderFilterFormData, ProductOrderType } from '@/types/order.type';
 import { Button } from '@/components/ui/button';
 import { useGetOrders } from '@/app/[locale]/(root)/products/_hooks/use-queries';
 import DrawerLayout from '@/components/drawer-layout';
@@ -20,6 +20,7 @@ import { DataTableProps } from '@/shared/data-table-props';
 import useProductOrderColumns from '@/app/[locale]/(root)/products/_hooks/use-product-order-columns';
 import DataTable from '@/components/data-table';
 import { formatDate } from 'date-fns';
+import ProductOrderFilters from './product-order-filters';
 
 export default function ProductOrderList() {
   const t = useTranslations('ProductMessages');
@@ -43,8 +44,8 @@ export default function ProductOrderList() {
     pageIndex: 0,
     pageSize: PAGE_SIZE,
   });
-  const [filterParams] = useState<ProductOrderFilterParams>({
-    fromDate: formatDate(new Date(2024, 1, 1), 'yyyy-MM-dd'),
+  const [filterParams] = useState<ProductOrderFilterFormData>({
+    fromDate: formatDate(new Date(2024, 0, 1), 'yyyy-MM-dd'),
     toDate: formatDate(new Date(), 'yyyy-MM-dd'),
   });
   const [isFilterOpened, setIsFilterOpened] = useState(false);
@@ -98,17 +99,17 @@ export default function ProductOrderList() {
           openButtonClassName="flex flex-row gap-1"
           open={isFilterOpened}
           setOpen={setIsFilterOpened}
+          bodyClassName="min-w-[500px]"
         >
-          {/*<ProductFilters*/}
-          {/*    productTypes={(productTypesData as CommonCodeType[]) ?? []}*/}
-          {/*    onFilters={onFilters}*/}
-          {/*    initialFilters={filterParams}*/}
-          {/*/>*/}
-          <></>
+          <ProductOrderFilters onFilters={onFilters} initialFilters={filterParams}/>
         </DrawerLayout>
       </div>
     ),
   });
+
+  const onFilters = (data: ProductOrderFilterFormData) => {
+    console.log('data', data);
+  };
 
   useEffect(() => {
     console.log('ordersData', ordersData);
