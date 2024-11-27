@@ -73,7 +73,12 @@ export const ProductMessages = {
     approvedDesc: '승인 설명',
     deliveryAddress: '배송 주소',
     selectFromDate: '시작 날짜 선택',
-    selectToDate: '종료 날짜 선택'
+    selectToDate: '종료 날짜 선택',
+    selectDeliveryType: '배송 유형 선택',
+    selectOrderStatus: '주문 상태 선택',
+    selectPaymentStatus: '결제 상태 선택',
+    selectCustomer: '고객 선택',
+    orderCodePlaceholder: '주문 코드',
   },
 };
 

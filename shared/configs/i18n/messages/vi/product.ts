@@ -80,6 +80,11 @@ export const ProductMessages = {
     deliveryAddress: 'Địa Chỉ Giao Hàng',
     selectFromDate: 'Chọn ngày bắt đầu',
     selectToDate: 'Chọn ngày kết thúc',
+    selectDeliveryType: 'Chọn loại giao hàng',
+    selectOrderStatus: 'Chọn trạng thái đơn hàng',
+    selectPaymentStatus: 'Chọn trạng thái thanh toán',
+    selectCustomer: 'Chọn khách hàng',
+    orderCodePlaceholder: 'Mã Đơn Hàng',
   },
 };
 

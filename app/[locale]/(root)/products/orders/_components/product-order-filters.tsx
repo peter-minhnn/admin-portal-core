@@ -29,6 +29,7 @@ import { PAGE_SIZE } from '@/shared/enums'
 import { get } from 'lodash'
 import { RESPONSE_LIST_KEY } from '@/shared/constants'
 import InfiniteScroll from '@/components/ui/infinite-scroll'
+import { DeliveryOrderData, OrderStatusData, PaymentStatusData } from '../product-order.data'
 
 type ProductOrderFilterProps = {
     onFilters: (data: ProductOrderFilterFormData) => void
@@ -38,6 +39,11 @@ type ProductOrderFilterProps = {
 const defaultFormValues: ProductOrderFilterFormData = {
     fromDate: '',
     toDate: '',
+    customerId: 0,
+    orderCode: '',
+    deliveryType: '',
+    orderStatus: '',
+    paymentStatus: '',
 }
 
 export default function ProductOrderFilters({
@@ -149,20 +155,26 @@ export default function ProductOrderFilters({
                         <FormField
                             name="orderCode"
                             render={({ field }) => (
-                                <FormItem>
+                                <FormItem className='w-full'>
                                     <FormLabel htmlFor="orderCode">
                                         {t('orders.orderCode')}
                                     </FormLabel>
-                                    <Input {...field} type="text" className='w-full'/>
+                                    <Input 
+                                        {...field}
+                                        defaultValue={''}
+                                        type="text" 
+                                        className='w-full' 
+                                        placeholder={t('orders.orderCodePlaceholder')}
+                                    />
                                 </FormItem>
                             )}
                         />
                         <FormField
-                            name="orderCode"
+                            name="customerId"
                             render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel htmlFor="orderCode">
-                                        {t('orders.orderCode')}
+                                <FormItem className='w-full'>
+                                    <FormLabel htmlFor="customerId">
+                                        {t('orders.customerId')}
                                     </FormLabel>
                                     <Select
                                         onValueChange={field.onChange}
@@ -171,9 +183,7 @@ export default function ProductOrderFilters({
                                         <FormControl>
                                             <SelectTrigger className='w-full'>
                                                 <SelectValue
-                                                    placeholder={t(
-                                                        'selectProductTypeCode'
-                                                    )}
+                                                    placeholder={t('orders.selectCustomer')}
                                                 />
                                             </SelectTrigger>
                                         </FormControl>
@@ -205,33 +215,106 @@ export default function ProductOrderFilters({
                             )}
                         />
                     </div>
-                </div>
-                <div>
-                    {/* <FormField
-                        name="productType"
-                        render={({ field }) => (
-                        <FormItem>
-                            <FormLabel htmlFor="content">{t('content')}</FormLabel>
-                            <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                            >
-                            <FormControl>
-                                <SelectTrigger>
-                                <SelectValue placeholder={t('selectProductTypeCode')} />
-                                </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                                {productTypes.map((product) => (
-                                <SelectItem key={product.code} value={product.code}>
-                                    {product.name}
-                                </SelectItem>
-                                ))}
-                            </SelectContent>
-                            </Select>
-                        </FormItem>
-                        )}
-                    /> */}
+                    <div className="flex flex-row justify-between gap-2">
+                        <FormField
+                            name="deliveryType"
+                            render={({ field }) => (
+                                <FormItem className='w-full'>
+                                    <FormLabel htmlFor="deliveryType">
+                                        {t('orders.deliveryType')}
+                                    </FormLabel>
+                                    <Select
+                                        onValueChange={field.onChange}
+                                        defaultValue={field.value}
+                                    >
+                                        <FormControl>
+                                            <SelectTrigger className='w-full'>
+                                                <SelectValue
+                                                    placeholder={t('orders.selectDeliveryType')}
+                                                />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {DeliveryOrderData.map((item) => (
+                                                <SelectItem
+                                                    key={item.code}
+                                                    value={item.code}
+                                                >
+                                                    {item.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            name="orderStatus"
+                            render={({ field }) => (
+                                <FormItem className='w-full'>
+                                    <FormLabel htmlFor="orderStatus">
+                                        {t('orders.orderStatus')}
+                                    </FormLabel>
+                                    <Select
+                                        onValueChange={field.onChange}
+                                        defaultValue={field.value}
+                                    >
+                                        <FormControl>
+                                            <SelectTrigger className='w-full'>
+                                                <SelectValue
+                                                    placeholder={t('orders.selectOrderStatus')}
+                                                />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {OrderStatusData.map((item) => (
+                                                <SelectItem
+                                                    key={item.code}
+                                                    value={item.code}
+                                                >
+                                                    {item.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+                    <div className="flex flex-row justify-between gap-2">
+                        <FormField
+                            name="paymentStatus"
+                            render={({ field }) => (
+                                <FormItem className='w-full'>
+                                    <FormLabel htmlFor="paymentStatus">
+                                        {t('orders.paymentStatus')}
+                                    </FormLabel>
+                                    <Select
+                                        onValueChange={field.onChange}
+                                        defaultValue={field.value}
+                                    >
+                                        <FormControl>
+                                            <SelectTrigger className='w-full'>
+                                                <SelectValue
+                                                    placeholder={t('orders.selectPaymentStatus')}
+                                                />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {PaymentStatusData.map((item) => (
+                                                <SelectItem
+                                                    key={item.code}
+                                                    value={item.code}
+                                                >
+                                                    {item.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </FormItem>
+                            )}
+                        />
+                    </div>
                 </div>
                 <div className="flex flex-row gap-2 w-full">
                     <Button
