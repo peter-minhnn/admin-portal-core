@@ -65,6 +65,7 @@ const CommonMessages = {
   btnConfirm: 'Xác nhận',
   selectAll: 'Chọn tất cả',
   rowSelection: 'Chọn dòng',
+  btnDelete: 'Xóa',
 };
 
 export default CommonMessages;

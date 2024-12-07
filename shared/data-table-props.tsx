@@ -46,7 +46,7 @@ export const DataTableProps = <TData extends MRT_RowData>(locale: Locale) => {
       table: MRT_TableInstance<TData>;
     }) => ({
       sx: {
-        height: table.getState().isFullScreen ? 'auto' : 'calc(100vh - 500px)',
+        height: table.getState().isFullScreen ? 'auto' : 'calc(100vh - 350px)',
       },
     }),
   } as Omit<MRT_TableOptions<TData>, any>;

@@ -64,6 +64,7 @@ const CommonMessages = {
   notUsing: '사용 중지',
   btnConfirm: '확인',
   selectAll: '모두 선택',
+  btnDelete: '삭제',
 };
 
 export default CommonMessages;

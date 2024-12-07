@@ -37,6 +37,7 @@ import { ProductPriceType } from '@/types/product.type';
 import { toast } from 'sonner';
 import { cn } from '@/shared/lib';
 import { OrderDetailRequestType } from '@/types/order.type';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 type OrderDetailFormProps = {
   form: UseFormReturn<any>;
@@ -47,6 +48,8 @@ const SearchIconProp = () => <SearchIcon size={16} />;
 const OrderDetailForm = ({ form }: Readonly<OrderDetailFormProps>) => {
   const t = useTranslations('ProductMessages');
   const tCommon = useTranslations('CommonMessages');
+  const isMobile = useIsMobile();
+
   const [isProductSelectOpen, setIsProductSelectOpen] =
     useState<boolean>(false);
   const [productRowSelection, setProductRowSelection] =
@@ -141,8 +144,8 @@ const OrderDetailForm = ({ form }: Readonly<OrderDetailFormProps>) => {
                 id={field.orderId}
                 className="mb-4 border-b pb-4"
               >
-                <div className="flex flex-row gap-2 justify-between items-center">
-                  <div className="mb-2 w-full min-h-[90px]">
+                <div className="flex flex-col md:flex-row gap-2 justify-between items-center">
+                  <div className="mb-2 w-full min-h-fit md:min-h-[90px]">
                     <FormField
                       key={field.orderId}
                       control={form.control}
@@ -170,7 +173,7 @@ const OrderDetailForm = ({ form }: Readonly<OrderDetailFormProps>) => {
                       )}
                     />
                   </div>
-                  <div className="mb-2 w-full min-h-[90px]">
+                  <div className="mb-2 w-full min-h-fit md:min-h-[90px]">
                     <NumberInput
                       form={form}
                       key={field.orderId}
@@ -185,7 +188,7 @@ const OrderDetailForm = ({ form }: Readonly<OrderDetailFormProps>) => {
                       disabled={form.watch('orderStatus') === 'APPROVED'}
                     />
                   </div>
-                  <div className="mb-2 w-full min-h-[90px]">
+                  <div className="mb-2 w-full min-h-fit md:min-h-[90px]">
                     <NumberInput
                       key={field.orderId}
                       form={form}
@@ -202,8 +205,10 @@ const OrderDetailForm = ({ form }: Readonly<OrderDetailFormProps>) => {
                   </div>
                   {fields.length > 1 && (
                     <div
-                      className={cn('flex items-end justify-end h-[25px]', {
+                      className={cn('flex h-[25px]', {
                         hidden: form.watch('orderStatus') === 'APPROVED',
+                        'w-full': isMobile,
+                        'items-end justify-end': !isMobile,
                       })}
                     >
                       <TooltipProvider>
@@ -211,11 +216,22 @@ const OrderDetailForm = ({ form }: Readonly<OrderDetailFormProps>) => {
                           <TooltipTrigger asChild>
                             <Button
                               type="button"
-                              className="bg-red-500 hover:bg-red-600 min-w-8 h-8 bg-transparent hover:bg-transparent hover:text-red-500/90"
+                              className={cn('min-w-8 h-8', {
+                                'bg-red-500 hover:bg-red-600hover:text-red-500/90 bg-transparent hover:bg-transparent':
+                                  !isMobile,
+                                'w-full': isMobile,
+                              })}
                               onClick={() => removeOrderDetail(index)}
-                              size="icon"
+                              size={isMobile ? 'lg' : 'icon'}
+                              {...(isMobile ? { variant: 'destructive' } : {})}
                             >
-                              <TrashIcon size={20} className="text-red-500" />
+                              <TrashIcon
+                                size={isMobile ? 18 : 20}
+                                className={cn('text-red-500', {
+                                  'text-white pr-1': isMobile,
+                                })}
+                              />
+                              {!isMobile ? '' : tCommon('btnDelete')}
                             </Button>
                           </TooltipTrigger>
                           <TooltipContent>
