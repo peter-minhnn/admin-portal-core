@@ -17,6 +17,8 @@ const LoginMessages = {
     password: 'Vui lòng nhập mật khẩu',
     invalid: 'Số điện thoại hoặc mật khẩu không chính xác',
   },
+  username: 'Tên đăng nhập',
+  roleName: 'Vai trò',
 };
 
 export default LoginMessages;

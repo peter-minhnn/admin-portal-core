@@ -17,6 +17,8 @@ const LoginMessages = {
     password: '비밀번호를 입력해주세요',
     invalid: '전화번호 또는 비밀번호가 올바르지 않습니다',
   },
+  username: '사용자명',
+  roleName: '역할',
 };
 
 export default LoginMessages;
