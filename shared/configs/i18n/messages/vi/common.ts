@@ -62,6 +62,9 @@ const CommonMessages = {
   alertTitle: 'Thông báo',
   active: 'Kích hoạt',
   inactive: 'Không kích hoạt',
+  btnConfirm: 'Xác nhận',
+  selectAll: 'Chọn tất cả',
+  rowSelection: 'Chọn dòng',
 };
 
 export default CommonMessages;

@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useMaterialReactTable } from 'material-react-table';
 import {
   useDeleteProduct,
@@ -35,6 +35,7 @@ import ProductForm from './product-form';
 import { useModal } from '@/hooks/use-modal';
 import { useAlertModal } from '@/hooks/use-alert-modal';
 import { useActionsButtonStore } from '@/states/common.state';
+import { Locale } from '@/shared/configs/i18n/config';
 
 export default function ProductList() {
   const t = useTranslations('ProductMessages');
@@ -45,6 +46,7 @@ export default function ProductList() {
   const { width } = useWindowSize();
   const queryClient = useQueryClient();
   const { actionType, actionData, setActionType } = useActionsButtonStore();
+  const locale = useLocale() as Locale;
 
   const [products, setProducts] = useState<ListResponseType<ProductFormData>>({
     data: [],
@@ -78,7 +80,7 @@ export default function ProductList() {
   const productColumns = useProductColumns({ t });
 
   const table = useMaterialReactTable({
-    ...DataTableProps(tCommon),
+    ...DataTableProps(locale),
     columns: productColumns,
     data: products?.data ?? [],
     rowCount: products?.meta?.itemCount ?? 0,
@@ -96,7 +98,7 @@ export default function ProductList() {
       columnSizing: { 'mrt-row-actions': 120 },
     },
     renderTopToolbarCustomActions: () => (
-      <div className="flex justify-between gap-1 w-full">
+      <div className="flex justify-start gap-2 w-fit">
         <Button
           type="button"
           size="sm"
@@ -223,7 +225,7 @@ export default function ProductList() {
 
   useEffect(() => {
     if (deleteMutateStatus === 'pending') return;
-    refetchProducts();
+    refetchProducts().finally();
   }, [pagination, isClosed, refetchProducts, deleteMutateStatus]);
 
   useEffect(() => {

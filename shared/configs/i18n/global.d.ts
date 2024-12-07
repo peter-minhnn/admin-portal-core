@@ -6,4 +6,4 @@ type VietnameseMessages = (typeof import('./messages/vi'))['default'];
 type Messages = VietnameseMessages & KoreanMessages;
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-declare interface IntlMessages extends Messages {}
+type IntlMessages = Messages;

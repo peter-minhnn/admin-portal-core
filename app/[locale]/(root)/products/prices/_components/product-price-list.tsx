@@ -1,6 +1,6 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useCallback, useEffect, useState } from 'react';
 import {
   ListResponseType,
@@ -29,6 +29,7 @@ import { FilterIcon } from 'lucide-react';
 import ProductPriceFilters from '@/app/[locale]/(root)/products/prices/_components/product-price-filters';
 import { useQueryClient } from '@tanstack/react-query';
 import ProductPriceForm from '@/app/[locale]/(root)/products/_components/product-price-form';
+import { Locale } from '@/shared/configs/i18n/config';
 
 export default function ProductPriceList() {
   const t = useTranslations('ProductMessages');
@@ -38,6 +39,7 @@ export default function ProductPriceList() {
   const isUseProductPriceMobile = useIsMobile();
   const queryClient = useQueryClient();
   const { setActionType, actionType, actionData } = useActionsButtonStore();
+  const locale = useLocale() as Locale;
 
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -74,7 +76,7 @@ export default function ProductPriceList() {
   const productPriceColumns = useProductPriceColumns({ t });
 
   const table = useMaterialReactTable({
-    ...DataTableProps(tCommon),
+    ...DataTableProps(locale),
     columns: productPriceColumns,
     data: productPrices.data ?? [],
     rowCount: productPrices.meta.itemCount ?? 0,
@@ -88,7 +90,7 @@ export default function ProductPriceList() {
       showProgressBars: isFetchingPrices || isRefetchingPrices,
     }, //pass the pagination state to the table
     renderTopToolbarCustomActions: () => (
-      <div className="flex justify-end gap-1 w-full">
+      <div className="flex justify-start gap-2 w-full">
         <DrawerLayout
           headerTitle={tCommon('btnAdvancedFilters')}
           openButtonLabel={

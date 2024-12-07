@@ -19,6 +19,8 @@ type TextInputProps = {
   maxLength?: number;
   reset?: boolean;
   editInline?: boolean;
+  disabled?: boolean;
+  hasError?: boolean;
 };
 
 const NumberFormatter = {
@@ -31,8 +33,8 @@ const numberFormatter = () =>
   Intl.NumberFormat(NumberFormatter['en'], { minimumFractionDigits: 0 });
 
 export default function NumberInput(props: Readonly<TextInputProps>) {
-  const initialValue = props.form.getValues()[props.name]
-    ? numberFormatter().format(props.form.getValues()[props.name])
+  const initialValue = props.form.watch(props.name)
+    ? numberFormatter().format(props.form.watch(props.name))
     : '';
 
   const [value, setValue] = useReducer((_: any, next: string) => {
@@ -60,7 +62,7 @@ export default function NumberInput(props: Readonly<TextInputProps>) {
         const _change = field.onChange;
 
         return (
-          <FormItem>
+          <FormItem className="w-full">
             {props.editInline && (
               <div className="flex flex-row items-center gap-2">
                 <FormLabel>{props.label}</FormLabel>
@@ -73,8 +75,12 @@ export default function NumberInput(props: Readonly<TextInputProps>) {
                       handleChange(_change, ev.target.value);
                     }}
                     value={value ?? initialValue}
-                    hasError={Boolean(props.form.formState.errors[props.name])}
+                    hasError={
+                      props.hasError ||
+                      Boolean(props.form.formState.errors[props.name])
+                    }
                     maxLength={props.maxLength}
+                    disabled={props.disabled}
                   />
                 </FormControl>
               </div>
@@ -91,8 +97,12 @@ export default function NumberInput(props: Readonly<TextInputProps>) {
                       handleChange(_change, ev.target.value);
                     }}
                     value={value ?? initialValue}
-                    hasError={Boolean(props.form.formState.errors[props.name])}
+                    hasError={
+                      props.hasError ||
+                      Boolean(props.form.formState.errors[props.name])
+                    }
                     maxLength={props.maxLength}
+                    disabled={props.disabled}
                   />
                 </FormControl>
               </>

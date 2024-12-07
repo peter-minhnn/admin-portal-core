@@ -3,7 +3,8 @@
 import { BaseResponseType, ResultType } from '@/types/common.type';
 import get from 'lodash/get';
 import { StatusCodes } from '@/shared/enums';
-import { redirectPageErrors } from '@/actions/login.action';
+import { logout } from '@/actions/login.action';
+import { pageRoutes } from '@/shared/routes/pages.route';
 
 export function handleApiResponse<T>(response: BaseResponseType<T>) {
   const isSuccess = get(response, 'isSuccess', null);
@@ -51,3 +52,22 @@ export async function handleApiCatchResponse<T>(e: any): Promise<ResultType> {
     } as BaseResponseType<T>,
   };
 }
+
+const redirectPageErrors = async (e: any) => {
+  switch (e?.status) {
+    case StatusCodes.NOT_FOUND:
+      window.location.href = pageRoutes.notFound;
+      break;
+    case StatusCodes.UNAUTHORIZED:
+      await logout();
+      break;
+    case StatusCodes.SERVICE_UNAVAILABLE:
+      window.location.href = pageRoutes.maintenance;
+      break;
+    case StatusCodes.INTERNAL_SERVER_ERROR:
+      window.location.href = pageRoutes.internalServerError;
+      break;
+    default:
+      break;
+  }
+};

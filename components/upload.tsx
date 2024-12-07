@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/file-upload';
 import { Paperclip } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { DropzoneOptions } from 'react-dropzone';
 
 const FileSvgDraw = () => {
   const t = useTranslations('CommonMessages');
@@ -39,14 +40,19 @@ const FileSvgDraw = () => {
 
 type FileUploadProps = {
   files: File[] | null;
-  onValueChange: (value: File[] | null) => void;
+  onValueChange?: (value: File[] | null) => void;
+  dropZoneConfigs?: DropzoneOptions;
 };
 
-const FileUpload = ({ files, onValueChange }: FileUploadProps) => {
+const FileUpload = ({
+  files,
+  onValueChange,
+  dropZoneConfigs,
+}: FileUploadProps) => {
   const dropZoneConfig = {
-    maxFiles: 5,
-    maxSize: 1024 * 1024 * 4,
-    multiple: true,
+    maxFiles: dropZoneConfigs?.maxFiles ?? 1,
+    maxSize: dropZoneConfigs?.maxSize ?? 1024 * 1024, // default 1MB
+    multiple: dropZoneConfigs?.multiple ?? false,
   };
 
   return (

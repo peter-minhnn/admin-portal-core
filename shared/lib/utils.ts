@@ -191,3 +191,20 @@ export const formatCurrency = (
     currency,
   }).format(Number(value));
 };
+
+export const generateCode = (): string => {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+
+  const dateTimeString = `${year}${month}${day}${hours}${minutes}${seconds}`;
+
+  // Generate a unique identifier (e.g., a random number or a UUID)
+  const uniqueId = Math.random().toString(36).slice(2, 9);
+
+  return `${uniqueId.toUpperCase()}${dateTimeString}`;
+};

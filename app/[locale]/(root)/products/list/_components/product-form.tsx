@@ -34,6 +34,10 @@ import {
 } from '@/app/[locale]/(root)/products/_hooks/use-queries';
 import { generateUniqueId } from '@/shared/lib';
 import { useUserStore } from '@/states/common.state';
+import { useUploadFile } from '@/hooks/use-upload-file';
+import { FileType } from '@/types/file.type';
+import get from 'lodash/get';
+import NumberInput from '@/components/number-input';
 
 type ProductFormProps = {
   units: UnitType[];
@@ -44,11 +48,11 @@ type ProductFormProps = {
 const defaultProductData = {
   productCode: '',
   productName: '',
-  productPrice: '',
+  productPrice: 0,
   productType: '',
   unitCode: '',
-  productMinQty: '',
-  productMaxQty: '',
+  productMinQty: 0,
+  productMaxQty: 0,
   productDesc: '',
   productImage: '',
   companyId: 1,
@@ -66,18 +70,7 @@ export default function ProductForm({
   const form = useForm<ProductFormData>({
     resolver: zodResolver(ProductFormSchema),
     defaultValues: rowData?.productCode
-      ? {
-          productCode: rowData.productCode,
-          productName: rowData.productName,
-          productPrice: String(rowData.productPrice),
-          productType: rowData.productType,
-          unitCode: rowData.unitCode,
-          productMinQty: String(rowData.productMinQty),
-          productMaxQty: String(rowData.productMaxQty),
-          productDesc: rowData.productDesc,
-          productImage: rowData.productImage,
-          companyId: rowData.companyId,
-        }
+      ? { ...rowData }
       : {
           ...defaultProductData,
           productType: productTypes[0]?.code,
@@ -93,7 +86,20 @@ export default function ProductForm({
   const { mutateAsync: updateProduct, status: updateMutateStatus } =
     useUpdateProduct(t, closeModal);
 
+  const { mutateAsync } = useUploadFile();
+
   const onSubmit = async (data: ProductFormData) => {
+    let path: string = '';
+
+    if (files?.length) {
+      const uploadResponse = await mutateAsync(files[0]);
+
+      if (uploadResponse.type === 'success') {
+        const fileData = get(uploadResponse, 'result.data', {}) as FileType;
+        path = fileData?.file?.path ?? '';
+      }
+    }
+
     const obj = {
       unitCode: data.unitCode,
       productDesc: data.productDesc ?? '',
@@ -106,7 +112,7 @@ export default function ProductForm({
         modalType === 'edit'
           ? data.productCode
           : generateUniqueId(data.productType),
-      productImage: data.productImage ?? '',
+      productImage: path,
       companyId: userInfo?.companyId ?? 1,
     };
     if (modalType === 'edit') {
@@ -114,13 +120,6 @@ export default function ProductForm({
       return;
     }
     await addProduct(obj);
-  };
-
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    const key = event.key;
-    if (!/^\d$/.test(key) && !['Backspace'].includes(key)) {
-      event.preventDefault();
-    }
   };
 
   return (
@@ -192,23 +191,12 @@ export default function ProductForm({
             />
           </div>
           <div className="flex flex-row gap-2 w-full">
-            <FormField
-              control={form.control}
+            <NumberInput
+              form={form}
               name="productPrice"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel required>{t('productPrice')}</FormLabel>
-                  <Input
-                    type="text"
-                    value={field.value ?? ''}
-                    onChange={field.onChange}
-                    onKeyDown={handleKeyPress}
-                    placeholder={t('productPrice')}
-                    hasError={!!form.formState.errors.productPrice}
-                  />
-                  <FormMessage namespace="ProductMessages" />
-                </FormItem>
-              )}
+              label={t('productPrice')}
+              placeholder={t('productPrice')}
+              namespace="ProductMessages"
             />
             <FormField
               control={form.control}
@@ -239,41 +227,19 @@ export default function ProductForm({
             />
           </div>
           <div className="flex flex-row gap-2 w-full">
-            <FormField
-              control={form.control}
+            <NumberInput
+              form={form}
               name="productMinQty"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel required>{t('productMinQty')}</FormLabel>
-                  <Input
-                    type="text"
-                    value={field.value ?? ''}
-                    onChange={field.onChange}
-                    onKeyDown={handleKeyPress}
-                    placeholder={t('productMinQty')}
-                    hasError={!!form.formState.errors.productMinQty}
-                  />
-                  <FormMessage namespace="ProductMessages" />
-                </FormItem>
-              )}
+              label={t('productMinQty')}
+              placeholder={t('productMinQty')}
+              namespace="ProductMessages"
             />
-            <FormField
-              control={form.control}
+            <NumberInput
+              form={form}
               name="productMaxQty"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel required>{t('productMaxQty')}</FormLabel>
-                  <Input
-                    type="text"
-                    value={field.value ?? ''}
-                    onChange={field.onChange}
-                    onKeyDown={handleKeyPress}
-                    placeholder={t('productMaxQty')}
-                    hasError={!!form.formState.errors.productMaxQty}
-                  />
-                  <FormMessage namespace="ProductMessages" />
-                </FormItem>
-              )}
+              label={t('productMaxQty')}
+              placeholder={t('productMaxQty')}
+              namespace="ProductMessages"
             />
           </div>
         </div>
@@ -296,15 +262,13 @@ export default function ProductForm({
         <FormField
           control={form.control}
           name="productImage"
-          render={({ field }) => (
+          render={() => (
             <FormItem>
               <FormLabel>{t('productDesc')}</FormLabel>
               <FileUpload
                 files={files}
-                onValueChange={(e) => {
-                  console.log(e);
-                  setFiles(e);
-                  field.onChange('/images/products/bun-han-the.jpg');
+                onValueChange={(value) => {
+                  setFiles(value);
                 }}
               />
               <FormMessage namespace="ProductMessages" />

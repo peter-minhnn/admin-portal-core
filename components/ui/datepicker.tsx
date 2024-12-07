@@ -769,7 +769,8 @@ const DateTimePicker = React.forwardRef<
       };
     }
 
-    const formatHourCycle = hourCycle === 24 ? initHourFormat.hour24 : initHourFormat.hour12;
+    const formatHourCycle =
+      hourCycle === 24 ? initHourFormat.hour24 : initHourFormat.hour12;
 
     return (
       <Popover>
@@ -789,13 +790,9 @@ const DateTimePicker = React.forwardRef<
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
             {value ? (
-              format(
-                value,
-                formatHourCycle,
-                {
-                  locale: loc,
-                }
-              )
+              format(value, formatHourCycle, {
+                locale: loc,
+              })
             ) : (
               <span>{placeholder}</span>
             )}

@@ -19,7 +19,13 @@ import {
   UnitType,
 } from '@/types/product.type';
 import { useAxios } from '@/hooks/use-axios';
-import { ProductOrderType, ProductOrderFilterFormData, CustomerType } from '@/types/order.type';
+import {
+  ProductOrderType,
+  ProductOrderFilterFormData,
+  CustomerType,
+  OrderRequestType,
+  ApproveOrderType,
+} from '@/types/order.type';
 
 export const getUnits = async () => {
   try {
@@ -171,12 +177,68 @@ export const getOrders = async (
 
 export const getCustomers = async (pagination: PaginationState) => {
   try {
-    const response = await useAxios.get<
-      null,
-      BaseResponseType,
-      CustomerType
-    >(apiRoutes.orders.getCustomers(pagination));
+    const response = await useAxios.get<null, BaseResponseType, CustomerType>(
+      apiRoutes.orders.getCustomers(pagination)
+    );
     return handleApiResponse<ListResponseType<CustomerType>>(response);
+  } catch (e) {
+    return handleApiCatchResponse(e);
+  }
+};
+
+export const addOrder = async (data: OrderRequestType) => {
+  try {
+    const response = await globalAxiosInstance.post<null, BaseResponseType>(
+      apiRoutes.orders.order,
+      data
+    );
+    return handleApiResponse<OrderRequestType>(response);
+  } catch (e) {
+    return handleApiCatchResponse(e);
+  }
+};
+
+export const updateOrder = async (data: OrderRequestType) => {
+  try {
+    const response = await globalAxiosInstance.put<null, BaseResponseType>(
+      apiRoutes.orders.order,
+      data
+    );
+    return handleApiResponse<ProductOrderType>(response);
+  } catch (e) {
+    return handleApiCatchResponse(e);
+  }
+};
+
+export const deleteOrder = async (orderCode: string) => {
+  try {
+    const response = await globalAxiosInstance.delete<null, BaseResponseType>(
+      apiRoutes.orders.orderByCode(orderCode)
+    );
+    return handleApiResponse<ProductType>(response);
+  } catch (e) {
+    return handleApiCatchResponse(e);
+  }
+};
+
+export const getOrderDetail = async (orderCode: string) => {
+  try {
+    const response = await globalAxiosInstance.get<null, BaseResponseType>(
+      apiRoutes.orders.orderByCode(orderCode)
+    );
+    return handleApiResponse<ProductOrderType>(response);
+  } catch (e) {
+    return handleApiCatchResponse(e);
+  }
+};
+
+export const approveOrder = async (data: ApproveOrderType) => {
+  try {
+    const response = await globalAxiosInstance.put<null, BaseResponseType>(
+      apiRoutes.orders.approve,
+      data
+    );
+    return handleApiResponse<any>(response);
   } catch (e) {
     return handleApiCatchResponse(e);
   }

@@ -1,9 +1,13 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { PaginationState } from '@/types/common.type';
 import {
+  addOrder,
   addProduct,
+  approveOrder,
+  deleteOrder,
   deleteProduct,
   getCustomers,
+  getOrderDetail,
   getOrders,
   getProductPriceDetail,
   getProductPriceListDetail,
@@ -11,6 +15,7 @@ import {
   getProducts,
   getProductTypes,
   getUnits,
+  updateOrder,
   updateProduct,
   updateProductPrice,
 } from '@/services/product.service';
@@ -23,7 +28,11 @@ import {
 import get from 'lodash/get';
 import { toast } from 'sonner';
 import { RESPONSE_LIST_KEY } from '@/shared/constants';
-import { ProductOrderFilterFormData } from '@/types/order.type';
+import {
+  ApproveOrderType,
+  OrderRequestType,
+  ProductOrderFilterFormData,
+} from '@/types/order.type';
 
 //-------------------------------------UNIT HOOKS----------------------------------------
 export const useGetUnits = () => {
@@ -67,6 +76,10 @@ export const useAddProduct = (t: any, closeModal: () => void) => {
         'result.messages[0]',
         t('notifications.addProductSuccess')
       );
+      if (!response.result.isSuccess) {
+        toast.error(message);
+        return;
+      }
       toast.success(message);
       closeModal();
     },
@@ -84,6 +97,10 @@ export const useUpdateProduct = (t: any, closeModal: () => void) => {
         'result.messages[0]',
         t('notifications.updateProductSuccess')
       );
+      if (!response.result.isSuccess) {
+        toast.error(message);
+        return;
+      }
       toast.success(message);
       closeModal();
     },
@@ -101,6 +118,10 @@ export const useDeleteProduct = (t: any, closeModal: () => void) => {
         'result.messages[0]',
         t('notifications.deleteProductSuccess')
       );
+      if (!response.result.isSuccess) {
+        toast.error(message);
+        return;
+      }
       toast.success(message);
       closeModal();
     },
@@ -178,6 +199,10 @@ export const useUpdateProductPrice = (t: any, closeModal: any) => {
         'result.messages[0]',
         t('notifications.updateProductPriceSuccess')
       );
+      if (!response.result.isSuccess) {
+        toast.error(message);
+        return;
+      }
       toast.success(message);
       closeModal();
     },
@@ -194,7 +219,6 @@ export const useGetOrders = (
     queryKey: ['orders', pagination, params],
     queryFn: async () => await getOrders(params, pagination),
     refetchOnWindowFocus: false,
-    refetchOnMount: true,
   });
 };
 
@@ -203,6 +227,110 @@ export const useGetCustomers = (pagination: PaginationState) => {
     queryKey: ['customers', pagination],
     queryFn: async () => await getCustomers(pagination),
     refetchOnWindowFocus: false,
-    refetchOnMount: true,
+  });
+};
+
+export const useGetProductOptions = (
+  pagination: PaginationState,
+  params: ProductPriceFilterParams
+) => {
+  return useQuery({
+    queryKey: ['product-options', pagination, params],
+    queryFn: async () => await getProductPrices({ ...params, ...pagination }),
+    refetchOnWindowFocus: false,
+  });
+};
+
+export const useAddOrder = (t: any, closeModal: () => void) => {
+  return useMutation({
+    mutationFn: async (product: OrderRequestType) => await addOrder(product),
+    onSuccess: (response) => {
+      const message = get(
+        response,
+        'result.messages[0]',
+        t('notifications.addOrderSuccess')
+      );
+      if (!response.result.isSuccess) {
+        toast.error(message);
+        return;
+      }
+
+      toast.success(message);
+      closeModal();
+    },
+    onError: () => toast.error(t('notifications.addOrderError')),
+  });
+};
+
+export const useUpdateOrder = (t: any, closeModal: () => void) => {
+  return useMutation({
+    mutationFn: async (product: OrderRequestType) => await updateOrder(product),
+    onSuccess: (response) => {
+      const message = get(
+        response,
+        'result.messages[0]',
+        t('notifications.updateOrderSuccess')
+      );
+      if (!response.result.isSuccess) {
+        toast.error(message);
+        return;
+      }
+
+      toast.success(message);
+      closeModal();
+    },
+    onError: () => toast.error(t('notifications.updateOrderError')),
+  });
+};
+
+export const useDeleteOrder = (t: any, closeModal: () => void) => {
+  return useMutation({
+    mutationFn: async (orderCode: string) => await deleteOrder(orderCode),
+    onSuccess: (response) => {
+      const message = get(
+        response,
+        'result.messages[0]',
+        t('notifications.deleteOrderSuccess')
+      );
+      if (!response.result.isSuccess) {
+        toast.error(message);
+        return;
+      }
+
+      toast.success(message);
+      closeModal();
+    },
+    onError: () => toast.error(t('notifications.deleteOrderError')),
+  });
+};
+
+export const useGetOrderDetail = (orderCode: string) => {
+  return useQuery({
+    queryKey: ['order-detail', orderCode],
+    queryFn: async () => await getOrderDetail(orderCode),
+    refetchOnWindowFocus: false,
+    enabled: !!orderCode,
+  });
+};
+
+export const useApproveOrder = (t: any, closeModal: () => void) => {
+  return useMutation({
+    mutationFn: async (product: ApproveOrderType) =>
+      await approveOrder(product),
+    onSuccess: (response) => {
+      const message = get(
+        response,
+        'result.messages[0]',
+        t('notifications.approveOrderSuccess')
+      );
+      if (!response.result.isSuccess) {
+        toast.error(message);
+        return;
+      }
+
+      toast.success(message);
+      closeModal();
+    },
+    onError: () => toast.error(t('notifications.approveOrderError')),
   });
 };

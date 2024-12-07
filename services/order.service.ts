@@ -9,17 +9,19 @@ import {
   handleApiResponse,
 } from '@/services/api.service';
 import { useAxios } from '@/hooks/use-axios';
-import { OrderFilterParams, OrderType } from '@/types/order.type';
+import { ProductOrderFilterParams, ProductOrderType } from '@/types/order.type';
 
 export const getOrders = async (
   pages: PaginationState,
-  params: OrderFilterParams
+  params: ProductOrderFilterParams
 ) => {
   try {
-    const response = await useAxios.get<null, BaseResponseType, OrderType>(
-      apiRoutes.orders.getOrders(params, pages.pageIndex + 1, pages.pageSize)
-    );
-    return handleApiResponse<ListResponseType<OrderType>>(response);
+    const response = await useAxios.get<
+      null,
+      BaseResponseType,
+      ProductOrderType
+    >(apiRoutes.orders.getOrders(params, pages.pageIndex + 1, pages.pageSize));
+    return handleApiResponse<ListResponseType<ProductOrderType>>(response);
   } catch (e) {
     return handleApiCatchResponse(e);
   }

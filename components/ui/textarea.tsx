@@ -51,6 +51,7 @@ type AutosizeTextAreaProps = {
   maxHeight?: number;
   minHeight?: number;
   autoSize?: boolean;
+  hasError?: boolean;
 } & React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 
 export const AutosizeTextarea = React.forwardRef<
@@ -65,6 +66,7 @@ export const AutosizeTextarea = React.forwardRef<
       onChange,
       value,
       autoSize,
+      hasError,
       ...props
     }: AutosizeTextAreaProps,
     ref: React.Ref<AutosizeTextAreaRef>
@@ -98,7 +100,10 @@ export const AutosizeTextarea = React.forwardRef<
         ref={textAreaRef}
         className={cn(
           'flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
-          className
+          className,
+          {
+            'border border-red-500': hasError,
+          }
         )}
         onChange={(e) => {
           if (autoSize) setTriggerAutoSize(e.target.value);

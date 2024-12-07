@@ -36,6 +36,8 @@ type FileUploaderContextType = {
   setActiveIndex: Dispatch<SetStateAction<number>>;
   orientation: 'horizontal' | 'vertical';
   direction: DirectionOptions;
+  files: File[] | null;
+  reset?: () => void;
 };
 
 const FileUploaderContext = createContext<FileUploaderContextType | null>(null);
@@ -51,7 +53,7 @@ export const useFileUpload = () => {
 type FileUploaderProps = {
   value: File[] | null;
   reSelect?: boolean;
-  onValueChange: (value: File[] | null) => void;
+  onValueChange?: (value: File[] | null) => void;
   dropzoneOptions: DropzoneOptions;
   orientation?: 'horizontal' | 'vertical';
 };
@@ -62,7 +64,7 @@ type FileUploaderProps = {
 
 export const FileUploader = forwardRef<
   HTMLDivElement,
-  FileUploaderProps & React.HTMLAttributes<HTMLDivElement>
+  FileUploaderProps & HTMLAttributes<HTMLDivElement>
 >(
   (
     {
@@ -81,6 +83,7 @@ export const FileUploader = forwardRef<
     const [isFileTooBig, setIsFileTooBig] = useState(false);
     const [isLOF, setIsLOF] = useState(false);
     const [activeIndex, setActiveIndex] = useState(-1);
+    const [files, setFiles] = useState<File[] | null>([]);
     const {
       accept = {
         'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
@@ -97,7 +100,8 @@ export const FileUploader = forwardRef<
       (i: number) => {
         if (!value) return;
         const newFiles = value.filter((_, index) => index !== i);
-        onValueChange(newFiles);
+        setFiles(newFiles);
+        onValueChange?.(newFiles);
       },
       [value, onValueChange]
     );
@@ -179,7 +183,8 @@ export const FileUploader = forwardRef<
           }
         });
 
-        onValueChange(newValues);
+        onValueChange?.(newValues);
+        setFiles(newValues);
 
         if (rejectedFiles.length > 0) {
           for (const element of rejectedFiles) {
@@ -214,9 +219,28 @@ export const FileUploader = forwardRef<
     const dropzoneState = useDropzone({
       ...opts,
       onDrop,
-      onDropRejected: () => setIsFileTooBig(true),
+      onDropRejected: () => {
+        setIsFileTooBig(true);
+        setFiles([]);
+        onValueChange?.([]);
+        toast.error(
+          `File is too large. Max size is ${formatFileSize(maxSize)}`
+        );
+      },
       onDropAccepted: () => setIsFileTooBig(false),
     });
+
+    const reset = useCallback(() => {
+      setFiles([]);
+    }, []);
+
+    const formatFileSize = (bytes: number): string => {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    };
 
     const objContext = useMemo(() => {
       return {
@@ -228,6 +252,8 @@ export const FileUploader = forwardRef<
         setActiveIndex,
         orientation,
         direction,
+        reset,
+        files,
       };
     }, [
       dropzoneState,
@@ -238,6 +264,8 @@ export const FileUploader = forwardRef<
       setActiveIndex,
       orientation,
       direction,
+      reset,
+      files,
     ]);
 
     return (
@@ -330,7 +358,7 @@ FileUploaderItem.displayName = 'FileUploaderItem';
 
 export const FileInput = forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
+  HTMLAttributes<HTMLDivElement>
 >(({ className, children, ...props }, ref) => {
   const { dropzoneState, isFileTooBig, isLOF } = useFileUpload();
   const rootProps = isLOF ? {} : dropzoneState.getRootProps();

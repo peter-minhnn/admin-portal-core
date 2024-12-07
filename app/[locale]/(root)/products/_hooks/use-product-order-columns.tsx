@@ -1,6 +1,6 @@
 import { MRT_ColumnDef } from 'material-react-table';
 import { formatCurrency, formatNumber } from '@/shared/lib';
-import { EditIcon, TrashIcon } from 'lucide-react';
+import { EditIcon, ClipboardPen, TrashIcon } from 'lucide-react';
 import {
   Tooltip,
   TooltipContent,
@@ -149,6 +149,17 @@ export default function useProductOrderColumns({ t }: ProductColumnProps) {
                 />
               </TooltipTrigger>
               <TooltipContent>{t('editProductModalTitle')}</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger>
+                <ClipboardPen
+                  size={25}
+                  onClick={() => setActionType('approve', row)}
+                />
+              </TooltipTrigger>
+              <TooltipContent>
+                {t('orders.approveOrderModalTitle')}
+              </TooltipContent>
             </Tooltip>
             <Tooltip>
               <TooltipTrigger>

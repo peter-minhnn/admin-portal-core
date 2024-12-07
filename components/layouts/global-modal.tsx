@@ -31,8 +31,8 @@ export default function GlobalModal() {
         <ResponsiveModalHeader>
           <ResponsiveModalTitle>{title}</ResponsiveModalTitle>
           <ResponsiveModalDescription>{description}</ResponsiveModalDescription>
-          {modalContent}
         </ResponsiveModalHeader>
+        {modalContent}
         {modalFooter && (
           <ResponsiveModalFooter>{modalFooter}</ResponsiveModalFooter>
         )}

@@ -62,6 +62,8 @@ const CommonMessages = {
   inactive: '비활성화',
   using: '사용 중',
   notUsing: '사용 중지',
+  btnConfirm: '확인',
+  selectAll: '모두 선택',
 };
 
 export default CommonMessages;

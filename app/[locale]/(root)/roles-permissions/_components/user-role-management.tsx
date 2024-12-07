@@ -59,7 +59,7 @@ export default function UserRoleManagement({
   const { data: users } = useGetUsersByRole(role.roleCode);
   const { status } = useUpdateUserRole(t);
 
-  const onSubmidEditUserRole = async (data: UpdateRoleFormData) => {
+  const onSubmitEditUserRole = async (data: UpdateRoleFormData) => {
     console.log(data);
   };
 
@@ -107,7 +107,7 @@ export default function UserRoleManagement({
                   <Form {...form}>
                     <form
                       id="update-user-role"
-                      onSubmit={form.handleSubmit(onSubmidEditUserRole)}
+                      onSubmit={form.handleSubmit(onSubmitEditUserRole)}
                       className="h-full flex flex-col justify-between gap-2"
                     >
                       <div className="mb-4">
