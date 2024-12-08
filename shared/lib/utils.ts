@@ -18,6 +18,9 @@ export const append = (params: Record<string, string | number | boolean>) => {
     if (typeof element === 'boolean' && !Boolean(element)) {
       continue;
     }
+    if (typeof element === 'string' && element.trim() === 'all') {
+      continue;
+    }
     objParams = { ...objParams, [key]: element };
   }
   return objParams;

@@ -134,6 +134,7 @@ export default function ProductOrderList() {
 
   const onFilters = (data: ProductOrderFilterFormData) => {
     setFilterParams(data);
+    setIsFilterOpened(false);
   };
 
   const handleEditOrder = useCallback(

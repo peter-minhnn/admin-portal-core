@@ -239,7 +239,9 @@ export default function ProductOrderFilters({
                     <SelectContent>
                       {DeliveryOrderData.map((item) => (
                         <SelectItem key={item.code} value={item.code}>
-                          {item.name}
+                          {item.code === 'all'
+                            ? tCommon(item.name as any)
+                            : item.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -272,7 +274,9 @@ export default function ProductOrderFilters({
                         .filter((v) => v.isActive)
                         .map((item) => (
                           <SelectItem key={item.code} value={item.code}>
-                            {item.name}
+                            {item.code === 'all'
+                              ? tCommon(item.name as any)
+                              : item.name}
                           </SelectItem>
                         ))}
                     </SelectContent>
@@ -307,7 +311,9 @@ export default function ProductOrderFilters({
                         .filter((v) => v.isActive)
                         .map((item) => (
                           <SelectItem key={item.code} value={item.code}>
-                            {item.name}
+                            {item.code === 'all'
+                              ? tCommon(item.name as any)
+                              : item.name}
                           </SelectItem>
                         ))}
                     </SelectContent>
