@@ -9,23 +9,25 @@ import { pageRoutes } from '@/shared/routes/pages.route';
 import { useRouter } from '@/shared/configs/i18n/routing';
 import { useUserStore } from '@/states/common.state';
 import { useAxios } from '@/hooks/use-axios';
-import { BaseResponseType } from '@/types/common.type';
+import get from 'lodash/get';
 
 export const useLogin = (t: any) => {
   const router = useRouter();
-  const { setUserInfo } = useUserStore();
+  const { setUserInfo, userInfo } = useUserStore();
   return useMutation({
-    mutationFn: async (loginInfo: UserLoginRequestType) =>
-      await login<LoginResponseType>(loginInfo),
+    mutationFn: async (loginInfo: UserLoginRequestType) => {
+      setUserInfo({
+        userName: loginInfo.userName,
+        pwd: loginInfo.password,
+      });
+      return await login<LoginResponseType>(loginInfo);
+    },
     onSuccess: async (response) => {
-      if (response.type === 'error') {
-        const result = useAxios.getResponse<LoginResponseType>(
-          response.result,
-          response.type
-        ) as BaseResponseType<LoginResponseType>;
-        if (!result.isSuccess) {
-          return;
-        }
+      const isSuccess = get(response.result, 'isSuccess', false);
+      if (!isSuccess) {
+        const message = get(response.result, 'messages[0]', '');
+        toast.error(message ?? t('loginFailed'));
+        return;
       }
 
       toast.success(t('loginSuccess'));
@@ -34,8 +36,12 @@ export const useLogin = (t: any) => {
         'object'
       ) as LoginResponseType;
 
-      await loginAction(userLoginInfo);
+      await loginAction({
+        ...userLoginInfo,
+        user: { ...userLoginInfo.user, pwd: userInfo?.pwd },
+      });
       setUserInfo({
+        ...userInfo,
         userName: userLoginInfo.user.userName,
         roleCode: userLoginInfo.user.roleCode,
         companyId: userLoginInfo.user.companyId,

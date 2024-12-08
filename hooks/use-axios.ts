@@ -13,10 +13,14 @@ export const useAxios = {
     });
   },
   post: async <TData, TResponse, T>(url: string, body: T) => {
-    return await axiosConfig.post<TData, TResponse>(url, body);
+    return await axiosConfig.post<TData, TResponse>(url, body, {
+      headers: { 'Content-Type': 'application/json' },
+    });
   },
   put: async <TData, TResponse, T>(url: string, body: T) => {
-    return await axiosConfig.put<TData, TResponse>(url, body);
+    return await axiosConfig.put<TData, TResponse>(url, body, {
+      headers: { 'Content-Type': 'application/json' },
+    });
   },
   delete: async <TData, TResponse>(url: string) => {
     return await axiosConfig.delete<TData, TResponse>(url);

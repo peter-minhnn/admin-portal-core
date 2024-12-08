@@ -11,9 +11,10 @@ export type LoginResponseType = {
 
 export type AuthUserType = {
   userName: string;
-  roleCode: string;
+  roleCode?: string;
   companyId?: number;
-  role: UserRoleType;
+  pwd?: string;
+  role?: UserRoleType;
 };
 
 export type UserRoleType = {

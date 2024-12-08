@@ -11,6 +11,8 @@ import {
 } from '@tabler/icons-react';
 import { ReactElement } from 'react';
 import { pageRoutes } from '@/shared/routes/pages.route';
+import { useUserStore } from '@/states/common.state';
+import { useLocale, useTranslations } from 'next-intl';
 
 export interface NavLink {
   title: string;
@@ -22,6 +24,20 @@ export interface NavLink {
 
 export interface SideLink extends NavLink {
   sub?: NavLink[];
+}
+
+export default function useSideLinks(): SideLink[] {
+  const { userInfo } = useUserStore();
+  const t = useTranslations('MenuMessages');
+  const locale = useLocale();
+
+  if (
+    userInfo?.userName === process.env.NEXT_PUBLIC_AUTH_ID &&
+    userInfo?.pwd === process.env.NEXT_PUBLIC_AUTH_PWD
+  ) {
+    return [...sideLinks(t, locale), ...sideLinksAuth(t, locale)];
+  }
+  return [...sideLinks(t, locale)];
 }
 
 export const sideLinks = (t: any, locale: string): SideLink[] => {
@@ -59,6 +75,12 @@ export const sideLinks = (t: any, locale: string): SideLink[] => {
         },
       ],
     },
+  ];
+};
+
+export const sideLinksAuth = (t: any, locale: string): SideLink[] => {
+  const path = `/${locale}`;
+  return [
     {
       title: t('rolesPermissions'),
       label: '',

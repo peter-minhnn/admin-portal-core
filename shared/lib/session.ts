@@ -12,6 +12,7 @@ export async function createSession(accessToken: string, user: AuthUserType) {
   const session = await encrypt({
     user: {
       userName: user.userName,
+      pwd: user.pwd,
       roleCode: user.roleCode,
       companyId: user.companyId,
       role: user.role,
