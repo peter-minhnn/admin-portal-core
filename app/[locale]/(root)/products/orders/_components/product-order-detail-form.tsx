@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { PlusIcon, SearchIcon, TrashIcon } from 'lucide-react';
+import { PlusIcon, SearchIcon } from 'lucide-react';
 import NumberInput from '@/components/number-input';
 import { useFieldArray, UseFormReturn } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
@@ -10,12 +10,6 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
 import InputButton from '@/components/input-button';
 import {
   AccordionContent,
@@ -37,24 +31,28 @@ import { ProductPriceType } from '@/types/product.type';
 import { toast } from 'sonner';
 import { cn } from '@/shared/lib';
 import { OrderDetailRequestType } from '@/types/order.type';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { ActionType } from '@/types/common.type';
 
 type OrderDetailFormProps = {
   form: UseFormReturn<any>;
+  modalType: ActionType;
 };
 
 const SearchIconProp = () => <SearchIcon size={16} />;
 
-const OrderDetailForm = ({ form }: Readonly<OrderDetailFormProps>) => {
+const OrderDetailForm = ({
+  form,
+  modalType,
+}: Readonly<OrderDetailFormProps>) => {
   const t = useTranslations('ProductMessages');
   const tCommon = useTranslations('CommonMessages');
-  const isMobile = useIsMobile();
+  // const isMobile = useIsMobile();
 
   const [isProductSelectOpen, setIsProductSelectOpen] =
     useState<boolean>(false);
   const [productRowSelection, setProductRowSelection] =
     useState<ProductPriceType | null>(null);
-  const { fields, append, remove, insert } = useFieldArray({
+  const { fields, append, insert } = useFieldArray({
     control: form.control,
     name: 'orderDetails',
     keyName: 'orderId',
@@ -76,22 +74,22 @@ const OrderDetailForm = ({ form }: Readonly<OrderDetailFormProps>) => {
   };
 
   // Remove an order detail row
-  const removeOrderDetail = (index: number) => {
-    if (form.watch('orderStatus') === 'APPROVED') {
-      toast.error(t('errors.orders.cannotDeleteOrderApproved'));
-      return;
-    }
-    remove(index);
-  };
+  // const removeOrderDetail = (index: number) => {
+  //   if (form.watch('orderStatus') === 'APPROVED') {
+  //     toast.error(t('errors.orders.cannotDeleteOrderApproved'));
+  //     return;
+  //   }
+  //   remove(index);
+  // };
 
   const handleToggleProductModal = (index: number) => {
     setRowIndex(index);
     setIsProductSelectOpen(true);
   };
 
-  const getProductDetail = (index: number) => {
-    return form.watch('orderDetails')[index]?.productCode;
-  };
+  // const getProductDetail = (index: number) => {
+  //   return form.watch('orderDetails')[index]?.productCode;
+  // };
 
   const createPlusIcon = () => {
     return <PlusIcon size={16} className="text-white" />;
@@ -120,7 +118,9 @@ const OrderDetailForm = ({ form }: Readonly<OrderDetailFormProps>) => {
         <AccordionContent>
           <div
             className={cn('w-full flex justify-end pr-2', {
-              hidden: form.watch('orderStatus') === 'APPROVED',
+              hidden:
+                form.watch('orderStatus') === 'APPROVED' ||
+                modalType === 'edit',
             })}
           >
             <Button
@@ -154,11 +154,18 @@ const OrderDetailForm = ({ form }: Readonly<OrderDetailFormProps>) => {
                         <FormItem className="min-w-64">
                           <FormLabel>{t('productCode')}</FormLabel>
                           <InputButton
-                            onClick={() => handleToggleProductModal(index)}
+                            onClick={() => {
+                              if (modalType === 'edit') {
+                                return;
+                              }
+                              handleToggleProductModal(index);
+                            }}
                             title={t('selectedProductPlaceholder')}
                             Icon={SearchIconProp}
                             iconPlacement={'right'}
-                            variant="expandIcon"
+                            {...(modalType !== 'edit'
+                              ? { variant: 'expandIcon' }
+                              : {})}
                             hasError={
                               !!(form.formState.errors.orderDetails as any)?.[
                                 index
@@ -185,7 +192,8 @@ const OrderDetailForm = ({ form }: Readonly<OrderDetailFormProps>) => {
                         !!(form.formState.errors.orderDetails as any)?.[index]
                           ?.quantity
                       }
-                      disabled={form.watch('orderStatus') === 'APPROVED'}
+                      disabled
+                      // disabled={form.watch('orderStatus') === 'APPROVED'}
                     />
                   </div>
                   <div className="mb-2 w-full min-h-fit md:min-h-[90px]">
@@ -203,46 +211,46 @@ const OrderDetailForm = ({ form }: Readonly<OrderDetailFormProps>) => {
                       disabled
                     />
                   </div>
-                  {fields.length > 1 && (
-                    <div
-                      className={cn('flex h-[25px]', {
-                        hidden: form.watch('orderStatus') === 'APPROVED',
-                        'w-full': isMobile,
-                        'items-end justify-end': !isMobile,
-                      })}
-                    >
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Button
-                              type="button"
-                              className={cn('min-w-8 h-8', {
-                                'bg-red-500 hover:bg-red-600hover:text-red-500/90 bg-transparent hover:bg-transparent':
-                                  !isMobile,
-                                'w-full': isMobile,
-                              })}
-                              onClick={() => removeOrderDetail(index)}
-                              size={isMobile ? 'lg' : 'icon'}
-                              {...(isMobile ? { variant: 'destructive' } : {})}
-                            >
-                              <TrashIcon
-                                size={isMobile ? 18 : 20}
-                                className={cn('text-red-500', {
-                                  'text-white pr-1': isMobile,
-                                })}
-                              />
-                              {!isMobile ? '' : tCommon('btnDelete')}
-                            </Button>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            {t('orders.deleteProductDetailRow', {
-                              productCode: getProductDetail(index),
-                            })}
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </div>
-                  )}
+                  {/*{fields.length > 1 && (*/}
+                  {/*  <div*/}
+                  {/*    className={cn('flex h-[25px]', {*/}
+                  {/*      hidden: form.watch('orderStatus') === 'APPROVED',*/}
+                  {/*      'w-full': isMobile,*/}
+                  {/*      'items-end justify-end': !isMobile,*/}
+                  {/*    })}*/}
+                  {/*  >*/}
+                  {/*    <TooltipProvider>*/}
+                  {/*      <Tooltip>*/}
+                  {/*        <TooltipTrigger asChild>*/}
+                  {/*          <Button*/}
+                  {/*            type="button"*/}
+                  {/*            className={cn('min-w-8 h-8', {*/}
+                  {/*              'bg-red-500 hover:bg-red-600hover:text-red-500/90 bg-transparent hover:bg-transparent':*/}
+                  {/*                !isMobile,*/}
+                  {/*              'w-full': isMobile,*/}
+                  {/*            })}*/}
+                  {/*            onClick={() => removeOrderDetail(index)}*/}
+                  {/*            size={isMobile ? 'lg' : 'icon'}*/}
+                  {/*            {...(isMobile ? { variant: 'destructive' } : {})}*/}
+                  {/*          >*/}
+                  {/*            <TrashIcon*/}
+                  {/*              size={isMobile ? 18 : 20}*/}
+                  {/*              className={cn('text-red-500', {*/}
+                  {/*                'text-white pr-1': isMobile,*/}
+                  {/*              })}*/}
+                  {/*            />*/}
+                  {/*            {!isMobile ? '' : tCommon('btnDelete')}*/}
+                  {/*          </Button>*/}
+                  {/*        </TooltipTrigger>*/}
+                  {/*        <TooltipContent>*/}
+                  {/*          {t('orders.deleteProductDetailRow', {*/}
+                  {/*            productCode: getProductDetail(index),*/}
+                  {/*          })}*/}
+                  {/*        </TooltipContent>*/}
+                  {/*      </Tooltip>*/}
+                  {/*    </TooltipProvider>*/}
+                  {/*  </div>*/}
+                  {/*)}*/}
                 </div>
               </div>
             ))}

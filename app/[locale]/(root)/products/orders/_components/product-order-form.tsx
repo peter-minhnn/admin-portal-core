@@ -368,7 +368,7 @@ export default function ProductOrderForm({
               </AccordionContent>
             </AccordionItem>
             <div className="flex flex-col gap-2 w-full mt-4">
-              <OrderDetailForm form={form} />
+              <OrderDetailForm form={form} modalType={modalType} />
             </div>
           </Accordion>
           <div id="scroll-area-bottom"></div>
