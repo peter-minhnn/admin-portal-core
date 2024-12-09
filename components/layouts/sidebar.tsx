@@ -33,7 +33,7 @@ export default function Sidebar({
     } else {
       document.body.classList.remove('overflow-hidden');
     }
-  }, [navOpened, sideLinks]);
+  }, [navOpened]);
 
   return (
     <aside
