@@ -1,19 +1,26 @@
 import { useLocale, useTranslations } from 'next-intl';
 import { useUserStore } from '@/states/common.state';
 import { SideLink, sideLinks, sideLinksAuth } from '@/shared/data/side-links';
+import { useEffect, useState } from 'react';
 
 export default function useSideLinks(): SideLink[] {
   const { userInfo } = useUserStore();
   const t = useTranslations('MenuMessages');
   const locale = useLocale();
+  const [menus, setMenus] = useState<SideLink[]>([]);
 
-  if (
-    userInfo?.userName === process.env.NEXT_PUBLIC_AUTH_ID &&
-    userInfo?.pwd === process.env.NEXT_PUBLIC_AUTH_PWD
-  ) {
-    return [...sideLinks(t, locale), ...sideLinksAuth(t, locale)];
-  }
-  return [...sideLinks(t, locale)];
+  useEffect(() => {
+    if (
+      userInfo?.userName === process.env.NEXT_PUBLIC_AUTH_ID &&
+      userInfo?.pwd === process.env.NEXT_PUBLIC_AUTH_PASSWORD
+    ) {
+      setMenus([...sideLinks(t, locale), ...sideLinksAuth(t, locale)]);
+    } else {
+      setMenus([...sideLinks(t, locale)]);
+    }
+  }, [userInfo, locale, t]);
+
+  return menus;
 }
 
 // export default function useSideLinks(): SideLink[] {
