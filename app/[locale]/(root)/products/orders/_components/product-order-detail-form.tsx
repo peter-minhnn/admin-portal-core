@@ -46,7 +46,6 @@ const OrderDetailForm = ({
 }: Readonly<OrderDetailFormProps>) => {
   const t = useTranslations('ProductMessages');
   const tCommon = useTranslations('CommonMessages');
-  // const isMobile = useIsMobile();
 
   const [isProductSelectOpen, setIsProductSelectOpen] =
     useState<boolean>(false);
@@ -192,7 +191,7 @@ const OrderDetailForm = ({
                         !!(form.formState.errors.orderDetails as any)?.[index]
                           ?.quantity
                       }
-                      disabled
+                      disabled={modalType === 'edit'}
                       // disabled={form.watch('orderStatus') === 'APPROVED'}
                     />
                   </div>
@@ -257,11 +256,12 @@ const OrderDetailForm = ({
           </div>
         </AccordionContent>
       </AccordionItem>
+      {/* Dialog Product List */}
       <Dialog open={isProductSelectOpen} onOpenChange={setIsProductSelectOpen}>
         <DialogContent className="max-w-full overflow-auto">
           <DialogHeader>
             <DialogTitle>{t('title')}</DialogTitle>
-            <DialogDescription> </DialogDescription>
+            <DialogDescription />
           </DialogHeader>
           <ProductOptions setRowSelection={setProductRowSelection} />
           <DialogFooter>

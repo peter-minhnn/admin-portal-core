@@ -253,7 +253,7 @@ export default function ProductOrderForm({
                       disabled={form.watch('orderStatus') === 'APPROVED'}
                     />
                   </div>
-                  <div className="flex flex-row justify-between gap-2 w-full">
+                  <div className="hidden">
                     <NumberInput
                       form={form}
                       namespace="ProductMessages"
