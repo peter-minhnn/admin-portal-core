@@ -26,11 +26,15 @@ export type ProductOrderType = {
   discountAmount: number;
   discountPercent: number;
   customerId: number;
+  customerName: string;
   deliveryType: DeliveryType;
   orderStatus: OrderStatus;
   paymentStatus: PaymentStatus;
   approvedBy: string;
   approvedAt: Date | null; // Allow null if not set.
+  contactName: string;
+  contactNumber: string;
+  deliveryAddress: string;
 };
 
 export type OrderRequestType = {
@@ -47,7 +51,8 @@ export type OrderRequestType = {
   orderDetails: OrderDetailRequestType[];
   companyId: number;
   orderDate: string;
-  phoneNumber: string;
+  contactNumber: string;
+  contactName: string;
 };
 
 export type OrderDetailRequestType = {
@@ -66,7 +71,7 @@ export type ProductOrderFilterParams = {
   deliveryType?: DeliveryType;
   orderStatus?: OrderStatus;
   paymentStatus?: PaymentStatus;
-  isExport?: boolean;
+  isExport: boolean;
 };
 
 export type CustomerType = {

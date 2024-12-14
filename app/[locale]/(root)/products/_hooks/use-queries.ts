@@ -33,6 +33,12 @@ import {
   OrderRequestType,
   ProductOrderFilterFormData,
 } from '@/types/order.type';
+import { generateCsv, download } from 'export-to-csv';
+import {
+  convertToOrderExcelData,
+  csvConfig,
+} from '@/app/[locale]/(root)/products/orders/product-order.data';
+import { Locale } from '@/shared/configs/i18n/config'; //or use your library of choice here
 
 //-------------------------------------UNIT HOOKS----------------------------------------
 export const useGetUnits = () => {
@@ -329,6 +335,33 @@ export const useApproveOrder = (t: any, closeModal: () => void) => {
       }
 
       toast.success(message);
+      closeModal();
+    },
+    onError: () => toast.error(t('notifications.approveOrderError')),
+  });
+};
+
+export const useOrdersExport = (
+  t: any,
+  closeModal: () => void,
+  locale: Locale
+) => {
+  return useMutation({
+    mutationFn: async (params: ProductOrderFilterFormData) =>
+      await getOrders(params, { pageIndex: 1, pageSize: 50 }),
+    onSuccess: (response) => {
+      if (!response.result.isSuccess) {
+        toast.error('notifications.exportExcelError');
+        return;
+      }
+
+      const data = get(response.result, RESPONSE_LIST_KEY, []);
+      const csv = generateCsv(csvConfig(t))(
+        convertToOrderExcelData(data, locale)
+      );
+      download(csvConfig(t))(csv);
+
+      toast.success(t('notifications.exportExcelSuccess'));
       closeModal();
     },
     onError: () => toast.error(t('notifications.approveOrderError')),

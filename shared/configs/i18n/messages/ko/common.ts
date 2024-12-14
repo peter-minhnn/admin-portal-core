@@ -65,6 +65,9 @@ const CommonMessages = {
   btnConfirm: '확인',
   selectAll: '모두 선택',
   btnDelete: '삭제',
+  exportAll: '현재 페이지 데이터 내보내기',
+  exportByPage: '전체 데이터 내보내기',
+  btnExport: '내보내기',
 };
 
 export default CommonMessages;

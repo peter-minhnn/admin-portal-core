@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+import parse from 'html-react-parser';
 import { useAlertModal } from '@/hooks/use-alert-modal';
 import {
   AlertDialog,
@@ -12,7 +14,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { useTranslations } from 'next-intl';
 
 export default function GlobalAlertModal() {
   const t = useTranslations('CommonMessages');
@@ -37,7 +38,7 @@ export default function GlobalAlertModal() {
         <AlertDialogHeader>
           <AlertDialogTitle>{title || t('alertTitle')}</AlertDialogTitle>
           <AlertDialogDescription>
-            {message || t('alertMessage')}
+            {parse(message) || t('alertMessage')}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

@@ -49,4 +49,7 @@ export type ActionType =
   | 'updatePrice'
   | 'approve'
   | 'search'
+  | 'update-status'
   | '';
+
+export type ExportExcelType = 'page' | 'all';

@@ -11,7 +11,7 @@ export interface InputProps
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, errorMessage, hasError, ...props }, ref) => {
     return (
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1 w-full">
         <input
           type={type}
           className={cn(

@@ -66,6 +66,9 @@ const CommonMessages = {
   selectAll: 'Chọn tất cả',
   rowSelection: 'Chọn dòng',
   btnDelete: 'Xóa',
+  exportAll: 'Xuất toàn bộ dữ liệu',
+  exportByPage: 'Xuất dữ liệu trang hiện tại',
+  btnExport: 'Xuất dữ liệu',
 };
 
 export default CommonMessages;

@@ -91,7 +91,7 @@ export default function ProductPriceForm({
           <Button
             type="submit"
             title={t('modalSaveBtn')}
-            variant="secondary"
+            variant="save"
             disabled={status === 'pending'}
             loading={status === 'pending'}
           >

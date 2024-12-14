@@ -20,6 +20,13 @@ export const ProductFormSchema = z.object({
     .min(1, { message: 'errors.productMaxQty' })
     .default(0),
   companyId: z.number().or(z.null()).optional(),
+  pricing: z
+    .object({
+      price: z.number().optional().default(0),
+      originalPrice: z.number().optional().default(0),
+    })
+    .optional(),
+  isActive: z.boolean().default(true),
 });
 
 export const ProductFilterFormSchema = z.object({
@@ -57,6 +64,7 @@ export const ProductOrderFilterFormSchema = z.object({
   deliveryType: z.string().optional(),
   orderStatus: z.string().optional(),
   paymentStatus: z.string().optional(),
+  isExport: z.boolean().optional().default(false),
 });
 
 export const ProductOrderFormSchema = z.object({
@@ -64,11 +72,7 @@ export const ProductOrderFormSchema = z.object({
   customerId: z
     .string()
     .min(1, { message: 'errors.orders.customerIdRequired' }),
-  totalAmount: z
-    .number()
-    .int()
-    .min(1, { message: 'errors.orders.totalAmountRequired' })
-    .default(0),
+  totalAmount: z.number().int().default(0),
   totalPrice: z
     .number()
     .int()
@@ -111,5 +115,13 @@ export const ProductOrderFormSchema = z.object({
     )
     .default([]),
   orderDate: z.string().optional().default(''),
-  phoneNumber: z.string().optional().default(''),
+  contactNumber: z
+    .string()
+    .min(1, { message: 'errors.orders.contactNumber' })
+    .regex(/^\d+$/, { message: 'errors.onlyNumber' })
+    .default(''),
+  contactName: z
+    .string()
+    .min(1, { message: 'errors.orders.contactName' })
+    .default(''),
 });

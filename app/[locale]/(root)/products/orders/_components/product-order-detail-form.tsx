@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { PlusIcon, SearchIcon } from 'lucide-react';
+import { CalculatorIcon, PlusIcon, SearchIcon } from 'lucide-react';
 import NumberInput from '@/components/number-input';
 import { useFieldArray, UseFormReturn } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
@@ -32,6 +32,7 @@ import { toast } from 'sonner';
 import { cn } from '@/shared/lib';
 import { OrderDetailRequestType } from '@/types/order.type';
 import { ActionType } from '@/types/common.type';
+import { Separator } from '@/components/ui/separator';
 
 type OrderDetailFormProps = {
   form: UseFormReturn<any>;
@@ -72,26 +73,25 @@ const OrderDetailForm = ({
     insert(0, defaultValue);
   };
 
-  // Remove an order detail row
-  // const removeOrderDetail = (index: number) => {
-  //   if (form.watch('orderStatus') === 'APPROVED') {
-  //     toast.error(t('errors.orders.cannotDeleteOrderApproved'));
-  //     return;
-  //   }
-  //   remove(index);
-  // };
-
   const handleToggleProductModal = (index: number) => {
     setRowIndex(index);
     setIsProductSelectOpen(true);
   };
 
-  // const getProductDetail = (index: number) => {
-  //   return form.watch('orderDetails')[index]?.productCode;
-  // };
-
   const createPlusIcon = () => {
     return <PlusIcon size={16} className="text-white" />;
+  };
+
+  const createCalculatorIcon = () => {
+    return <CalculatorIcon size={16} className="text-white" />;
+  };
+
+  const handleCalculationTotalPrices = () => {
+    const orderDetails = form.watch('orderDetails');
+    const totalPrices = orderDetails.reduce((acc: number, item: any) => {
+      return acc + item.quantity * item.price;
+    }, 0);
+    form.setValue('totalPrice', totalPrices);
   };
 
   useEffect(() => {
@@ -115,28 +115,54 @@ const OrderDetailForm = ({
           </div>
         </AccordionTrigger>
         <AccordionContent>
-          <div
-            className={cn('w-full flex justify-end pr-2', {
-              hidden:
-                form.watch('orderStatus') === 'APPROVED' ||
-                modalType === 'edit',
-            })}
-          >
-            <Button
-              type="button"
-              className="min-w-fit h-7 bg-[#3C603C] hover:bg-[#3C603C] text-white"
-              onClick={addOrderDetail}
-              size="sm"
-              title={t('addProductModalTitle')}
-              Icon={createPlusIcon}
-              iconPlacement="left"
-              variant="expandIcon"
-              disabled={form.watch('orderStatus') === 'APPROVED'}
+          <div className={cn('w-full flex justify-between gap-3 mb-4 pr-2')}>
+            <NumberInput
+              form={form}
+              namespace="ProductMessages"
+              name="totalPrice"
+              label={t('orders.totalPrice')}
+              placeholder={t('orders.totalPrice')}
+              disabled
+              editInline
+              className="w-full"
+            />
+            <div
+              className={cn(`flex gap-4`, {
+                hidden:
+                  form.watch('orderStatus') === 'APPROVED' ||
+                  modalType === 'edit',
+              })}
             >
-              {t('addProductModalTitle')}
-            </Button>
+              <Button
+                type="button"
+                className="min-w-fit h-9 bg-[#D26426] hover:bg-[#D26426] text-white"
+                onClick={handleCalculationTotalPrices}
+                size="sm"
+                title={t('orders.calculatorTotalPrices')}
+                Icon={createCalculatorIcon}
+                iconPlacement="left"
+                variant="expandIcon"
+                disabled={form.watch('orderStatus') === 'APPROVED'}
+              >
+                {t('orders.calculatorTotalPrices')}
+              </Button>
+              <Button
+                type="button"
+                className="min-w-fit h-9 bg-[#3C603C] hover:bg-[#3C603C] text-white"
+                onClick={addOrderDetail}
+                size="sm"
+                title={t('addProductModalTitle')}
+                Icon={createPlusIcon}
+                iconPlacement="left"
+                variant="expandIcon"
+                disabled={form.watch('orderStatus') === 'APPROVED'}
+              >
+                {t('addProductModalTitle')}
+              </Button>
+            </div>
           </div>
-          <div className="w-full flex flex-col gap-2 justify-between">
+          <Separator className="mb-4" />
+          <div className="w-full flex flex-col gap-2 justify-between px-2">
             {fields.map((field, index) => (
               <div
                 key={field.orderId}
@@ -210,46 +236,6 @@ const OrderDetailForm = ({
                       disabled
                     />
                   </div>
-                  {/*{fields.length > 1 && (*/}
-                  {/*  <div*/}
-                  {/*    className={cn('flex h-[25px]', {*/}
-                  {/*      hidden: form.watch('orderStatus') === 'APPROVED',*/}
-                  {/*      'w-full': isMobile,*/}
-                  {/*      'items-end justify-end': !isMobile,*/}
-                  {/*    })}*/}
-                  {/*  >*/}
-                  {/*    <TooltipProvider>*/}
-                  {/*      <Tooltip>*/}
-                  {/*        <TooltipTrigger asChild>*/}
-                  {/*          <Button*/}
-                  {/*            type="button"*/}
-                  {/*            className={cn('min-w-8 h-8', {*/}
-                  {/*              'bg-red-500 hover:bg-red-600hover:text-red-500/90 bg-transparent hover:bg-transparent':*/}
-                  {/*                !isMobile,*/}
-                  {/*              'w-full': isMobile,*/}
-                  {/*            })}*/}
-                  {/*            onClick={() => removeOrderDetail(index)}*/}
-                  {/*            size={isMobile ? 'lg' : 'icon'}*/}
-                  {/*            {...(isMobile ? { variant: 'destructive' } : {})}*/}
-                  {/*          >*/}
-                  {/*            <TrashIcon*/}
-                  {/*              size={isMobile ? 18 : 20}*/}
-                  {/*              className={cn('text-red-500', {*/}
-                  {/*                'text-white pr-1': isMobile,*/}
-                  {/*              })}*/}
-                  {/*            />*/}
-                  {/*            {!isMobile ? '' : tCommon('btnDelete')}*/}
-                  {/*          </Button>*/}
-                  {/*        </TooltipTrigger>*/}
-                  {/*        <TooltipContent>*/}
-                  {/*          {t('orders.deleteProductDetailRow', {*/}
-                  {/*            productCode: getProductDetail(index),*/}
-                  {/*          })}*/}
-                  {/*        </TooltipContent>*/}
-                  {/*      </Tooltip>*/}
-                  {/*    </TooltipProvider>*/}
-                  {/*  </div>*/}
-                  {/*)}*/}
                 </div>
               </div>
             ))}

@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/form'; // Shadcn UI import
 import { Input } from '@/components/ui/input'; // Shandcn UI Input
 import { UseFormReturn } from 'react-hook-form';
+import { cn } from '@/shared/lib';
 
 type TextInputProps = {
   form: UseFormReturn<any>;
@@ -21,6 +22,7 @@ type TextInputProps = {
   editInline?: boolean;
   disabled?: boolean;
   hasError?: boolean;
+  className?: string;
 };
 
 const NumberFormatter = {
@@ -62,10 +64,10 @@ export default function NumberInput(props: Readonly<TextInputProps>) {
         const _change = field.onChange;
 
         return (
-          <FormItem className="w-full">
+          <FormItem className={cn('w-full', props.className)}>
             {props.editInline && (
-              <div className="flex flex-row items-center gap-2">
-                <FormLabel>{props.label}</FormLabel>
+              <div className="flex flex-row items-center w-full gap-2">
+                <FormLabel className="min-w-fit">{props.label}</FormLabel>
                 <FormControl>
                   <Input
                     placeholder={props.placeholder}

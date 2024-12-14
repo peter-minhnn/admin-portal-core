@@ -51,6 +51,7 @@ const defaultFormValues: ProductOrderFilterFormData = {
   deliveryType: 'all',
   orderStatus: 'all',
   paymentStatus: 'all',
+  isExport: false,
 };
 
 export default function ProductOrderFilters({
@@ -73,6 +74,16 @@ export default function ProductOrderFilters({
     pageIndex: page + 1,
     pageSize: PAGE_SIZE,
   });
+
+  const deliveryOrderOptions = DeliveryOrderData('search').filter(
+    (v) => v.isActive
+  );
+  const orderStatusOptions = OrderStatusData('search').filter(
+    (v) => v.isActive
+  );
+  const paymentStatusOptions = PaymentStatusData('search').filter(
+    (v) => v.isActive
+  );
 
   const onSubmitFilters = (data: ProductOrderFilterFormData) => {
     onFilters({ ...data });
@@ -237,7 +248,7 @@ export default function ProductOrderFilters({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {DeliveryOrderData.map((item) => (
+                      {deliveryOrderOptions.map((item) => (
                         <SelectItem key={item.code} value={item.code}>
                           {item.code === 'all'
                             ? tCommon(item.name as any)
@@ -270,15 +281,13 @@ export default function ProductOrderFilters({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {OrderStatusData('search')
-                        .filter((v) => v.isActive)
-                        .map((item) => (
-                          <SelectItem key={item.code} value={item.code}>
-                            {item.code === 'all'
-                              ? tCommon(item.name as any)
-                              : item.name}
-                          </SelectItem>
-                        ))}
+                      {orderStatusOptions.map((item) => (
+                        <SelectItem key={item.code} value={item.code}>
+                          {item.code === 'all'
+                            ? tCommon(item.name as any)
+                            : item.name}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </FormItem>
@@ -307,15 +316,13 @@ export default function ProductOrderFilters({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {PaymentStatusData('search')
-                        .filter((v) => v.isActive)
-                        .map((item) => (
-                          <SelectItem key={item.code} value={item.code}>
-                            {item.code === 'all'
-                              ? tCommon(item.name as any)
-                              : item.name}
-                          </SelectItem>
-                        ))}
+                      {paymentStatusOptions.map((item) => (
+                        <SelectItem key={item.code} value={item.code}>
+                          {item.code === 'all'
+                            ? tCommon(item.name as any)
+                            : item.name}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </FormItem>

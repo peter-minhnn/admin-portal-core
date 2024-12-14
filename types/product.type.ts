@@ -16,6 +16,13 @@ export type ProductType = {
   productMinQty: number;
   productMaxQty: number;
   companyId: number;
+  pricing?: PricingType;
+  status?: boolean;
+};
+
+export type PricingType = {
+  sellPrice: number;
+  originalPrice: number;
 };
 
 export type UnitType = {

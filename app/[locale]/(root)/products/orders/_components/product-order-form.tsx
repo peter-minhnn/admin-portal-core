@@ -29,7 +29,7 @@ import {
   useGetOrderDetail,
   useUpdateOrder,
 } from '../../_hooks/use-queries';
-import { generateCode } from '@/shared/lib';
+import { cn, generateCode } from '@/shared/lib';
 import { OrderRequestType, ProductOrderFormData } from '@/types/order.type';
 import CustomersSelect from '@/components/customers-select';
 import NumberInput from '@/components/number-input';
@@ -50,6 +50,7 @@ import { Badge } from '@/components/ui/badge';
 import get from 'lodash/get';
 import { toast } from 'sonner';
 import { useUserStore } from '@/states/common.state';
+import { Input } from '@/components/ui/input';
 
 type ProductOrderFormProps = {
   rowData?: ProductOrderFormData;
@@ -68,7 +69,8 @@ const defaultProductOrderData: ProductOrderFormData = {
   discountPercent: 0,
   orderDetails: [],
   orderDate: '',
-  phoneNumber: '',
+  contactNumber: '',
+  contactName: '',
 };
 
 export default function ProductOrderForm({
@@ -83,6 +85,10 @@ export default function ProductOrderForm({
     (v) => v.isActive
   );
   const paymentStatusOptions = PaymentStatusData(modalType).filter(
+    (v) => v.isActive
+  );
+
+  const deliveryOrderOptions = DeliveryOrderData(modalType).filter(
     (v) => v.isActive
   );
 
@@ -180,17 +186,15 @@ export default function ProductOrderForm({
                       name="customerId"
                       render={({ field }) => (
                         <FormItem className="w-full">
-                          <FormLabel htmlFor="customerId">
+                          <FormLabel htmlFor="customerId" required>
                             {t('orders.customerId')}
                           </FormLabel>
                           <CustomersSelect
                             value={field.value}
                             onValueChange={(value) => {
+                              if (form.watch('orderStatus') === 'APPROVED')
+                                return;
                               field.onChange(String(value.id));
-                              form.setValue(
-                                'phoneNumber',
-                                get(value, 'phoneNumber', '')
-                              );
                             }}
                             translateKey="ProductMessages"
                             hasError={!!form.formState.errors.customerId}
@@ -204,11 +208,15 @@ export default function ProductOrderForm({
                       name="deliveryType"
                       render={({ field }) => (
                         <FormItem className="w-full">
-                          <FormLabel htmlFor="deliveryType">
+                          <FormLabel htmlFor="deliveryType" required>
                             {t('orders.deliveryType')}
                           </FormLabel>
                           <Select
-                            onValueChange={field.onChange}
+                            onValueChange={(ev) => {
+                              if (form.watch('orderStatus') === 'APPROVE')
+                                return;
+                              field.onChange(ev);
+                            }}
                             defaultValue={field.value}
                             value={field.value}
                             disabled={form.watch('orderStatus') === 'APPROVED'}
@@ -224,7 +232,7 @@ export default function ProductOrderForm({
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              {DeliveryOrderData.map((item) => (
+                              {deliveryOrderOptions.map((item) => (
                                 <SelectItem key={item.code} value={item.code}>
                                   {item.name}
                                 </SelectItem>
@@ -235,15 +243,7 @@ export default function ProductOrderForm({
                       )}
                     />
                   </div>
-                  <div className="flex flex-row justify-between gap-2 w-full">
-                    <NumberInput
-                      form={form}
-                      namespace="ProductMessages"
-                      name="totalPrice"
-                      label={t('orders.totalPrice')}
-                      placeholder={t('orders.totalPrice')}
-                      disabled={form.watch('orderStatus') === 'APPROVED'}
-                    />
+                  <div className="flex-row justify-between gap-2 w-full hidden">
                     <NumberInput
                       form={form}
                       namespace="ProductMessages"
@@ -277,18 +277,22 @@ export default function ProductOrderForm({
                     control={form.control}
                     name="orderStatus"
                     render={({ field }) => (
-                      <FormItem className="w-full">
+                      <FormItem
+                        className={cn('w-full', {
+                          hidden: modalType === 'add',
+                        })}
+                      >
                         <FormLabel htmlFor="orderStatus">
                           {t('orders.orderStatus')}
                         </FormLabel>
                         <Select
-                          onValueChange={field.onChange}
+                          onValueChange={(ev) => {
+                            if (field.value === 'APPROVE') return;
+                            field.onChange(ev);
+                          }}
                           defaultValue={field.value}
                           value={field.value}
-                          disabled={
-                            field.value === 'APPROVED' ||
-                            ['edit', 'add'].includes(modalType)
-                          }
+                          disabled={field.value === 'APPROVED'}
                         >
                           <FormControl>
                             <SelectTrigger
@@ -315,7 +319,11 @@ export default function ProductOrderForm({
                     control={form.control}
                     name="paymentStatus"
                     render={({ field }) => (
-                      <FormItem className="w-full">
+                      <FormItem
+                        className={cn('w-full', {
+                          hidden: modalType === 'add',
+                        })}
+                      >
                         <FormLabel htmlFor="paymentStatus">
                           {t('orders.paymentStatus')}
                         </FormLabel>
@@ -349,13 +357,62 @@ export default function ProductOrderForm({
                 </div>
                 <FormField
                   control={form.control}
+                  name="contactName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel htmlFor="contactName" required>
+                        {t('orders.contactName')}
+                      </FormLabel>
+                      <Input
+                        value={field.value ?? ''}
+                        onChange={(ev) => {
+                          if (form.watch('orderStatus') === 'APPROVED') return;
+                          field.onChange(ev.target.value);
+                        }}
+                        placeholder={t('orders.contactName')}
+                        hasError={!!form.formState.errors.contactName}
+                        disabled={form.watch('orderStatus') === 'APPROVED'}
+                      />
+                      <FormMessage namespace="ProductMessages" />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="contactNumber"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel htmlFor="contactNumber" required>
+                        {t('orders.contactNumber')}
+                      </FormLabel>
+                      <Input
+                        value={field.value ?? ''}
+                        onChange={(ev) => {
+                          if (form.watch('orderStatus') === 'APPROVED') return;
+                          field.onChange(ev.target.value);
+                        }}
+                        placeholder={t('orders.contactNumber')}
+                        hasError={!!form.formState.errors.contactNumber}
+                        disabled={form.watch('orderStatus') === 'APPROVED'}
+                      />
+                      <FormMessage namespace="ProductMessages" />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
                   name="deliveryAddress"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t('orders.deliveryAddress')}</FormLabel>
+                      <FormLabel htmlFor="deliveryAddress" required>
+                        {t('orders.deliveryAddress')}
+                      </FormLabel>
                       <AutosizeTextarea
                         value={field.value ?? ''}
-                        onChange={field.onChange}
+                        onChange={(ev) => {
+                          if (form.watch('orderStatus') === 'APPROVED') return;
+                          field.onChange(ev.target.value);
+                        }}
                         placeholder={t('orders.deliveryAddress')}
                         autoSize
                         hasError={!!form.formState.errors.deliveryAddress}
@@ -389,7 +446,7 @@ export default function ProductOrderForm({
           <Button
             type="submit"
             title={t('modalSaveBtn')}
-            variant="secondary"
+            variant="save"
             disabled={
               addMutateStatus === 'pending' || updateMutateStatus === 'pending'
             }

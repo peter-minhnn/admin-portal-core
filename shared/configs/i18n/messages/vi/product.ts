@@ -34,6 +34,10 @@ export const ProductMessages = {
     approveOrderSuccess: 'Phê duyệt đơn hàng thành công',
     approveOrderError: 'Phê duyệt đơn hàng thất bại',
     getOrderDetailError: 'Lấy chi tiết đơn hàng thất bại',
+    updateProductStatusQuestion:
+      'Bạn có muốn thay đổi tình trạng mã sản phẩm "{bOpen}{productName} ({productCode}){bClose}"',
+    exportExcelSuccess: 'Xuất dữ liệu thành công',
+    exportExcelError: 'Xuất dữ liệu thất bại',
   },
   deleteProductModalTitle: 'Xóa sản phẩm',
   deleteProductModalDesc: 'Bạn có chắc chắn muốn xóa sản phẩm này?',
@@ -71,6 +75,8 @@ export const ProductMessages = {
       productCodeRequired: 'Vui lòng chọn mã sản phẩm',
       approveReasonRequired: 'Vui lòng nhập lý do phê duyệt',
       cannotDeleteOrderApproved: 'Không thể xóa đơn hàng đã được duyệt',
+      contactName: 'Vui lòng nhập tên người liên hệ',
+      contactNumber: 'Vui lòng nhập số điện thoại người liên hệ',
     },
   },
   actions: 'Hành Động',
@@ -126,7 +132,17 @@ export const ProductMessages = {
     approveReasonPlaceholder: 'Nhập lý do phê duyệt',
     approved: 'Phê Duyệt',
     rejected: 'Từ Chối',
+    contactName: 'Tên Người Nhận',
+    contactNumber: 'Người Nhận (SĐT)',
+    updateOrderModalContent: 'Chi tiết đơn hàng {orderCode}',
+    calculatorTotalPrices: 'Tạm tính',
+    exportExcel: 'Export',
+    approvedBy: 'Người Duyệt',
+    approvedAt: 'Ngày Duyệt',
+    customerName: 'Tên Khách Hàng',
   },
+  productStatus: 'Tình trạng',
+  updateProductStatusTitle: 'Thay đổi tình trạng sản phẩm',
 };
 
 export default ProductMessages;

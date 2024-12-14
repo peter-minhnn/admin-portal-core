@@ -1,6 +1,6 @@
 import { MRT_ColumnDef } from 'material-react-table';
-import { formatCurrency, formatNumber } from '@/shared/lib';
-import { EditIcon, ClipboardPen, TrashIcon } from 'lucide-react';
+import { formatCurrency } from '@/shared/lib';
+import { EditIcon, ClipboardPen } from 'lucide-react';
 import {
   Tooltip,
   TooltipContent,
@@ -55,17 +55,6 @@ export default function useProductOrderColumns({ t }: ProductColumnProps) {
       },
     },
     {
-      accessorKey: 'deliveryAddress', //access nested data with dot notation
-      header: t('orders.deliveryAddress'),
-      muiTableBodyCellProps: {
-        sx: {
-          textAlign: 'left',
-        },
-      },
-      minSize: 400,
-      grow: true,
-    },
-    {
       accessorKey: 'orderDate', //access nested data with dot notation
       header: t('orders.orderDate'),
       muiTableBodyCellProps: {
@@ -75,16 +64,6 @@ export default function useProductOrderColumns({ t }: ProductColumnProps) {
       },
       accessorFn: (dataRow) =>
         formatDate(new Date(dataRow.orderDate), 'yyyy-MM-dd'),
-    },
-    {
-      accessorKey: 'totalAmount', //access nested data with dot notation
-      header: t('orders.totalAmount'),
-      muiTableBodyCellProps: {
-        sx: {
-          textAlign: 'right',
-        },
-      },
-      accessorFn: (dataRow) => formatNumber(dataRow.totalAmount),
     },
     {
       accessorKey: 'totalPrice', //access nested data with dot notation
@@ -102,24 +81,47 @@ export default function useProductOrderColumns({ t }: ProductColumnProps) {
         ),
     },
     {
-      accessorKey: 'discountAmount', //access nested data with dot notation
-      header: t('orders.discountAmount'),
+      accessorKey: 'customerName', //access nested data with dot notation
+      header: t('orders.customerName'),
       muiTableBodyCellProps: {
         sx: {
-          textAlign: 'right',
+          textAlign: 'left',
         },
       },
-      accessorFn: (dataRow) => formatNumber(dataRow.discountAmount),
+      minSize: 300,
+      grow: true,
     },
     {
-      accessorKey: 'discountPercent', //access nested data with dot notation
-      header: t('orders.discountPercent'),
+      accessorKey: 'contactName', //access nested data with dot notation
+      header: t('orders.contactName'),
       muiTableBodyCellProps: {
         sx: {
-          textAlign: 'right',
+          textAlign: 'left',
         },
       },
-      accessorFn: (dataRow) => `${dataRow.discountPercent}%`,
+      minSize: 300,
+      grow: true,
+    },
+    {
+      accessorKey: 'contactNumber', //access nested data with dot notation
+      header: t('orders.contactNumber'),
+      muiTableBodyCellProps: {
+        sx: {
+          textAlign: 'center',
+        },
+      },
+      minSize: 150,
+    },
+    {
+      accessorKey: 'deliveryAddress', //access nested data with dot notation
+      header: t('orders.deliveryAddress'),
+      muiTableBodyCellProps: {
+        sx: {
+          textAlign: 'left',
+        },
+      },
+      minSize: 400,
+      grow: true,
     },
     {
       accessorKey: 'orderStatus',
@@ -160,15 +162,6 @@ export default function useProductOrderColumns({ t }: ProductColumnProps) {
               <TooltipContent>
                 {t('orders.approveOrderModalTitle')}
               </TooltipContent>
-            </Tooltip>
-            <Tooltip>
-              <TooltipTrigger>
-                <TrashIcon
-                  size={25}
-                  onClick={() => setActionType('delete', row)}
-                />
-              </TooltipTrigger>
-              <TooltipContent>{t('deleteProductModalTitle')}</TooltipContent>
             </Tooltip>
           </TooltipProvider>
         </div>

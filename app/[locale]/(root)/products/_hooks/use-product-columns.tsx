@@ -1,6 +1,6 @@
 import { MRT_ColumnDef } from 'material-react-table';
 import { ProductFormData } from '@/types/product.type';
-import { formatCurrency, formatNumber } from '@/shared/lib';
+import { cn, formatCurrency, formatNumber } from '@/shared/lib';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { EditIcon, TrashIcon } from 'lucide-react';
 import { IconCoin } from '@tabler/icons-react';
@@ -11,6 +11,17 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { useActionsButtonStore } from '@/states/common.state';
+import {
+  LocaleCurrencyConst,
+  LocaleCurrencyUnitConst,
+} from '@/shared/constants';
+import {
+  Locale,
+  LocaleCurrency,
+  LocaleUnitCurrency,
+} from '@/shared/configs/i18n/config';
+import { useLocale } from 'next-intl';
+import { Switch } from '@/components/ui/switch';
 
 type ProductColumnProps = {
   t: any;
@@ -18,6 +29,7 @@ type ProductColumnProps = {
 
 export default function useProductColumns({ t }: ProductColumnProps) {
   const { setActionType } = useActionsButtonStore();
+  const locale = useLocale() as Locale;
 
   return [
     {
@@ -62,15 +74,34 @@ export default function useProductColumns({ t }: ProductColumnProps) {
       },
     },
     {
-      accessorKey: 'productPrice',
-      header: t('productPrice'),
+      accessorKey: 'pricing.originalPrice',
+      header: t('originalPrice'),
       muiTableBodyCellProps: {
         sx: {
           textAlign: 'right',
         },
       },
       accessorFn: (dataRow) =>
-        formatCurrency(dataRow.productPrice, 'vi-VN', 'VND'),
+        formatCurrency(
+          Number(dataRow.pricing?.originalPrice ?? 0),
+          LocaleCurrencyConst[locale] as LocaleCurrency,
+          LocaleCurrencyUnitConst[locale] as LocaleUnitCurrency
+        ),
+    },
+    {
+      accessorKey: 'pricing.price',
+      header: t('priceSell'),
+      muiTableBodyCellProps: {
+        sx: {
+          textAlign: 'right',
+        },
+      },
+      accessorFn: (dataRow) =>
+        formatCurrency(
+          Number(dataRow.pricing?.price ?? 0),
+          LocaleCurrencyConst[locale] as LocaleCurrency,
+          LocaleCurrencyUnitConst[locale] as LocaleUnitCurrency
+        ),
     },
     {
       accessorKey: 'productMinQty',
@@ -115,6 +146,22 @@ export default function useProductColumns({ t }: ProductColumnProps) {
       header: t('productDesc'),
       grow: true,
       minSize: 400,
+    },
+    {
+      accessorKey: 'isActive',
+      header: t('productStatus'),
+      minSize: 120,
+      accessorFn: (dataRow) => (
+        <Switch
+          className={cn({
+            '!bg-green-500 hover:bg-green-600': dataRow.isActive,
+          })}
+          checked={dataRow.isActive}
+          onCheckedChange={(checked) =>
+            setActionType('update-status', { ...dataRow, isActive: checked })
+          }
+        />
+      ),
     },
     {
       accessorKey: 'actions',

@@ -8,12 +8,14 @@ import {
   useGetProducts,
   useGetProductTypes,
   useGetUnits,
+  useUpdateProduct,
 } from '../../_hooks/use-queries';
 import { useQueryClient } from '@tanstack/react-query';
 import { FilterIcon, PlusIcon } from 'lucide-react';
 import {
   ProductFilterParams,
   ProductFormData,
+  ProductType,
   UnitType,
 } from '@/types/product.type';
 import {
@@ -75,8 +77,11 @@ export default function ProductList() {
     isRefetching: isRefetchingGetProducts,
   } = useGetProducts(pagination, filterParams);
 
+  const { mutateAsync: updateProduct } = useUpdateProduct(t, closeModal);
+
   const { mutateAsync: deleteProduct, status: deleteMutateStatus } =
     useDeleteProduct(t, closeModal);
+
   const productColumns = useProductColumns({ t });
 
   const table = useMaterialReactTable({
@@ -104,6 +109,7 @@ export default function ProductList() {
           size="sm"
           title={t('addProductModalTitle')}
           onClick={handleAddProduct}
+          variant="blueShine"
         >
           <PlusIcon size={18} />
           {!isMobile ? t('addProductModalTitle') : ''}
@@ -190,6 +196,33 @@ export default function ProductList() {
     [openModal, t]
   );
 
+  const openUpdateStatusConfirmModal = useCallback(
+    (rows: ProductFormData) => {
+      openAlertModal({
+        isOpen: true,
+        title: t('updateProductStatusTitle'),
+        message: t('notifications.updateProductStatusQuestion', {
+          productName: rows.productName,
+          productCode: rows.productCode,
+          bOpen: '<b>',
+          bClose: '</b>',
+        }),
+        onConfirm: async () => {
+          const obj = {
+            ...rows,
+            companyId: rows.companyId ?? 1,
+            isActive: rows.isActive,
+          } as ProductType;
+
+          await updateProduct(obj);
+          closeAlertModal();
+        },
+        onCancel: closeAlertModal,
+      });
+    },
+    [openAlertModal, t, closeAlertModal, updateProduct]
+  );
+
   const onFilters = async (data: ProductFilterParams) => {
     setIsFilterOpened(false);
     setFilterParams({ ...data });
@@ -207,6 +240,9 @@ export default function ProductList() {
       case 'updatePrice':
         handleUpdateProductPrice(actionData as ProductFormData);
         break;
+      case 'update-status':
+        openUpdateStatusConfirmModal(actionData as ProductFormData);
+        break;
       default:
         break;
     }
@@ -216,6 +252,7 @@ export default function ProductList() {
     handleEditProduct,
     handleUpdateProductPrice,
     openDeleteConfirmModal,
+    openUpdateStatusConfirmModal,
   ]);
 
   useEffect(() => {

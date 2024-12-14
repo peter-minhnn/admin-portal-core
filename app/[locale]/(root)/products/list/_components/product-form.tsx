@@ -154,6 +154,7 @@ export default function ProductForm({
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
+                    disabled={modalType === 'edit'}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -291,7 +292,7 @@ export default function ProductForm({
           <Button
             type="submit"
             title={t('modalSaveBtn')}
-            variant="secondary"
+            variant="save"
             disabled={
               addMutateStatus === 'pending' || updateMutateStatus === 'pending'
             }
