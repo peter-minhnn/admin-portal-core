@@ -17,7 +17,7 @@ export const apiRoutes = {
     getProducts: (
       params: ProductFilterParams,
       page: number = 1,
-      take: number = 50
+      take: number = PAGE_SIZE
     ) =>
       `/product${createQueryParams({ ...params, order: 'DESC', page, take })}`,
     getProductPrices: (product: ProductPriceFilterParams) =>
@@ -49,7 +49,7 @@ export const apiRoutes = {
     getOrders: (
       params: ProductOrderFilterFormData,
       page: number = 1,
-      take: number = 50
+      take: number = PAGE_SIZE
     ) => `/order${createQueryParams({ ...params, order: 'DESC', page, take })}`,
     getCustomers: (pagination: PaginationState) =>
       `/customer${createQueryParams({ order: 'DESC', page: pagination.pageIndex, take: pagination.pageSize })}`,
@@ -59,5 +59,10 @@ export const apiRoutes = {
   uploadFile: {
     post: '/files/upload',
     get: (path: string) => `/files/${path}`,
+  },
+  customers: {
+    customer: '/customer',
+    getCustomers: (page: number = 1, take: number = PAGE_SIZE) =>
+      `/customer${createQueryParams({ order: 'DESC', page, take })}`,
   },
 };

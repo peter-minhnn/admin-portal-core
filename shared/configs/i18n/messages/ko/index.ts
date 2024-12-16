@@ -6,6 +6,7 @@ import ProductMessages from './product';
 import CommonMessages from './common';
 import LocaleSwitcherMessages from './locales';
 import RoleMessages from './roles';
+import CustomerMessages from './customer';
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
@@ -17,4 +18,5 @@ export default {
   CommonMessages,
   LocaleSwitcherMessages,
   RoleMessages,
+  CustomerMessages,
 };

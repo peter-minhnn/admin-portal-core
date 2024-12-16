@@ -1,4 +1,4 @@
-export const RoleMessages = {
+const RoleMessages = {
   btnAddNewRole: 'Thêm quyền mới',
   totalUsers: 'Tổng số {userCount} người dùng',
   addUser: 'Thêm người dùng',

@@ -1,4 +1,4 @@
-export const MenuMessages = {
+const MenuMessages = {
   dashboard: '대시보드',
   products: '제품',
   productList: '제품 목록',
@@ -11,6 +11,7 @@ export const MenuMessages = {
   datePicker: '날짜 선택기',
   productPrice: '제품 가격',
   productOrder: '주문',
+  customers: '고객',
 };
 
 export default MenuMessages;

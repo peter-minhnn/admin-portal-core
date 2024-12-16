@@ -292,7 +292,6 @@ export default function ProductOrderForm({
                           }}
                           defaultValue={field.value}
                           value={field.value}
-                          disabled={field.value === 'APPROVED'}
                         >
                           <FormControl>
                             <SelectTrigger
@@ -331,7 +330,6 @@ export default function ProductOrderForm({
                           onValueChange={field.onChange}
                           defaultValue={field.value}
                           value={field.value}
-                          disabled={form.watch('orderStatus') === 'NEW'}
                         >
                           <FormControl>
                             <SelectTrigger

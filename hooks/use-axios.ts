@@ -22,8 +22,8 @@ export const useAxios = {
       headers: { 'Content-Type': 'application/json' },
     });
   },
-  delete: async <TData, TResponse>(url: string) => {
-    return await axiosConfig.delete<TData, TResponse>(url);
+  delete: async <TData, TResponse, T>(url: string) => {
+    return await axiosConfig.delete<TData, TResponse, T>(url);
   },
   getResponse: <T>(
     response: BaseResponseType<T>,

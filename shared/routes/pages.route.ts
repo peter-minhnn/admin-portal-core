@@ -24,4 +24,5 @@ export const pageRoutes = {
     price: '/products/prices',
     order: '/products/orders',
   },
+  customers: '/customers',
 };

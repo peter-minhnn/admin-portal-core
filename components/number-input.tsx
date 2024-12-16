@@ -23,6 +23,7 @@ type TextInputProps = {
   disabled?: boolean;
   hasError?: boolean;
   className?: string;
+  suppressEdit?: boolean;
 };
 
 const NumberFormatter = {
@@ -73,6 +74,7 @@ export default function NumberInput(props: Readonly<TextInputProps>) {
                     placeholder={props.placeholder}
                     type="text"
                     onChange={(ev) => {
+                      if (props.suppressEdit) return;
                       setValue(ev.target.value);
                       handleChange(_change, ev.target.value);
                     }}
@@ -95,6 +97,7 @@ export default function NumberInput(props: Readonly<TextInputProps>) {
                     placeholder={props.placeholder}
                     type="text"
                     onChange={(ev) => {
+                      if (props.suppressEdit) return;
                       setValue(ev.target.value);
                       handleChange(_change, ev.target.value);
                     }}

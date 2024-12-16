@@ -40,6 +40,8 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { download, generateCsv, mkConfig } from 'export-to-csv';
 import { convertToOrderExcelData } from '@/app/[locale]/(root)/products/orders/product-order.data';
+import get from 'lodash/get';
+import { RESPONSE_OBJ_KEY } from '@/shared/constants';
 
 const csvConfig = mkConfig({
   fieldSeparator: ',',
@@ -326,7 +328,16 @@ export default function ProductOrderList() {
 
   useEffect(() => {
     if (isFetchingOrders || ordersData?.type === 'error') return;
-    setOrders(ordersData?.result.data);
+
+    const orders = get(ordersData?.result, RESPONSE_OBJ_KEY, null);
+    setOrders({
+      data: get(orders, 'data', []),
+      meta: get(orders, 'meta', {
+        take: PAGE_SIZE,
+        page: 0,
+        pageCount: 0,
+      }),
+    });
   }, [ordersData, isFetchingOrders]);
 
   useEffect(() => {

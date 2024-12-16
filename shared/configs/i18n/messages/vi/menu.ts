@@ -11,6 +11,7 @@ export const MenuMessages = {
   datePicker: 'Date Picker',
   productPrice: 'Giá Sản Phẩm',
   productOrder: 'Đặt Hàng',
+  customers: 'Khách Hàng',
 };
 
 export default MenuMessages;

@@ -24,3 +24,9 @@ export enum StatusCodes {
   SERVICE_UNAVAILABLE = 503,
   GATEWAY_TIMEOUT = 504,
 }
+
+export enum Gender {
+  MALE = 0,
+  FEMALE = 1,
+  OTHER = 2,
+}

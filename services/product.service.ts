@@ -188,10 +188,11 @@ export const getCustomers = async (pagination: PaginationState) => {
 
 export const addOrder = async (data: OrderRequestType) => {
   try {
-    const response = await globalAxiosInstance.post<null, BaseResponseType>(
-      apiRoutes.orders.order,
-      data
-    );
+    const response = await useAxios.post<
+      null,
+      BaseResponseType,
+      OrderRequestType
+    >(apiRoutes.orders.order, data);
     return handleApiResponse<OrderRequestType>(response);
   } catch (e) {
     return handleApiCatchResponse(e);
@@ -200,10 +201,11 @@ export const addOrder = async (data: OrderRequestType) => {
 
 export const updateOrder = async (data: OrderRequestType) => {
   try {
-    const response = await globalAxiosInstance.put<null, BaseResponseType>(
-      apiRoutes.orders.order,
-      data
-    );
+    const response = await useAxios.put<
+      null,
+      BaseResponseType,
+      OrderRequestType
+    >(apiRoutes.orders.order, data);
     return handleApiResponse<ProductOrderType>(response);
   } catch (e) {
     return handleApiCatchResponse(e);
@@ -212,9 +214,11 @@ export const updateOrder = async (data: OrderRequestType) => {
 
 export const deleteOrder = async (orderCode: string) => {
   try {
-    const response = await globalAxiosInstance.delete<null, BaseResponseType>(
-      apiRoutes.orders.orderByCode(orderCode)
-    );
+    const response = await useAxios.delete<
+      null,
+      BaseResponseType,
+      { orderCode: string }
+    >(apiRoutes.orders.orderByCode(orderCode));
     return handleApiResponse<ProductType>(response);
   } catch (e) {
     return handleApiCatchResponse(e);
@@ -223,9 +227,11 @@ export const deleteOrder = async (orderCode: string) => {
 
 export const getOrderDetail = async (orderCode: string) => {
   try {
-    const response = await globalAxiosInstance.get<null, BaseResponseType>(
-      apiRoutes.orders.orderByCode(orderCode)
-    );
+    const response = await useAxios.get<
+      null,
+      BaseResponseType,
+      { orderCode: string }
+    >(apiRoutes.orders.orderByCode(orderCode));
     return handleApiResponse<ProductOrderType>(response);
   } catch (e) {
     return handleApiCatchResponse(e);
@@ -234,10 +240,11 @@ export const getOrderDetail = async (orderCode: string) => {
 
 export const approveOrder = async (data: ApproveOrderType) => {
   try {
-    const response = await globalAxiosInstance.put<null, BaseResponseType>(
-      apiRoutes.orders.approve,
-      data
-    );
+    const response = await useAxios.put<
+      null,
+      BaseResponseType,
+      ApproveOrderType
+    >(apiRoutes.orders.approve, data);
     return handleApiResponse<any>(response);
   } catch (e) {
     return handleApiCatchResponse(e);

@@ -7,6 +7,7 @@ const MetaDataMessages = {
   rolePermissionTitle: '역할 및 권한 관리',
   productPriceTitle: '제품 가격 목록',
   productOrderTitle: '주문 목록',
+  customerTitle: '고객 목록',
 };
 
 export default MetaDataMessages;

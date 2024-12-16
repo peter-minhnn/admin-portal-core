@@ -8,6 +8,7 @@ import {
   IconPackages,
   IconSettings,
   IconShield,
+  IconUser,
 } from '@tabler/icons-react';
 import { ReactElement } from 'react';
 import { pageRoutes } from '@/shared/routes/pages.route';
@@ -74,6 +75,12 @@ export const sideLinks = (t: any, locale: string): SideLink[] => {
           icon: <IconComponents size={18} />,
         },
       ],
+    },
+    {
+      title: t('customers'),
+      label: '',
+      href: path + pageRoutes.customers,
+      icon: <IconUser size={18} />,
     },
   ];
 };

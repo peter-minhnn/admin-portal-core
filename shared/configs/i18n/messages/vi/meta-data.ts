@@ -7,6 +7,7 @@ const MetaDataMessages = {
   rolePermissionTitle: 'Quản Lý Vai Trò & Quyền',
   productPriceTitle: 'Danh Sách Giá Sản Phẩm',
   productOrderTitle: 'Danh Sách Đơn Hàng',
+  customerTitle: 'Danh Sách Khách Hàng',
 };
 
 export default MetaDataMessages;

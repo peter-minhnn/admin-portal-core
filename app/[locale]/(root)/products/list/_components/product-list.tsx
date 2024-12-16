@@ -12,6 +12,7 @@ import {
 } from '../../_hooks/use-queries';
 import { useQueryClient } from '@tanstack/react-query';
 import { FilterIcon, PlusIcon } from 'lucide-react';
+import get from 'lodash/get';
 import {
   ProductFilterParams,
   ProductFormData,
@@ -38,6 +39,7 @@ import { useModal } from '@/hooks/use-modal';
 import { useAlertModal } from '@/hooks/use-alert-modal';
 import { useActionsButtonStore } from '@/states/common.state';
 import { Locale } from '@/shared/configs/i18n/config';
+import { RESPONSE_OBJ_KEY } from '@/shared/constants';
 
 export default function ProductList() {
   const t = useTranslations('ProductMessages');
@@ -257,7 +259,15 @@ export default function ProductList() {
 
   useEffect(() => {
     if (isFetchingProducts || productsData?.type === 'error') return;
-    setProducts(productsData?.result.data);
+    const products = get(productsData?.result, RESPONSE_OBJ_KEY, null);
+    setProducts({
+      data: get(products, 'data', []),
+      meta: get(products, 'meta', {
+        take: PAGE_SIZE,
+        page: 0,
+        pageCount: 0,
+      }),
+    });
   }, [productsData, isFetchingProducts]);
 
   useEffect(() => {

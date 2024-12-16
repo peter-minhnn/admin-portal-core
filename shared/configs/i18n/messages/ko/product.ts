@@ -1,4 +1,4 @@
-export const ProductMessages = {
+const ProductMessages = {
   title: '제품 목록',
   description:
     '제품 페이지는 특정 제품에 대한 자세한 정보를 제공하도록 설계된 전자 상거래 웹사이트의 중요한 구성 요소입니다.',

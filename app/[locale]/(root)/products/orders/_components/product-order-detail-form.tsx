@@ -218,7 +218,7 @@ const OrderDetailForm = ({
                           ?.quantity
                       }
                       disabled={modalType === 'edit'}
-                      // disabled={form.watch('orderStatus') === 'APPROVED'}
+                      suppressEdit={modalType === 'edit'}
                     />
                   </div>
                   <div className="mb-2 w-full min-h-fit md:min-h-[90px]">
