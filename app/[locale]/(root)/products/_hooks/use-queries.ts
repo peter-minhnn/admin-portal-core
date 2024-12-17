@@ -230,7 +230,7 @@ export const useGetOrders = (
 
 export const useGetCustomers = (
   pagination: PaginationState,
-  type: 'list' | 'dialog'
+  type: 'list' | 'dialog' = 'list'
 ) => {
   return useQuery({
     queryKey: ['customers', pagination],
