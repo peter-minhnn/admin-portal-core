@@ -126,7 +126,7 @@ export default function ProductForm({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-3"
+        className="flex flex-col gap-3 mt-4"
       >
         <div className="flex flex-col gap-2">
           <FormField

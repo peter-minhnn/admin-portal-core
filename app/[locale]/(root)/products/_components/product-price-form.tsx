@@ -61,7 +61,7 @@ export default function ProductPriceForm({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-4"
+        className="flex flex-col gap-4 mt-4"
       >
         <NumberInput
           form={form}
@@ -69,6 +69,7 @@ export default function ProductPriceForm({
           label={t('priceSell')}
           namespace="ProductMessages"
           placeholder={t('priceSell')}
+          loading={priceStatus === 'pending'}
         />
         <NumberInput
           form={form}
@@ -76,6 +77,7 @@ export default function ProductPriceForm({
           label={t('originalPrice')}
           namespace="ProductMessages"
           placeholder={t('originalPrice')}
+          loading={priceStatus === 'pending'}
         />
         <div className="flex flex-row justify-end gap-2">
           <Button
@@ -83,7 +85,8 @@ export default function ProductPriceForm({
             title={t('modalCancelBtn')}
             variant="outline"
             onClick={closeModal}
-            disabled={status === 'pending'}
+            disabled={priceStatus === 'pending' || status === 'pending'}
+            loading={priceStatus === 'pending'}
           >
             <IconX size={16} />
             {tCommon('btnCancel')}
@@ -92,8 +95,8 @@ export default function ProductPriceForm({
             type="submit"
             title={t('modalSaveBtn')}
             variant="save"
-            disabled={status === 'pending'}
-            loading={status === 'pending'}
+            disabled={priceStatus === 'pending' || status === 'pending'}
+            loading={priceStatus === 'pending'}
           >
             <IconDeviceFloppy size={16} />
             {tCommon('btnSave')}

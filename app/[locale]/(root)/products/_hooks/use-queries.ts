@@ -228,11 +228,15 @@ export const useGetOrders = (
   });
 };
 
-export const useGetCustomers = (pagination: PaginationState) => {
+export const useGetCustomers = (
+  pagination: PaginationState,
+  type: 'list' | 'dialog'
+) => {
   return useQuery({
     queryKey: ['customers', pagination],
     queryFn: async () => await getCustomers(pagination),
     refetchOnWindowFocus: false,
+    enabled: type === 'list',
   });
 };
 

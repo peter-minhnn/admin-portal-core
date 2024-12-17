@@ -10,6 +10,7 @@ import {
 import { Input } from '@/components/ui/input'; // Shandcn UI Input
 import { UseFormReturn } from 'react-hook-form';
 import { cn } from '@/shared/lib';
+import { Skeleton } from '@/components/ui/skeleton';
 
 type TextInputProps = {
   form: UseFormReturn<any>;
@@ -24,6 +25,7 @@ type TextInputProps = {
   hasError?: boolean;
   className?: string;
   suppressEdit?: boolean;
+  loading?: boolean;
 };
 
 const NumberFormatter = {
@@ -92,7 +94,8 @@ export default function NumberInput(props: Readonly<TextInputProps>) {
             {!props.editInline && (
               <>
                 <FormLabel>{props.label}</FormLabel>
-                <FormControl>
+                {props.loading && <Skeleton className="h-9 w-full" />}
+                <FormControl className={cn({ hidden: props.loading })}>
                   <Input
                     placeholder={props.placeholder}
                     type="text"

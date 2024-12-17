@@ -48,15 +48,15 @@ export default function useProductColumns({ t }: ProductColumnProps) {
         <div className="w-full flex justify-center">
           <Avatar className="w-16 h-16">
             <AvatarImage
-              src={String(dataRow.productImage) || '/images/placeholder.png'}
-              srcSet={String(dataRow.productImage) || '/images/placeholder.png'}
-              alt={String(dataRow.productName) || 'Product Image'}
+              src={dataRow.productImage ?? '/images/placeholder.png'}
+              srcSet={dataRow.productImage ?? '/images/placeholder.png'}
+              alt={dataRow.productImage ?? 'Product Image'}
               className="size-full rounded-[inherit] object-cover"
             />
             <AvatarFallback>
               <AvatarImage
                 src={'/images/placeholder.png'}
-                alt={String(dataRow.productName) || 'Product Image'}
+                alt={dataRow.productName || 'Product Image'}
                 className="size-full rounded-[inherit] object-cover"
               />
             </AvatarFallback>

@@ -29,7 +29,7 @@ import {
   useGetOrderDetail,
   useUpdateOrder,
 } from '../../_hooks/use-queries';
-import { cn, generateCode } from '@/shared/lib';
+import { cn } from '@/shared/lib';
 import { OrderRequestType, ProductOrderFormData } from '@/types/order.type';
 import CustomersSelect from '@/components/customers-select';
 import NumberInput from '@/components/number-input';
@@ -117,8 +117,7 @@ export default function ProductOrderForm({
     const obj: OrderRequestType = {
       ...data,
       customerId: Number(data.customerId),
-      orderCode:
-        modalType === 'edit' ? String(data.orderCode ?? '') : generateCode(),
+      orderCode: modalType === 'edit' ? String(data.orderCode ?? '') : '',
       orderDetails: data.orderDetails.map((item) => ({
         productCode: item.productCode,
         unitCode: item.unitCode,
@@ -162,7 +161,7 @@ export default function ProductOrderForm({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-3"
+        className="flex flex-col gap-3 mt-4"
       >
         <ScrollArea className="w-full lg:h-[500px] px-2" ref={scrollAreaRef}>
           <Accordion

@@ -52,7 +52,7 @@ const csvConfig = mkConfig({
 export default function ProductOrderList() {
   const t = useTranslations('ProductMessages');
   const tCommon = useTranslations('CommonMessages');
-  const { isClosed, openModal, closeModal } = useModal();
+  const { isOpen, isClosed, openModal, closeModal } = useModal();
   const { openAlertModal, closeAlertModal } = useAlertModal();
   const isMobile = useIsMobile();
   const { width } = useWindowSize();
@@ -90,7 +90,6 @@ export default function ProductOrderList() {
     isFetching: isFetchingOrders,
     data: ordersData,
     refetch: refetchOrders,
-    isRefetching: isRefetchingGetOrders,
   } = useGetOrders(pagination, filterParams);
 
   const { mutateAsync: deleteOrder, status: deleteOrderStatus } =
@@ -113,8 +112,7 @@ export default function ProductOrderList() {
     onPaginationChange: setPagination, //hoist pagination state to your state when it changes internally
     state: {
       pagination,
-      isLoading: isFetchingOrders,
-      showProgressBars: isRefetchingGetOrders,
+      isLoading: isFetchingOrders && !isOpen,
     }, //pass the pagination state to the table
     initialState: {
       columnSizing: {

@@ -16,6 +16,16 @@ const CustomerMessages = {
   actions: 'Hành động',
   editCustomerModalTitle: 'Cập nhật thông tin khách hàng',
   status: 'Trạng thái',
+  notifications: {
+    updateCustomerSuccess: 'Cập nhật thông tin khách hàng thành công',
+    updateCustomerError: 'Cập nhật thông tin khách hàng thất bại',
+  },
+  male: 'Nam',
+  female: 'Nữ',
+  other: 'Khác',
+  active: 'Kích hoạt',
+  inactive: 'Khóa tài khoản',
+  editStatusCustomerModalTitle: 'Cập nhật trạng thái khách hàng',
 };
 
 export default CustomerMessages;

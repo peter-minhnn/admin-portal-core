@@ -43,12 +43,12 @@ export function ProductOrderApprove({
   };
 
   return (
-    <div className="flex flex-col gap-6 space-y-2 mt-2">
+    <div className="flex flex-col gap-6 space-y-2 mt-4">
       <RadioGroup
         defaultValue={orderStatus}
         onValueChange={(value) => {
           setOrderStatus(value as OrderStatus);
-          if (value === 'Y') {
+          if (value === 'APPROVED') {
             setApprovedDesc('');
             setIsSaved(false);
           }

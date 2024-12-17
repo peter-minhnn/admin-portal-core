@@ -44,7 +44,7 @@ import { RESPONSE_OBJ_KEY } from '@/shared/constants';
 export default function ProductList() {
   const t = useTranslations('ProductMessages');
   const tCommon = useTranslations('CommonMessages');
-  const { openModal, closeModal, isClosed } = useModal();
+  const { openModal, closeModal, isClosed, isOpen } = useModal();
   const { openAlertModal, closeAlertModal } = useAlertModal();
   const isMobile = useIsMobile();
   const { width } = useWindowSize();
@@ -76,7 +76,6 @@ export default function ProductList() {
     isFetching: isFetchingProducts,
     data: productsData,
     refetch: refetchProducts,
-    isRefetching: isRefetchingGetProducts,
   } = useGetProducts(pagination, filterParams);
 
   const { mutateAsync: updateProduct } = useUpdateProduct(t, closeModal);
@@ -98,8 +97,7 @@ export default function ProductList() {
     onPaginationChange: setPagination, //hoist pagination state to your state when it changes internally
     state: {
       pagination,
-      isLoading: isFetchingProducts,
-      showProgressBars: isRefetchingGetProducts,
+      isLoading: isFetchingProducts && !isOpen,
     }, //pass the pagination state to the table
     initialState: {
       columnSizing: { 'mrt-row-actions': 120 },

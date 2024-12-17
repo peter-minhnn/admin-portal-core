@@ -34,7 +34,7 @@ import { Locale } from '@/shared/configs/i18n/config';
 export default function ProductPriceList() {
   const t = useTranslations('ProductMessages');
   const tCommon = useTranslations('CommonMessages');
-  const { openModal, isClosed } = useModal();
+  const { openModal, isClosed, isOpen } = useModal();
   const { width } = useWindowSize();
   const isUseProductPriceMobile = useIsMobile();
   const queryClient = useQueryClient();
@@ -86,8 +86,7 @@ export default function ProductPriceList() {
     onPaginationChange: setPagination, //hoist pagination state to your state when it changes internally
     state: {
       pagination,
-      isLoading: isFetchingPrices || isRefetchingPrices,
-      showProgressBars: isFetchingPrices || isRefetchingPrices,
+      isLoading: (isFetchingPrices || isRefetchingPrices) && !isOpen,
     }, //pass the pagination state to the table
     renderTopToolbarCustomActions: () => (
       <div className="flex justify-start gap-2 w-full">

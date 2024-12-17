@@ -11,7 +11,7 @@ import { useActionsButtonStore } from '@/states/common.state';
 import { CustomerType } from '@/types/customer.type';
 import { Switch } from '@/components/ui/switch';
 import { cn } from '@/shared/lib';
-import { format } from 'date-fns';
+import { Gender } from '@/shared/enums';
 
 type CustomerColumnProps = {
   t: any;
@@ -19,6 +19,12 @@ type CustomerColumnProps = {
 
 export default function useCustomerColumns({ t }: CustomerColumnProps) {
   const { setActionType } = useActionsButtonStore();
+
+  const handleSetGenderType = (gender: number) => {
+    if (gender === Gender.MALE) return t('male');
+    if (gender === Gender.FEMALE) return t('female');
+    return t('other');
+  };
 
   return [
     {
@@ -28,9 +34,9 @@ export default function useCustomerColumns({ t }: CustomerColumnProps) {
         <div className="w-full flex justify-center">
           <Avatar className="w-16 h-16">
             <AvatarImage
-              src={String(dataRow.avatar) || '/images/placeholder.png'}
-              srcSet={String(dataRow.avatar) || '/images/placeholder.png'}
-              alt={String(dataRow.avatar) || dataRow.firstName}
+              src={dataRow.avatar || '/images/placeholder.png'}
+              srcSet={dataRow.avatar || '/images/placeholder.png'}
+              alt={dataRow.avatar || dataRow.firstName}
               className="size-full rounded-[inherit] object-cover"
             />
             <AvatarFallback>
@@ -83,6 +89,7 @@ export default function useCustomerColumns({ t }: CustomerColumnProps) {
     {
       accessorKey: 'gender',
       header: t('gender'),
+      accessorFn: (dataRow) => handleSetGenderType(dataRow.gender),
       muiTableBodyCellProps: {
         sx: {
           textAlign: 'center',
@@ -92,10 +99,9 @@ export default function useCustomerColumns({ t }: CustomerColumnProps) {
     {
       accessorKey: 'birthDate',
       header: t('birthDate'),
-      accessorFn: (dataRow) =>
-        dataRow.birthDate
-          ? format(new Date(dataRow.birthDate), 'dd/MM/yyyy')
-          : '',
+      accessorFn: () => {
+        return null;
+      },
       muiTableBodyCellProps: {
         sx: {
           textAlign: 'center',

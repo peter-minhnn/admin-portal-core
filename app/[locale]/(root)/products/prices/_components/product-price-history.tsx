@@ -54,20 +54,20 @@ const ProductPriceHistory = memo(
     }, [page]);
 
     const memoizedEmptyList: ReactElement | null = useMemo(() => {
-      if (products.length) return null;
+      if (products.length || status === 'pending') return null;
 
       return (
         <h1 className="text-lg font-semibold text-center w-full mb-4">
           No result
         </h1>
       );
-    }, [products]);
+    }, [products, status]);
 
     const memoizedProducts: ReactElement | null = useMemo(() => {
       if (!products.length) return null;
 
       return (
-        <div className="flex w-full flex-col items-center gap-4">
+        <div className="flex w-full flex-col gap-4">
           {products?.map((item) => (
             <div
               key={item.id}
@@ -151,13 +151,13 @@ const ProductPriceHistory = memo(
     }, [productsDetail, status, page, isMounted]);
 
     useEffect(() => {
-      refetch();
+      refetch().finally();
     }, [page, refetch]);
 
     return (
       isMounted && (
         <div
-          className="max-h-[1000px] w-full overflow-y-auto"
+          className="max-h-[1000px] w-full overflow-y-auto mt-4"
           key={productCode}
         >
           {memoizedProducts}

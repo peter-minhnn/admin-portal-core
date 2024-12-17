@@ -1,14 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import get from 'lodash/get';
-// import {useQueryClient} from "@tanstack/react-query";
-// import {useModal} from "@/hooks/use-modal";
-// import {useAlertModal} from "@/hooks/use-alert-modal";
-// import {useIsMobile} from "@/hooks/use-mobile";
-// import {useWindowSize} from "@/hooks/use-window-size";
-// import {useActionsButtonStore} from "@/states/common.state";
+import { useModal } from '@/hooks/use-modal';
+import { useWindowSize } from '@/hooks/use-window-size';
+import { useActionsButtonStore } from '@/states/common.state';
 import { Locale } from '@/shared/configs/i18n/config';
 import { PAGE_SIZE } from '@/shared/enums';
 import { ListResponseType, PaginationState } from '@/types/common.type';
@@ -19,16 +16,14 @@ import { useMaterialReactTable } from 'material-react-table';
 import { DataTableProps } from '@/shared/data-table-props';
 import useCustomerColumns from '@/app/[locale]/(root)/customers/_hooks/use-customer-columns';
 import DataTable from '@/components/data-table';
+import CustomerForm from '@/app/[locale]/(root)/customers/_components/customer-form';
+import { CustomerActive } from '@/app/[locale]/(root)/customers/_components/customer-active';
 
 export default function CustomerList() {
   const t = useTranslations('CustomerMessages');
-  // const tCommon = useTranslations('CommonMessages');
-  // const { openModal, closeModal, isClosed } = useModal();
-  // const { openAlertModal, closeAlertModal } = useAlertModal();
-  // const isMobile = useIsMobile();
-  // const { width } = useWindowSize();
-  // const queryClient = useQueryClient();
-  // const { actionType, actionData, setActionType } = useActionsButtonStore();
+  const { openModal, isClosed, isOpen } = useModal();
+  const { width } = useWindowSize();
+  const { actionType, actionData, setActionType } = useActionsButtonStore();
   const locale = useLocale() as Locale;
 
   const [customers, setCustomers] = useState<ListResponseType<CustomerType>>({
@@ -47,12 +42,15 @@ export default function CustomerList() {
   const {
     data: customerData,
     isFetching,
-    isRefetching,
+    refetch,
     status,
-  } = useGetCustomers({
-    pageIndex: pagination.pageIndex + 1,
-    pageSize: pagination.pageSize,
-  });
+  } = useGetCustomers(
+    {
+      pageIndex: pagination.pageIndex + 1,
+      pageSize: pagination.pageSize,
+    },
+    isOpen ? 'dialog' : 'list'
+  );
 
   const customerColumns = useCustomerColumns({ t });
 
@@ -68,13 +66,43 @@ export default function CustomerList() {
     onPaginationChange: setPagination, //hoist pagination state to your state when it changes internally
     state: {
       pagination,
-      isLoading: isFetching,
-      showProgressBars: isRefetching,
+      isLoading: isFetching && !isOpen,
     }, //pass the pagination state to the table
     initialState: {
       columnSizing: { 'mrt-row-actions': 120 },
     },
   });
+
+  const openEditCustomerModal = useCallback(() => {
+    openModal({
+      isOpen: true,
+      title: t('editCustomerModalTitle'),
+      description: '',
+      modalContent: <CustomerForm rowData={actionData} />,
+    });
+  }, [actionData, openModal, t]);
+
+  const openActiveCustomerModal = useCallback(() => {
+    openModal({
+      isOpen: true,
+      title: t('editStatusCustomerModalTitle'),
+      description: '',
+      modalContent: <CustomerActive rowData={actionData} />,
+    });
+  }, [actionData, openModal, t]);
+
+  const handleActionClick = useCallback(() => {
+    switch (actionType) {
+      case 'edit':
+        openEditCustomerModal();
+        break;
+      case 'update-status':
+        openActiveCustomerModal();
+        break;
+      default:
+        break;
+    }
+  }, [actionType, openEditCustomerModal, openActiveCustomerModal]);
 
   useEffect(() => {
     if (status === 'pending' || customerData?.type === 'error') {
@@ -99,6 +127,28 @@ export default function CustomerList() {
       }),
     });
   }, [customerData, status]);
+
+  useEffect(() => {
+    refetch().finally();
+  }, [pagination, isClosed, refetch]);
+
+  useEffect(() => {
+    if (width > 1280) {
+      table.initialState.columnPinning = {
+        left: ['mrt-row-pin'],
+        right: ['actions'],
+      };
+    } else {
+      table.initialState.columnPinning = {};
+    }
+  }, [width, table]);
+
+  useEffect(() => {
+    if (actionType) {
+      handleActionClick();
+      setActionType('', null);
+    }
+  }, [actionType, setActionType, handleActionClick]);
 
   return <DataTable table={table} />;
 }
