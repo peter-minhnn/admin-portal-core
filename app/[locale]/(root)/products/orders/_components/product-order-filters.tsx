@@ -70,10 +70,13 @@ export default function ProductOrderFilters({
     defaultValues: initialFilters ?? defaultFormValues,
   });
 
-  const { data: customersData, status: customerStatus } = useGetCustomers({
-    pageIndex: page + 1,
-    pageSize: PAGE_SIZE,
-  });
+  const { data: customersData, status: customerStatus } = useGetCustomers(
+    {
+      pageIndex: page + 1,
+      pageSize: PAGE_SIZE,
+    },
+    'list'
+  );
 
   const deliveryOrderOptions = DeliveryOrderData('search').filter(
     (v) => v.isActive
