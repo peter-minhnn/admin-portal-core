@@ -28,6 +28,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { useIsMounted } from '@/hooks/use-is-mounted';
 import { Label } from '@/components/ui/label';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface ProductPriceHistoryProps {
   productCode: string;
@@ -63,11 +64,33 @@ const ProductPriceHistory = memo(
       );
     }, [products, status]);
 
+    const memoizedProductSkeletons: ReactElement | null = useMemo(() => {
+      if (status === 'success') return null;
+
+      return (
+        <div className="flex flex-col gap-3">
+          {[...Array(5)].map((_) => (
+            <div key={_} className="flex w-full flex-col gap-4">
+              <div className="border border-input rounded-2xl flex flex-col w-full p-4 gap-3">
+                <div className="flex flex-row justify-between gap-2">
+                  <Skeleton className="w-60 h-4" />
+                </div>
+                <div className="flex flex-col items-start gap-2">
+                  <Skeleton className="w-full h-4" />
+                  <Skeleton className="w-full h-4" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    }, [status]);
+
     const memoizedProducts: ReactElement | null = useMemo(() => {
       if (!products.length) return null;
 
       return (
-        <div className="flex w-full flex-col gap-4">
+        <div className="flex w-full flex-col gap-4 pb-20 md:pb-0">
           {products?.map((item) => (
             <div
               key={item.id}
@@ -161,6 +184,7 @@ const ProductPriceHistory = memo(
           key={productCode}
         >
           {memoizedProducts}
+          {memoizedProductSkeletons}
           {memoizedEmptyList}
         </div>
       )

@@ -41,7 +41,7 @@ export default function useProductPriceColumns({ t }: ProductPriceColumnProps) {
       modalContent: (
         <ProductPriceHistory productCode={productCode} unitCode={unitCode} />
       ),
-      customSize: '!h-screen lg:!max-w-[800px]',
+      customSize: '!h-screen lg:!max-w-[800px] overflow-hidden',
     });
   };
 
