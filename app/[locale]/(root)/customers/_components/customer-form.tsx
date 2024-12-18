@@ -140,14 +140,14 @@ export default function CustomerForm({ rowData }: Readonly<CustomerFormProps>) {
             />
             <FormField
               control={form.control}
-              name="birthDate"
+              name="email"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>{t('birthDate')}</FormLabel>
+                  <FormLabel>{t('email')}</FormLabel>
                   <Input
                     type="text"
                     value={field.value ?? ''}
-                    placeholder={t('birthDate')}
+                    placeholder={t('email')}
                     disabled
                   />
                 </FormItem>

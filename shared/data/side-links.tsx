@@ -1,19 +1,16 @@
 import {
   IconComponents,
-  IconLayoutDashboard,
   IconInputAi,
   IconTable,
   IconBoxMultiple,
   IconCalendar,
-  IconPackages,
   IconSettings,
-  IconShield,
-  IconUser,
 } from '@tabler/icons-react';
 import { ReactElement } from 'react';
 import { pageRoutes } from '@/shared/routes/pages.route';
 import { useUserStore } from '@/states/common.state';
 import { useLocale, useTranslations } from 'next-intl';
+import Image from 'next/image';
 
 export interface NavLink {
   title: string;
@@ -48,31 +45,66 @@ export const sideLinks = (t: any, locale: string): SideLink[] => {
       title: t('dashboard'),
       label: '',
       href: path + pageRoutes.dashboard,
-      icon: <IconLayoutDashboard size={18} />,
+      icon: (
+        <Image
+          src="/images/menus/dashboard.svg"
+          alt=""
+          width={18}
+          height={18}
+        />
+      ),
     },
     {
       title: t('products'),
       label: '',
       href: '',
-      icon: <IconPackages size={18} />,
+      icon: (
+        <Image
+          src="/images/menus/management.svg"
+          alt=""
+          width={18}
+          height={18}
+        />
+      ),
       sub: [
         {
           title: t('productList'),
           label: '',
           href: path + pageRoutes.products.list,
-          icon: <IconComponents size={18} />,
+          icon: (
+            <Image
+              src="/images/menus/product.svg"
+              alt=""
+              width={18}
+              height={18}
+            />
+          ),
         },
         {
           title: t('productPrice'),
           label: '',
           href: path + pageRoutes.products.price,
-          icon: <IconComponents size={18} />,
+          icon: (
+            <Image
+              src="/images/menus/price.svg"
+              alt=""
+              width={18}
+              height={18}
+            />
+          ),
         },
         {
           title: t('productOrder'),
           label: '',
           href: path + pageRoutes.products.order,
-          icon: <IconComponents size={18} />,
+          icon: (
+            <Image
+              src="/images/menus/order.svg"
+              alt=""
+              width={18}
+              height={18}
+            />
+          ),
         },
       ],
     },
@@ -80,7 +112,9 @@ export const sideLinks = (t: any, locale: string): SideLink[] => {
       title: t('customers'),
       label: '',
       href: path + pageRoutes.customers,
-      icon: <IconUser size={18} />,
+      icon: (
+        <Image src="/images/menus/customer.svg" alt="" width={18} height={18} />
+      ),
     },
   ];
 };
@@ -92,7 +126,9 @@ export const sideLinksAuth = (t: any, locale: string): SideLink[] => {
       title: t('rolesPermissions'),
       label: '',
       href: path + pageRoutes.rolesPermissions,
-      icon: <IconShield size={18} />,
+      icon: (
+        <Image src="/images/menus/role.svg" alt="" width={18} height={18} />
+      ),
     },
     {
       title: t('settings'),

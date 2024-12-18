@@ -12,6 +12,8 @@ import { Layout } from '@/components/layouts/layout';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import useSideLinks from '@/hooks/use-side-links';
+import { useRouter } from '@/shared/configs/i18n/routing';
+import { pageRoutes } from '@/shared/routes/pages.route';
 
 interface SidebarProps extends HTMLAttributes<HTMLElement> {
   isCollapsed: boolean;
@@ -25,6 +27,7 @@ export default function Sidebar({
 }: Readonly<SidebarProps>) {
   const [navOpened, setNavOpened] = useState(false);
   const sideLinks = useSideLinks();
+  const router = useRouter();
 
   /* Make body not scrollable when navBar is opened */
   useEffect(() => {
@@ -45,7 +48,13 @@ export default function Sidebar({
       {/* Overlay in mobile */}
       <button
         onClick={() => setNavOpened(false)}
-        className={`absolute inset-0 transition-[opacity] delay-100 duration-700 ${navOpened ? 'h-svh opacity-50' : 'h-0 opacity-0'} w-full bg-black md:hidden`}
+        className={cn(
+          `absolute inset-0 transition-[opacity] delay-100 duration-700 w-full bg-black md:hidden`,
+          {
+            'h-svh opacity-50': navOpened,
+            'h-0 opacity-0': !navOpened,
+          }
+        )}
       />
 
       <Layout fixed className={navOpened ? 'h-svh' : ''}>
@@ -54,7 +63,13 @@ export default function Sidebar({
           sticky
           className={`z-50 flex justify-between py-3 shadow-sm md:px-4 ${!isCollapsed ? 'px-4' : '!p-1.5'}`}
         >
-          <div className={`flex items-center ${!isCollapsed ? 'gap-2' : ''}`}>
+          <button
+            type="button"
+            className={cn(`flex items-center cursor-pointer`, {
+              'gap-2': !isCollapsed,
+            })}
+            onClick={() => router.push(pageRoutes.dashboard)}
+          >
             <Image
               src="/images/logo-freshbunpho.jpg"
               alt="sidebar-logo"
@@ -66,11 +81,14 @@ export default function Sidebar({
               priority
             />
             <div
-              className={`flex flex-col justify-end truncate ${isCollapsed ? 'invisible w-0' : 'visible w-auto'}`}
+              className={cn(`flex flex-col justify-end truncate`, {
+                'invisible w-0': isCollapsed,
+                'visible w-auto': !isCollapsed,
+              })}
             >
               <span className="font-medium">freshphởbún</span>
             </div>
-          </div>
+          </button>
 
           {/* Toggle Button in mobile */}
           <Button

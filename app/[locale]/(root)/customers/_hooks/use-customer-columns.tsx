@@ -1,5 +1,4 @@
 import { MRT_ColumnDef } from 'material-react-table';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { EditIcon } from 'lucide-react';
 import {
   Tooltip,
@@ -27,29 +26,6 @@ export default function useCustomerColumns({ t }: CustomerColumnProps) {
   };
 
   return [
-    {
-      accessorKey: 'avatar',
-      header: t('avatar'),
-      accessorFn: (dataRow) => (
-        <div className="w-full flex justify-center">
-          <Avatar className="w-16 h-16">
-            <AvatarImage
-              src={dataRow.avatar || '/images/placeholder.png'}
-              srcSet={dataRow.avatar || '/images/placeholder.png'}
-              alt={dataRow.avatar || dataRow.firstName}
-              className="size-full rounded-[inherit] object-cover"
-            />
-            <AvatarFallback>
-              <AvatarImage
-                src={'/images/placeholder.png'}
-                alt={String(dataRow.avatar) || 'Product Image'}
-                className="size-full rounded-[inherit] object-cover"
-              />
-            </AvatarFallback>
-          </Avatar>
-        </div>
-      ),
-    },
     {
       accessorKey: 'email', //access nested data with dot notation
       header: t('email'),
