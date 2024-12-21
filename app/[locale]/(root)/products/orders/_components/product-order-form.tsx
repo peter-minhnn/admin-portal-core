@@ -168,13 +168,15 @@ export default function ProductOrderForm({
   }, [orderDetailData, status, form, t]);
 
   const memoizedSkeletons: ReactElement | null = useMemo(() => {
-    if (status !== 'pending' || orderDetailData) return null;
+    if (status !== 'pending' || orderDetailData || modalType === 'add')
+      return null;
 
     return <ProductOrderFormSkeletons loading={status === 'pending'} />;
-  }, [status, orderDetailData]);
+  }, [status, orderDetailData, modalType]);
 
   const memoizedProductOrderForm: ReactElement | null = useMemo(() => {
-    if (status === 'pending' || !orderDetailData) return null;
+    if ((status === 'pending' || !orderDetailData) && modalType === 'edit')
+      return null;
 
     return (
       <Form {...form}>
@@ -210,9 +212,12 @@ export default function ProductOrderForm({
                             <CustomersSelect
                               value={field.value}
                               onValueChange={(value) => {
-                                if (form.watch('orderStatus') === 'APPROVED')
+                                if (form.watch('orderStatus') === 'APPROVED') {
+                                  field.onChange(String(field.value));
                                   return;
-                                field.onChange(String(value.id));
+                                }
+
+                                field.onChange(String(value.id || field.value));
                               }}
                               translateKey="ProductMessages"
                               hasError={!!form.formState.errors.customerId}

@@ -100,7 +100,7 @@ export function ProductOrderApprove({
           size="sm"
           title={tCommon('btnCancel')}
           variant="outline"
-          onClick={() => closeModal(false)}
+          onClick={closeModal}
           disabled={status === 'pending'}
         >
           <IconX size={16} />

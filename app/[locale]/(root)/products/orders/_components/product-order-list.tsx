@@ -285,7 +285,7 @@ export default function ProductOrderList() {
               type="button"
               size="sm"
               title={tCommon('btnCancel')}
-              onClick={() => closeModal(false)}
+              onClick={closeModal}
               disabled={exportStatus === 'pending'}
               variant="outline"
               className=" flex flex-row gap-1"
