@@ -256,7 +256,7 @@ export default function ProductOrderList() {
       title: t('orders.exportExcel'),
       description: '',
       modalContent: (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 mt-6">
           <RadioGroup
             defaultValue={exportExcelType}
             onValueChange={(value) =>
@@ -281,7 +281,7 @@ export default function ProductOrderList() {
               type="button"
               size="sm"
               title={tCommon('btnCancel')}
-              onClick={closeAlertModal}
+              onClick={closeModal}
               disabled={exportStatus === 'pending'}
               variant="outline"
               className=" flex flex-row gap-1"

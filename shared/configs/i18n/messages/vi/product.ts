@@ -1,7 +1,7 @@
 export const ProductMessages = {
   title: 'Danh Sách Sản Phẩm',
   description:
-    'Một trang sản phẩm là một thành phần quan trọng của một trang web thương mại điện tử, được thiết kế để cung cấp thông tin chi tiết về một sản phẩm cụ thể.',
+    'Thiết lập và quản lý thông tin sản phẩm, hình ảnh, giá cả, chiết khấu, trạng thái của từng sản phẩm hiển thị trên mobile app.',
   productCode: 'Mã Sản Phẩm',
   productName: 'Tên Sản Phẩm',
   productDesc: 'Mô Tả Sản Phẩm',
@@ -82,7 +82,8 @@ export const ProductMessages = {
   actions: 'Hành Động',
   productPriceTitle: 'Danh Sách Giá Sản Phẩm',
   editProductPrice: 'Chỉnh Sửa Giá Sản Phẩm',
-  productPriceDescTitle: 'Quản lý giá sản phẩm',
+  productPriceDescTitle:
+    'Quản lý thông tin về giá, cập nhật giá hàng và lịch sử thay đổi giá của từng sản phẩm.',
   isActive: 'Kích hoạt',
   using: 'Đang sử dụng',
   notUsing: 'Không sử dụng',
@@ -92,7 +93,7 @@ export const ProductMessages = {
   orders: {
     title: 'Danh Sách Đơn Hàng',
     description:
-      'Trang đơn hàng là một phần quan trọng của một trang web thương mại điện tử, được thiết kế để cung cấp thông tin chi tiết về một đơn hàng cụ thể.',
+      'Quản lý toàn bộ đơn hàng phát sinh từ Mobile APP bao gồm tạo đơn, phê duyệt đơn, cập nhật trạng thái giao hàng, trạng thái thanh toán của đơn hàng.',
     orderCode: 'Mã Đơn Hàng',
     orderDate: 'Ngày Đặt Hàng',
     customerId: 'ID Khách Hàng',

@@ -15,6 +15,7 @@ import { CustomerType } from '@/types/order.type';
 import { useGetCustomers } from '@/app/[locale]/(root)/products/_hooks/use-queries';
 import { PAGE_SIZE } from '@/shared/enums';
 import { useTranslations } from 'next-intl';
+import { Skeleton } from '@/components/ui/skeleton';
 
 type CustomersSelectProps = {
   translateKey: any;
@@ -59,6 +60,10 @@ export default function CustomersSelect({
       setHasMoreCustomers(false);
     }
   }, [customersData, customerStatus, customerPage]);
+
+  if (customerStatus === 'pending' && customerPage === 0) {
+    return <Skeleton className="w-full h-10" />;
+  }
 
   return (
     <Select

@@ -1,18 +1,18 @@
 export const SettingsMessages = {
-  profile: 'Profile',
-  profileDes: 'This is how others will see you on the site.',
+  profile: '프로필',
+  profileDes: '계정에 대한 세부 정보입니다.',
   formProfile: {
-    userName: 'Username',
-    firstName: 'First Name',
-    lastName: 'Last Name',
-    phoneNumber: 'Phone Number',
-    email: 'Email',
+    userName: '사용자 이름',
+    firstName: '이름',
+    lastName: '성',
+    phoneNumber: '전화번호',
+    email: '이메일',
   },
-  account: 'Account',
-  accountDes: 'Manage your account information.',
-  title: 'Settings',
-  description: 'Manage your account settings and set e-mail preferences.',
-  updateProfileBtn: 'Update Profile',
+  account: '계정',
+  accountDes: '개인정보를 관리합니다.',
+  title: '설정',
+  description: '계정 설정 및 이메일 구성을 관리합니다.',
+  updateProfileBtn: '프로필 업데이트',
 };
 
 export default SettingsMessages;

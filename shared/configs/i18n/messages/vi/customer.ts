@@ -1,6 +1,7 @@
 const CustomerMessages = {
   title: 'Danh sách khách hàng',
-  description: 'Danh sách khách hàng',
+  description:
+    'Quản lý và cập nhật toàn bộ thông tin khách hàng đăng ký từ Moblie app.',
   errors: {
     phoneRequired: 'Vui lòng nhập số điện thoại',
     onlyNumber: 'Vui lòng nhập số',

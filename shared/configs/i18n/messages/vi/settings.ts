@@ -1,6 +1,6 @@
 export const SettingsMessages = {
   profile: 'Hồ sơ',
-  profileDes: 'Đây là cách mà người khác sẽ nhìn thấy bạn trên trang web.',
+  profileDes: 'Thông tin chi tiết về tài khoản của bạn.',
   formProfile: {
     userName: 'Tên người dùng',
     firstName: 'Tên',

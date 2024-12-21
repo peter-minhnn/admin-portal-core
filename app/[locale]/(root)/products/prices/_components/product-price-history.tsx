@@ -69,8 +69,8 @@ const ProductPriceHistory = memo(
 
       return (
         <div className="flex flex-col gap-3">
-          {[...Array(5)].map((_) => (
-            <div key={_} className="flex w-full flex-col gap-4">
+          {[...Array(5)].map((_, index) => (
+            <div key={`${_}-${index}`} className="flex w-full flex-col gap-4">
               <div className="border border-input rounded-2xl flex flex-col w-full p-4 gap-3">
                 <div className="flex flex-row justify-between gap-2">
                   <Skeleton className="w-60 h-4" />
@@ -180,7 +180,7 @@ const ProductPriceHistory = memo(
     return (
       isMounted && (
         <div
-          className="max-h-[1000px] w-full overflow-y-auto mt-4"
+          className="max-h-[inherit] lg:max-h-[1000px] w-full overflow-y-auto mt-4"
           key={productCode}
         >
           {memoizedProducts}
