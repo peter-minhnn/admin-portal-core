@@ -17,6 +17,7 @@ export function useModal() {
     setModalOpen({
       isOpen: true,
       isClosed: false,
+      isRefresh: false,
       title,
       description,
       customSize,
@@ -26,11 +27,12 @@ export function useModal() {
     });
   };
 
-  const closeModal = () => {
+  const closeModal = (isRefresh?: boolean) => {
     setModalOpen({
       ...modalProps,
       isClosed: true,
       isOpen: false,
+      isRefresh: isRefresh || true,
     });
   };
 

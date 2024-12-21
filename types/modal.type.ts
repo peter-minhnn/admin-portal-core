@@ -9,6 +9,7 @@ export type ModalType = {
   customSize?: string;
   modalFooter?: ReactNode;
   isClosed?: boolean;
+  isRefresh?: boolean;
 };
 
 export type AlertModalType = {

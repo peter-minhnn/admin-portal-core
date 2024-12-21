@@ -2,7 +2,7 @@
 
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AutosizeTextarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { useTranslations } from 'next-intl';
@@ -15,10 +15,12 @@ import { OrderStatus } from '@/types/order.type';
 
 type ProductOrderApproveProps = {
   orderCode: string;
+  approvedStatus: OrderStatus;
 };
 
 export function ProductOrderApprove({
   orderCode,
+  approvedStatus,
 }: Readonly<ProductOrderApproveProps>) {
   const tCommon = useTranslations('CommonMessages');
   const t = useTranslations('ProductMessages');
@@ -42,6 +44,11 @@ export function ProductOrderApprove({
     setIsSaved(false);
   };
 
+  useEffect(() => {
+    if (!approvedStatus) return;
+    setOrderStatus(approvedStatus);
+  }, [approvedStatus]);
+
   return (
     <div className="flex flex-col gap-6 space-y-2 mt-4">
       <RadioGroup
@@ -53,6 +60,7 @@ export function ProductOrderApprove({
             setIsSaved(false);
           }
         }}
+        value={orderStatus}
       >
         <div className="flex items-center space-x-2">
           <RadioGroupItem value="APPROVED" id="r1" />
@@ -92,7 +100,7 @@ export function ProductOrderApprove({
           size="sm"
           title={tCommon('btnCancel')}
           variant="outline"
-          onClick={() => closeModal()}
+          onClick={() => closeModal(false)}
           disabled={status === 'pending'}
         >
           <IconX size={16} />

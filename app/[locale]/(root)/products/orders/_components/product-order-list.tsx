@@ -16,6 +16,7 @@ import {
 } from '@/types/common.type';
 import { PAGE_SIZE } from '@/shared/enums';
 import {
+  OrderStatus,
   ProductOrderFilterFormData,
   ProductOrderFormData,
   ProductOrderType,
@@ -52,7 +53,7 @@ const csvConfig = mkConfig({
 export default function ProductOrderList() {
   const t = useTranslations('ProductMessages');
   const tCommon = useTranslations('CommonMessages');
-  const { isOpen, isClosed, openModal, closeModal } = useModal();
+  const { isOpen, isRefresh, openModal, closeModal } = useModal();
   const { openAlertModal, closeAlertModal } = useAlertModal();
   const isMobile = useIsMobile();
   const { width } = useWindowSize();
@@ -203,7 +204,10 @@ export default function ProductOrderList() {
           orderCode: String(row.orderCode ?? ''),
         }),
         modalContent: (
-          <ProductOrderApprove orderCode={String(row.orderCode ?? '')} />
+          <ProductOrderApprove
+            orderCode={String(row.orderCode ?? '')}
+            approvedStatus={row.orderStatus as OrderStatus}
+          />
         ),
       });
     },
@@ -281,7 +285,7 @@ export default function ProductOrderList() {
               type="button"
               size="sm"
               title={tCommon('btnCancel')}
-              onClick={closeModal}
+              onClick={() => closeModal(false)}
               disabled={exportStatus === 'pending'}
               variant="outline"
               className=" flex flex-row gap-1"
@@ -339,9 +343,9 @@ export default function ProductOrderList() {
   }, [ordersData, isFetchingOrders]);
 
   useEffect(() => {
-    if (deleteOrderStatus === 'pending') return;
+    if (deleteOrderStatus === 'pending' || !isRefresh) return;
     refetchOrders().finally();
-  }, [pagination, isClosed, refetchOrders, filterParams, deleteOrderStatus]);
+  }, [pagination, isRefresh, refetchOrders, filterParams, deleteOrderStatus]);
 
   useEffect(() => {
     if (width > 1280) {
