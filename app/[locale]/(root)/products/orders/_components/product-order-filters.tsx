@@ -120,7 +120,7 @@ export default function ProductOrderFilters({
               control={form.control}
               name="fromDate"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="w-full">
                   <FormLabel htmlFor="fromDate">
                     {t('orders.fromDate')}
                   </FormLabel>
@@ -146,7 +146,7 @@ export default function ProductOrderFilters({
               control={form.control}
               name="toDate"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="w-full">
                   <FormLabel htmlFor="toDate">{t('orders.toDate')}</FormLabel>
                   <DateTimePicker
                     value={
