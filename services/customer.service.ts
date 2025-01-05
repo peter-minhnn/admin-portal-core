@@ -5,7 +5,10 @@ import {
   handleApiCatchResponse,
   handleApiResponse,
 } from '@/services/api.service';
-import { CustomerFormData } from '@/types/customer.type';
+import {
+  CustomerFormData,
+  CustomerResetPwdFormData,
+} from '@/types/customer.type';
 
 export const updateCustomer = async (data: CustomerFormData) => {
   try {
@@ -15,6 +18,19 @@ export const updateCustomer = async (data: CustomerFormData) => {
       CustomerFormData
     >(apiRoutes.customers.customer, data);
     return handleApiResponse<CustomerFormData>(response);
+  } catch (e) {
+    return handleApiCatchResponse(e);
+  }
+};
+
+export const resetPassword = async (data: CustomerResetPwdFormData) => {
+  try {
+    const response = await useAxios.post<
+      null,
+      BaseResponseType,
+      CustomerResetPwdFormData
+    >(apiRoutes.customers.resetPassword, data);
+    return handleApiResponse<CustomerResetPwdFormData>(response);
   } catch (e) {
     return handleApiCatchResponse(e);
   }

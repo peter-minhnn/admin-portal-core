@@ -67,6 +67,8 @@ const CommonMessages = {
   exportAll: '현재 페이지 데이터 내보내기',
   exportByPage: '전체 데이터 내보내기',
   btnExport: '내보내기',
+  btnClickToCopy: '복사',
+  copyTextSuccess: '복사 성공',
 };
 
 export default CommonMessages;

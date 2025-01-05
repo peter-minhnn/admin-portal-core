@@ -1,5 +1,5 @@
 import { MRT_ColumnDef } from 'material-react-table';
-import { EditIcon } from 'lucide-react';
+import { EditIcon, KeyIcon } from 'lucide-react';
 import {
   Tooltip,
   TooltipContent,
@@ -128,6 +128,17 @@ export default function useCustomerColumns({ t }: CustomerColumnProps) {
               </TooltipTrigger>
               <TooltipContent>{t('editCustomerModalTitle')}</TooltipContent>
             </Tooltip>
+            {row?.isActive && (
+              <Tooltip>
+                <TooltipTrigger>
+                  <KeyIcon
+                    size={25}
+                    onClick={() => setActionType('reset-password', row)}
+                  />
+                </TooltipTrigger>
+                <TooltipContent>{t('resetPasswordAlertTitle')}</TooltipContent>
+              </Tooltip>
+            )}
           </TooltipProvider>
         </div>
       ),

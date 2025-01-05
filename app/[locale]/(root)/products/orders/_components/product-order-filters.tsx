@@ -23,7 +23,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { IconLoader2, IconRefresh } from '@tabler/icons-react';
 import { DateTimePicker } from '@/components/ui/datepicker';
-import { formatDate, isDate } from 'date-fns';
+import { isDate } from 'date-fns';
 import { useGetCustomers } from '../../_hooks/use-queries';
 import { PAGE_SIZE } from '@/shared/enums';
 import { get } from 'lodash';
@@ -41,11 +41,8 @@ type ProductOrderFilterProps = {
 };
 
 const defaultFormValues: ProductOrderFilterFormData = {
-  fromDate: formatDate(
-    new Date(new Date().getFullYear() - 1, 0, 1),
-    'yyyy-MM-dd'
-  ),
-  toDate: formatDate(new Date(), 'yyyy-MM-dd'),
+  fromDate: new Date(new Date().getFullYear() - 1, 0, 1),
+  toDate: new Date(),
   customerId: 'all',
   orderCode: '',
   deliveryType: 'all',

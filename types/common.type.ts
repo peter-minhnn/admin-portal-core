@@ -50,6 +50,8 @@ export type ActionType =
   | 'approve'
   | 'search'
   | 'update-status'
+  | 'update-password'
+  | 'reset-password'
   | '';
 
 export type ExportExcelType = 'page' | 'all';

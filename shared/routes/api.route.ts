@@ -3,7 +3,7 @@ import {
   ProductFilterParams,
   ProductPriceFilterParams,
 } from '@/types/product.type';
-import { ProductOrderFilterFormData } from '@/types/order.type';
+import { ProductOrderFilterParams } from '@/types/order.type';
 import { PAGE_SIZE } from '@/shared/enums';
 import { PaginationState } from '@/types/common.type';
 
@@ -47,7 +47,7 @@ export const apiRoutes = {
   orders: {
     order: '/order',
     getOrders: (
-      params: ProductOrderFilterFormData,
+      params: ProductOrderFilterParams,
       page: number = 1,
       take: number = PAGE_SIZE
     ) => `/order${createQueryParams({ ...params, order: 'DESC', page, take })}`,
@@ -55,6 +55,8 @@ export const apiRoutes = {
       `/customer${createQueryParams({ order: 'DESC', page: pagination.pageIndex, take: pagination.pageSize })}`,
     orderByCode: (orderCode: string) => `/order/${orderCode}`,
     approve: '/order/approve',
+    export: (filterParams: ProductOrderFilterParams) =>
+      `/order/export${createQueryParams(filterParams)}`,
   },
   uploadFile: {
     post: '/files/upload',
@@ -64,5 +66,6 @@ export const apiRoutes = {
     customer: '/customer',
     getCustomers: (page: number = 1, take: number = PAGE_SIZE) =>
       `/customer${createQueryParams({ order: 'DESC', page, take })}`,
+    resetPassword: '/customer/reset-password',
   },
 };

@@ -211,3 +211,36 @@ export const generateCode = (): string => {
 
   return `${uniqueId.toUpperCase()}${dateTimeString}`;
 };
+
+export const downloadExcelFile = (data: any, fileName: string) => {
+  // Create a Blob object with the data and the correct MIME type
+  const blob = new Blob([data], {
+    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  });
+
+  // Create a URL for the Blob object
+  const url = window.URL.createObjectURL(blob);
+
+  // Create an anchor element
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = fileName;
+
+  // Append the anchor to the body (required for Firefox)
+  document.body.appendChild(a);
+
+  // Programmatically click the anchor to trigger the download
+  a.click();
+
+  // Clean up by revoking the Blob URL and removing the anchor element
+  window.URL.revokeObjectURL(url);
+  document.body.removeChild(a);
+};
+
+export const copyToClipboard = async (text: string) => {
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch (err) {
+    console.error('Failed to copy text: ', err);
+  }
+};

@@ -5,6 +5,7 @@ import get from 'lodash/get';
 import { StatusCodes } from '@/shared/enums';
 import { logout } from '@/actions/login.action';
 import { pageRoutes } from '@/shared/routes/pages.route';
+import { toast } from 'sonner';
 
 export function handleApiResponse<T>(response: BaseResponseType<T>) {
   const isSuccess = get(response, 'isSuccess', null);
@@ -53,7 +54,7 @@ export async function handleApiCatchResponse<T>(e: any): Promise<ResultType> {
   };
 }
 
-const redirectPageErrors = async (e: any) => {
+async function redirectPageErrors(e: any) {
   switch (e?.status) {
     case StatusCodes.NOT_FOUND:
       window.location.href = pageRoutes.notFound;
@@ -70,4 +71,18 @@ const redirectPageErrors = async (e: any) => {
     default:
       break;
   }
-};
+}
+
+export function handleQueryResponse(
+  response: any,
+  messageStr: string,
+  callback: (value: any) => void
+) {
+  const message = get(response, 'result.messages[0]', messageStr);
+  if (!response.result.isSuccess) {
+    toast.error(message);
+    return;
+  }
+  toast.success(message);
+  callback(response.result.data);
+}

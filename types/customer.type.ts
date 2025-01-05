@@ -3,11 +3,13 @@ import { Gender } from '@/shared/enums';
 import {
   CustomerFilterFormSchema,
   CustomerFormSchema,
+  CustomerResetPwdFormSchema,
 } from '@/app/[locale]/(root)/customers/shema';
 
 export type CustomerType = {
   id: number;
   email: string;
+  userName: string;
   phoneNumber: string;
   firstName: string;
   lastName: string;
@@ -27,3 +29,6 @@ export type CustomerFilterType = {
 
 export type CustomerFormData = z.infer<typeof CustomerFormSchema>;
 export type CustomerFilterFormData = z.infer<typeof CustomerFilterFormSchema>;
+export type CustomerResetPwdFormData = z.infer<
+  typeof CustomerResetPwdFormSchema
+>;

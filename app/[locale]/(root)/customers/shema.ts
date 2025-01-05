@@ -21,3 +21,7 @@ export const CustomerFilterFormSchema = z.object({
   phoneNumber: z.string().optional().default(''),
   address: z.string().optional().default(''),
 });
+
+export const CustomerResetPwdFormSchema = z.object({
+  email: z.string().default(''),
+});

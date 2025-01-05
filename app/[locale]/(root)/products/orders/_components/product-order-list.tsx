@@ -2,21 +2,19 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { FilterIcon, PlusIcon, XIcon } from 'lucide-react';
-import { MRT_Row, useMaterialReactTable } from 'material-react-table';
+import { FilterIcon, PlusIcon } from 'lucide-react';
+import { useMaterialReactTable } from 'material-react-table';
 import { formatDate } from 'date-fns';
 import { useModal } from '@/hooks/use-modal';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useWindowSize } from '@/hooks/use-window-size';
 import { useAlertModal } from '@/hooks/use-alert-modal';
-import {
-  ExportExcelType,
-  ListResponseType,
-  PaginationState,
-} from '@/types/common.type';
+import { ListResponseType, PaginationState } from '@/types/common.type';
 import { PAGE_SIZE } from '@/shared/enums';
 import {
+  DeliveryType,
   OrderStatus,
+  PaymentStatus,
   ProductOrderFilterFormData,
   ProductOrderFormData,
   ProductOrderType,
@@ -36,24 +34,14 @@ import ProductOrderForm from './product-order-form';
 import { useActionsButtonStore } from '@/states/common.state';
 import { ProductOrderApprove } from '@/app/[locale]/(root)/products/orders/_components/product-order-approve';
 import { Locale } from '@/shared/configs/i18n/config';
-import { IconCheck, IconFileExcel } from '@tabler/icons-react';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Label } from '@/components/ui/label';
-import { download, generateCsv, mkConfig } from 'export-to-csv';
-import { convertToOrderExcelData } from '@/app/[locale]/(root)/products/orders/product-order.data';
+import { IconFileExcel } from '@tabler/icons-react';
 import get from 'lodash/get';
 import { RESPONSE_OBJ_KEY } from '@/shared/constants';
-
-const csvConfig = mkConfig({
-  fieldSeparator: ',',
-  decimalSeparator: '.',
-  useKeysAsHeaders: true,
-});
 
 export default function ProductOrderList() {
   const t = useTranslations('ProductMessages');
   const tCommon = useTranslations('CommonMessages');
-  const { isOpen, isRefresh, openModal, closeModal } = useModal();
+  const { isOpen, isRefresh, openModal } = useModal();
   const { openAlertModal, closeAlertModal } = useAlertModal();
   const isMobile = useIsMobile();
   const { width } = useWindowSize();
@@ -73,31 +61,30 @@ export default function ProductOrderList() {
     pageSize: PAGE_SIZE,
   });
   const [filterParams, setFilterParams] = useState<ProductOrderFilterFormData>({
-    fromDate: formatDate(
-      new Date(new Date().getFullYear(), 0, 1),
-      'yyyy-MM-dd'
-    ),
-    toDate: formatDate(new Date(), 'yyyy-MM-dd'),
+    fromDate: new Date(new Date().getFullYear(), 0, 1),
+    toDate: new Date(),
     isExport: false,
   });
   const [isFilterOpened, setIsFilterOpened] = useState(false);
-  const [exportExcelType, setExportExcelType] =
-    useState<ExportExcelType>('all');
-  const [selectedRows, setSelectedRows] = useState<MRT_Row<ProductOrderType>[]>(
-    []
-  );
 
   const {
     isFetching: isFetchingOrders,
     data: ordersData,
     refetch: refetchOrders,
-  } = useGetOrders(pagination, filterParams);
+  } = useGetOrders(pagination, {
+    ...filterParams,
+    deliveryType: filterParams.deliveryType as DeliveryType,
+    orderStatus: filterParams.orderStatus as OrderStatus,
+    paymentStatus: filterParams.paymentStatus as PaymentStatus,
+    fromDate: formatDate(filterParams.fromDate, 'yyyy-MM-dd'),
+    toDate: formatDate(filterParams.toDate, 'yyyy-MM-dd'),
+  });
 
   const { mutateAsync: deleteOrder, status: deleteOrderStatus } =
     useDeleteOrder(t, closeAlertModal);
 
   const { mutateAsync: mutateExportData, status: exportStatus } =
-    useOrdersExport(t, closeModal, locale);
+    useOrdersExport(t);
 
   const productOrderColumns = useProductOrderColumns({ t });
 
@@ -122,7 +109,7 @@ export default function ProductOrderList() {
         totalAmount: 150,
       },
     },
-    renderTopToolbarCustomActions: ({ table }) => (
+    renderTopToolbarCustomActions: () => (
       <div className="flex justify-start gap-2 w-fit">
         <Button
           type="button"
@@ -153,10 +140,10 @@ export default function ProductOrderList() {
           size="sm"
           title={t('orders.exportExcel')}
           variant="save"
-          onClick={() => {
-            setSelectedRows(table.getRowModel().rows);
-            openExportExcelModal();
+          onClick={async () => {
+            await handleExportExcel();
           }}
+          loading={exportStatus === 'pending'}
         >
           <IconFileExcel size={18} />
           {!isMobile ? t('orders.exportExcel') : ''}
@@ -254,78 +241,15 @@ export default function ProductOrderList() {
     openDeleteConfirmModal,
   ]);
 
-  const openExportExcelModal = () => {
-    openModal({
-      isOpen: true,
-      title: t('orders.exportExcel'),
-      description: '',
-      modalContent: (
-        <div className="flex flex-col gap-4 mt-6">
-          <RadioGroup
-            defaultValue={exportExcelType}
-            onValueChange={(value) =>
-              setExportExcelType(value as ExportExcelType)
-            }
-          >
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="all" id="r1" />
-              <Label htmlFor="r1" className="cursor-pointer">
-                {tCommon('exportAll')}
-              </Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="page" id="r2" />
-              <Label htmlFor="r2" className="cursor-pointer">
-                {tCommon('exportByPage')}
-              </Label>
-            </div>
-          </RadioGroup>
-          <div className="flex flex-row justify-end items-center gap-2">
-            <Button
-              type="button"
-              size="sm"
-              title={tCommon('btnCancel')}
-              onClick={closeModal}
-              disabled={exportStatus === 'pending'}
-              variant="outline"
-              className=" flex flex-row gap-1"
-            >
-              <XIcon size={16} />
-              {tCommon('btnCancel')}
-            </Button>
-            <Button
-              type="button"
-              size="sm"
-              title={tCommon('btnExport')}
-              onClick={handleExportExcel}
-              disabled={exportStatus === 'pending'}
-              loading={exportStatus === 'pending'}
-              variant="save"
-              className=" flex flex-row gap-1"
-            >
-              <IconCheck size={16} />
-              {tCommon('btnOk')}
-            </Button>
-          </div>
-        </div>
-      ),
-    });
-  };
-
-  const handleExportRows = () => {
-    const csv = generateCsv(csvConfig)(
-      convertToOrderExcelData(selectedRows as any[], locale)
-    );
-    download(csvConfig)(csv);
-  };
-
   const handleExportExcel = async () => {
-    if (exportExcelType === 'all') {
-      await mutateExportData({ ...filterParams, isExport: true });
-      return;
-    }
-
-    handleExportRows();
+    await mutateExportData({
+      ...filterParams,
+      deliveryType: filterParams.deliveryType as DeliveryType,
+      orderStatus: filterParams.orderStatus as OrderStatus,
+      paymentStatus: filterParams.paymentStatus as PaymentStatus,
+      fromDate: formatDate(filterParams.fromDate, 'yyyy-MM-dd'),
+      toDate: formatDate(filterParams.toDate, 'yyyy-MM-dd'),
+    });
   };
 
   useEffect(() => {

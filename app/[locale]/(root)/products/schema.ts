@@ -49,18 +49,8 @@ export const ProductPriceFormSchema = z
 export const ProductOrderFilterFormSchema = z.object({
   orderCode: z.string().optional(),
   customerId: z.string().optional(),
-  fromDate: z
-    .string()
-    .min(1, { message: 'errors.fromDate' })
-    .regex(/^\d{4}-\d{2}-\d{2}$/, {
-      message: 'errors.invalidDateFormat',
-    }),
-  toDate: z
-    .string()
-    .min(1, { message: 'errors.toDate' })
-    .regex(/^\d{4}-\d{2}-\d{2}$/, {
-      message: 'errors.invalidDateFormat',
-    }),
+  fromDate: z.date(),
+  toDate: z.date(),
   deliveryType: z.string().optional(),
   orderStatus: z.string().optional(),
   paymentStatus: z.string().optional(),

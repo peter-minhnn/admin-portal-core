@@ -69,6 +69,8 @@ const CommonMessages = {
   exportAll: 'Xuất toàn bộ dữ liệu',
   exportByPage: 'Xuất dữ liệu trang hiện tại',
   btnExport: 'Xuất dữ liệu',
+  btnClickToCopy: 'Nhấn để sao chép',
+  copyTextSuccess: 'Sao chép thành công',
 };
 
 export default CommonMessages;

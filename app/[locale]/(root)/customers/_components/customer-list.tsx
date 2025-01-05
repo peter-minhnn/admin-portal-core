@@ -18,10 +18,23 @@ import useCustomerColumns from '@/app/[locale]/(root)/customers/_hooks/use-custo
 import DataTable from '@/components/data-table';
 import CustomerForm from '@/app/[locale]/(root)/customers/_components/customer-form';
 import { CustomerActive } from '@/app/[locale]/(root)/customers/_components/customer-active';
+import { useAlertModal } from '@/hooks/use-alert-modal';
+import { useCustomerResetPassword } from '@/app/[locale]/(root)/customers/_hooks/use-queries';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { Badge } from '@/components/ui/badge';
+import { copyToClipboard } from '@/shared/lib';
+import { toast } from 'sonner';
 
 export default function CustomerList() {
   const t = useTranslations('CustomerMessages');
+  const tCommon = useTranslations('CommonMessages');
   const { openModal, isClosed, isOpen } = useModal();
+  const { openAlertModal, closeAlertModal } = useAlertModal();
   const { width } = useWindowSize();
   const { actionType, actionData, setActionType } = useActionsButtonStore();
   const locale = useLocale() as Locale;
@@ -52,7 +65,44 @@ export default function CustomerList() {
     isOpen ? 'dialog' : 'list'
   );
 
+  const handleShowNewCustomerPwd = (data: { newPassword: string }) => {
+    closeAlertModal();
+    openModal({
+      isOpen: true,
+      title: t('newPassword'),
+      description: '',
+      isRefresh: false,
+      modalContent: (
+        <div className="flex flex-row items-center justify-center mt-4">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Badge
+                  variant="primary"
+                  className="flex flex-row gap-2"
+                  onClick={async () => {
+                    await copyToClipboard(data?.newPassword ?? '');
+                    toast.success(tCommon('copyTextSuccess'));
+                  }}
+                >
+                  <span className="font-semibold text-lg">
+                    {data?.newPassword}
+                  </span>
+                </Badge>
+              </TooltipTrigger>
+              <TooltipContent>{tCommon('btnClickToCopy')}</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+      ),
+    });
+  };
+
   const customerColumns = useCustomerColumns({ t });
+  const { mutateAsync: resetPwdMutateAsync } = useCustomerResetPassword(
+    t,
+    handleShowNewCustomerPwd
+  );
 
   const table = useMaterialReactTable({
     ...DataTableProps(locale),
@@ -91,6 +141,19 @@ export default function CustomerList() {
     });
   }, [actionData, openModal, t]);
 
+  const openCustomerResetPwdModal = useCallback(() => {
+    openAlertModal({
+      isOpen: true,
+      title: t('resetPasswordAlertTitle'),
+      message: t('resetPasswordAlertContent', {
+        email: actionData.email,
+      }),
+      onConfirm: async () =>
+        await resetPwdMutateAsync({ email: actionData.email as string }),
+      onCancel: closeAlertModal,
+    });
+  }, [actionData, openAlertModal, t, resetPwdMutateAsync, closeAlertModal]);
+
   const handleActionClick = useCallback(() => {
     switch (actionType) {
       case 'edit':
@@ -99,10 +162,18 @@ export default function CustomerList() {
       case 'update-status':
         openActiveCustomerModal();
         break;
+      case 'reset-password':
+        openCustomerResetPwdModal();
+        break;
       default:
         break;
     }
-  }, [actionType, openEditCustomerModal, openActiveCustomerModal]);
+  }, [
+    actionType,
+    openEditCustomerModal,
+    openActiveCustomerModal,
+    openCustomerResetPwdModal,
+  ]);
 
   useEffect(() => {
     if (status === 'pending' || customerData?.type === 'error') {

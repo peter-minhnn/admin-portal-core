@@ -6,6 +6,7 @@ import {
   approveOrder,
   deleteOrder,
   deleteProduct,
+  downloadFile,
   getCustomers,
   getOrderDetail,
   getOrders,
@@ -31,14 +32,10 @@ import { RESPONSE_LIST_KEY } from '@/shared/constants';
 import {
   ApproveOrderType,
   OrderRequestType,
-  ProductOrderFilterFormData,
+  ProductOrderFilterParams,
 } from '@/types/order.type';
-import { generateCsv, download } from 'export-to-csv';
-import {
-  convertToOrderExcelData,
-  csvConfig,
-} from '@/app/[locale]/(root)/products/orders/product-order.data';
-import { Locale } from '@/shared/configs/i18n/config'; //or use your library of choice here
+import { format } from 'date-fns';
+import { downloadExcelFile } from '@/shared/lib'; //or use your library of choice here
 
 //-------------------------------------UNIT HOOKS----------------------------------------
 export const useGetUnits = () => {
@@ -219,7 +216,7 @@ export const useUpdateProductPrice = (t: any, closeModal: any) => {
 //-------------------------------------PRODUCT ORDER HOOKS-------------------------------------
 export const useGetOrders = (
   pagination: PaginationState,
-  params: ProductOrderFilterFormData
+  params: ProductOrderFilterParams
 ) => {
   return useQuery({
     queryKey: ['orders', pagination, params],
@@ -345,29 +342,22 @@ export const useApproveOrder = (t: any, closeModal: () => void) => {
   });
 };
 
-export const useOrdersExport = (
-  t: any,
-  closeModal: () => void,
-  locale: Locale
-) => {
+export const useOrdersExport = (t: any) => {
   return useMutation({
-    mutationFn: async (params: ProductOrderFilterFormData) =>
-      await getOrders(params, { pageIndex: 1, pageSize: 50 }),
+    mutationFn: async (params: ProductOrderFilterParams) =>
+      await downloadFile(params),
     onSuccess: (response) => {
-      if (!response.result.isSuccess) {
-        toast.error('notifications.exportExcelError');
+      console.log('response', response);
+
+      if (!response) {
+        toast.error(t('notifications.exportExcelError'));
         return;
       }
-
-      const data = get(response.result, RESPONSE_LIST_KEY, []);
-      const csv = generateCsv(csvConfig(t))(
-        convertToOrderExcelData(data, locale)
+      downloadExcelFile(
+        response,
+        `orders-${format(new Date(), 'yyyyMMddHHmmss')}`
       );
-      download(csvConfig(t))(csv);
-
-      toast.success(t('notifications.exportExcelSuccess'));
-      closeModal();
     },
-    onError: () => toast.error(t('notifications.approveOrderError')),
+    onError: () => toast.error(t('notifications.exportExcelError')),
   });
 };

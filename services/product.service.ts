@@ -20,11 +20,11 @@ import {
 } from '@/types/product.type';
 import { useAxios } from '@/hooks/use-axios';
 import {
-  ProductOrderType,
-  ProductOrderFilterFormData,
+  ApproveOrderType,
   CustomerType,
   OrderRequestType,
-  ApproveOrderType,
+  ProductOrderFilterParams,
+  ProductOrderType,
 } from '@/types/order.type';
 
 export const getUnits = async () => {
@@ -154,7 +154,7 @@ export const updateProductPrice = async (data: ProductPriceType) => {
 };
 
 export const getOrders = async (
-  params: ProductOrderFilterFormData,
+  params: ProductOrderFilterParams,
   pagination: PaginationState
 ) => {
   try {
@@ -207,8 +207,8 @@ export const updateOrder = async (data: OrderRequestType) => {
       OrderRequestType
     >(apiRoutes.orders.order, data);
     return handleApiResponse<ProductOrderType>(response);
-  } catch (e) {
-    return handleApiCatchResponse(e);
+  } catch (err) {
+    return handleApiCatchResponse(err);
   }
 };
 
@@ -220,8 +220,8 @@ export const deleteOrder = async (orderCode: string) => {
       { orderCode: string }
     >(apiRoutes.orders.orderByCode(orderCode));
     return handleApiResponse<ProductType>(response);
-  } catch (e) {
-    return handleApiCatchResponse(e);
+  } catch (err) {
+    return handleApiCatchResponse(err);
   }
 };
 
@@ -233,8 +233,8 @@ export const getOrderDetail = async (orderCode: string) => {
       { orderCode: string }
     >(apiRoutes.orders.orderByCode(orderCode));
     return handleApiResponse<ProductOrderType>(response);
-  } catch (e) {
-    return handleApiCatchResponse(e);
+  } catch (err) {
+    return handleApiCatchResponse(err);
   }
 };
 
@@ -246,7 +246,20 @@ export const approveOrder = async (data: ApproveOrderType) => {
       ApproveOrderType
     >(apiRoutes.orders.approve, data);
     return handleApiResponse<any>(response);
-  } catch (e) {
-    return handleApiCatchResponse(e);
+  } catch (err) {
+    return handleApiCatchResponse(err);
+  }
+};
+
+export const downloadFile = async (filterParams: ProductOrderFilterParams) => {
+  try {
+    return await globalAxiosInstance.get(
+      apiRoutes.orders.export(filterParams),
+      {
+        responseType: 'blob',
+      }
+    );
+  } catch (err) {
+    return handleApiCatchResponse(err);
   }
 };
