@@ -6,9 +6,11 @@ enum MODE {
   LIGHT = 'light',
 }
 
+const siteName = 'Lang Gao Portal';
+
 export const siteConfig = {
-  title: `freshphởbún - Trang Quản Lý`,
-  description: 'freshphởbún',
+  title: siteName,
+  description: siteName,
   // logo: logoImg,
   // icon: logoIconImg,
   mode: MODE.LIGHT,
@@ -21,13 +23,13 @@ export const metaObject = (
   description: string = siteConfig.description
 ): Metadata => {
   return {
-    title: title ? `${title} - freshphởbún` : siteConfig.title,
+    title: title ? `${title} - ${siteName}` : siteConfig.title,
     description,
     openGraph: openGraph ?? {
-      title: title ? `${title} - freshphởbún` : title,
+      title: title ? `${title} - ${siteName}` : title,
       description,
-      url: 'https://freshphobun.com',
-      siteName: 'freshphởbún', // https://developers.google.com/search/docs/appearance/site-names
+      url: 'https://langgao.net',
+      siteName: 'langgao', // https://developers.google.com/search/docs/appearance/site-names
       images: {
         url: '',
         width: 1200,

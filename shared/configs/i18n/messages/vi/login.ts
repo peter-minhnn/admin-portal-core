@@ -1,5 +1,5 @@
 const LoginMessages = {
-  webName: 'freshphởbún',
+  webName: 'Lang Gao Portal',
   title: 'Trang đăng nhập',
   description: 'Authentication forms built using the components.',
   welcome: 'Chào mừng quay trở lại!',

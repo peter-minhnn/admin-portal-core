@@ -1,5 +1,5 @@
 const LoginMessages = {
-  webName: 'freshphởbún',
+  webName: 'Lang Gao Portal',
   title: '로그인',
   description: '컴포넌트를 사용하여 만든 인증 양식입니다.',
   welcome: '환영합니다!',

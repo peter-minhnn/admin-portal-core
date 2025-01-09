@@ -18,10 +18,10 @@ export default function AuthenticationPage() {
   return (
     <main className="max-h-screen">
       <div className="container relative min-h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0 overflow-hidden">
-        <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
-          <div className="absolute inset-0 bg-[#9FBD48]" />
+        <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex border-r border-r-gray-300">
+          <div className="absolute inset-0 bg-[#FFF]" />
           <ReactImage
-            src="/images/logo.svg"
+            src="/images/langgao-logo.svg"
             alt="logo"
             fill
             sizes="(max-width: 640px) 100vw, 640px"
@@ -38,7 +38,7 @@ export default function AuthenticationPage() {
               </h1>
               <div className="flex items-center justify-center text-lg font-bold text-[#3C603C]">
                 <ReactImage
-                  src="/images/logo.svg"
+                  src="/images/langgao-logo.svg"
                   alt="logo"
                   width={50}
                   height={50}

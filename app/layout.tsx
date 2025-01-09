@@ -18,7 +18,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'freshphởbún',
+  title: 'Làng Gạo',
   description: 'Chuyên cung cấp bún tươi, phở nóng',
 };
 
