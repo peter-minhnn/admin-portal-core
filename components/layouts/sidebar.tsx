@@ -71,12 +71,11 @@ export default function Sidebar({
             onClick={() => router.push(pageRoutes.dashboard)}
           >
             <Image
-              src="/images/logo-freshbunpho.jpg"
+              src="/images/langgao-logo.svg"
               alt="sidebar-logo"
               width={40}
               height={40}
               className="rounded-full"
-              style={{ width: 'auto', height: 'auto' }}
               fetchPriority="auto"
               priority
             />
@@ -86,7 +85,7 @@ export default function Sidebar({
                 'visible w-auto': !isCollapsed,
               })}
             >
-              <span className="font-medium">freshphởbún</span>
+              <span className="font-medium">Lang Gao Portal</span>
             </div>
           </button>
 

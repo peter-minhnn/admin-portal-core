@@ -22,7 +22,7 @@ export function UserNav() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
-            <AvatarImage src="/images/logo-freshbunpho.jpg" alt="@minhnn" />
+            <AvatarImage src="/images/langgao-logo.svg" alt="@minhnn" />
             <AvatarFallback>A</AvatarFallback>
           </Avatar>
         </Button>
