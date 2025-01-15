@@ -35,7 +35,8 @@ import {
   ProductOrderFilterParams,
 } from '@/types/order.type';
 import { format } from 'date-fns';
-import { downloadExcelFile } from '@/shared/lib'; //or use your library of choice here
+import { downloadExcelFile } from '@/shared/lib';
+import { AxiosResponse } from 'axios';
 
 //-------------------------------------UNIT HOOKS----------------------------------------
 export const useGetUnits = () => {
@@ -345,16 +346,14 @@ export const useApproveOrder = (t: any, closeModal: () => void) => {
 export const useOrdersExport = (t: any) => {
   return useMutation({
     mutationFn: async (params: ProductOrderFilterParams) =>
-      await downloadFile(params),
-    onSuccess: (response) => {
-      console.log('response', response);
-
-      if (!response) {
+      (await downloadFile(params)) as AxiosResponse,
+    onSuccess: (response: AxiosResponse) => {
+      if (!response?.data) {
         toast.error(t('notifications.exportExcelError'));
         return;
       }
       downloadExcelFile(
-        response,
+        response.data,
         `orders-${format(new Date(), 'yyyyMMddHHmmss')}`
       );
     },

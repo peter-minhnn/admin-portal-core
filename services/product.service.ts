@@ -260,6 +260,6 @@ export const downloadFile = async (filterParams: ProductOrderFilterParams) => {
       }
     );
   } catch (err) {
-    return handleApiCatchResponse(err);
+    console.log('[ERROR] [downloadFile]: ', err);
   }
 };

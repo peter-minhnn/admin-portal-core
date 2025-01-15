@@ -225,14 +225,8 @@ export const downloadExcelFile = (data: any, fileName: string) => {
   const a = document.createElement('a');
   a.href = url;
   a.download = fileName;
-
-  // Append the anchor to the body (required for Firefox)
   document.body.appendChild(a);
-
-  // Programmatically click the anchor to trigger the download
   a.click();
-
-  // Clean up by revoking the Blob URL and removing the anchor element
   window.URL.revokeObjectURL(url);
   document.body.removeChild(a);
 };
