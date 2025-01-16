@@ -19,6 +19,9 @@ const LoginMessages = {
   },
   username: '이름',
   roleName: '역할',
+  withdraw: '회원 탈퇴',
+  withdrawHint: '회원 탈퇴를 위한 계정 정보를 입력하세요',
+  withdrawBtn: '회원 탈퇴',
 };
 
 export default LoginMessages;

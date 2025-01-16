@@ -22,7 +22,10 @@ export default async function middleware(req: NextRequest) {
   const isValidUser = await getUserInfoLogin();
   const session = await getSession();
   const defaultLocale = locale ? `/${locale}` : '/vi';
-  const publicRoutes = [`${defaultLocale}${pageRoutes.auth.login}`];
+  const publicRoutes = [
+    `${defaultLocale}${pageRoutes.auth.login}`,
+    `${defaultLocale}${pageRoutes.withdraw}`,
+  ];
   const isPublicRoute = publicRoutes.includes(path);
 
   if (errorRoutes.includes(path)) {

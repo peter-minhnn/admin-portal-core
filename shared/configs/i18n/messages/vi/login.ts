@@ -19,6 +19,9 @@ const LoginMessages = {
   },
   username: 'Tên đăng nhập',
   roleName: 'Vai trò',
+  withdraw: 'Rời hội',
+  withdrawHint: 'Nhập thông tin tài khoản để rời hội',
+  withdrawBtn: 'Chấp nhận',
 };
 
 export default LoginMessages;
