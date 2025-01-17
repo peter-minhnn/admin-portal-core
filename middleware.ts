@@ -25,6 +25,7 @@ export default async function middleware(req: NextRequest) {
   const publicRoutes = [
     `${defaultLocale}${pageRoutes.auth.login}`,
     `${defaultLocale}${pageRoutes.withdraw}`,
+    `${defaultLocale}${pageRoutes.policy}`,
   ];
   const isPublicRoute = publicRoutes.includes(path);
 

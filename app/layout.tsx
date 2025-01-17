@@ -19,7 +19,7 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: 'Làng Gạo',
-  description: 'Chuyên cung cấp bún tươi, phở nóng',
+  description: '',
 };
 
 export default function RootLayout({

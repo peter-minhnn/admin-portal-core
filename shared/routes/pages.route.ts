@@ -26,4 +26,5 @@ export const pageRoutes = {
   },
   customers: '/customers',
   withdraw: '/withdraw',
+  policy: '/policy',
 };
