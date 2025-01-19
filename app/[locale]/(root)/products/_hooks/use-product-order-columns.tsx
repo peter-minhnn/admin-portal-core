@@ -10,16 +10,6 @@ import {
 import { useActionsButtonStore } from '@/states/common.state';
 import { formatDate } from 'date-fns';
 import { OrderStatus, ProductOrderType } from '@/types/order.type';
-import {
-  LocaleCurrencyConst,
-  LocaleCurrencyUnitConst,
-} from '@/shared/constants';
-import { useLocale } from 'next-intl';
-import {
-  Locale,
-  LocaleCurrency,
-  LocaleUnitCurrency,
-} from '@/shared/configs/i18n/config';
 import { Badge } from '@/components/ui/badge';
 
 type ProductColumnProps = {
@@ -28,7 +18,6 @@ type ProductColumnProps = {
 
 export default function useProductOrderColumns({ t }: ProductColumnProps) {
   const { setActionType } = useActionsButtonStore();
-  const locale = useLocale() as Locale;
 
   const handleSetOrderStatus = (orderStatus: OrderStatus) => {
     switch (orderStatus) {
@@ -73,12 +62,7 @@ export default function useProductOrderColumns({ t }: ProductColumnProps) {
           textAlign: 'right',
         },
       },
-      accessorFn: (dataRow) =>
-        formatCurrency(
-          dataRow.totalPrice,
-          LocaleCurrencyConst[locale] as LocaleCurrency,
-          LocaleCurrencyUnitConst[locale] as LocaleUnitCurrency
-        ),
+      accessorFn: (dataRow) => formatCurrency(dataRow.totalPrice),
     },
     {
       accessorKey: 'customerName', //access nested data with dot notation

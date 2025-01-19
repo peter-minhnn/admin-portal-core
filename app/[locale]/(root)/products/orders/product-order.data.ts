@@ -2,15 +2,6 @@ import { ActionType, CommonCodeType } from '@/types/common.type';
 import { mkConfig } from 'export-to-csv';
 import { format } from 'date-fns';
 import { formatCurrency } from '@/shared/lib';
-import {
-  LocaleCurrencyConst,
-  LocaleCurrencyUnitConst,
-} from '@/shared/constants';
-import {
-  Locale,
-  LocaleCurrency,
-  LocaleUnitCurrency,
-} from '@/shared/configs/i18n/config';
 
 const selectAll = { code: 'all', name: 'selectAll', isActive: true };
 
@@ -108,15 +99,11 @@ export const csvConfig = (t: any) => {
   });
 };
 
-export const convertToOrderExcelData = (data: any[], locale: Locale) => {
+export const convertToOrderExcelData = (data: any[]) => {
   return data.map((item: any) => ({
     orderCode: item.orderCode,
     orderDate: item.orderDate,
-    totalPrice: formatCurrency(
-      item.totalPrice,
-      LocaleCurrencyConst[locale] as LocaleCurrency,
-      LocaleCurrencyUnitConst[locale] as LocaleUnitCurrency
-    ),
+    totalPrice: formatCurrency(item.totalPrice),
     contactName: item.customerName,
     contactNumber: item.customerNumber,
     deliveryAddress: item.deliveryAddress,

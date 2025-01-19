@@ -16,15 +16,7 @@ import get from 'lodash/get';
 import { formatDate } from 'date-fns';
 import { useLocale, useTranslations } from 'next-intl';
 import { formatCurrency, generateUniqueId } from '@/shared/lib';
-import {
-  LocaleCurrencyConst,
-  LocaleCurrencyUnitConst,
-} from '@/shared/constants';
-import {
-  Locale,
-  LocaleCurrency,
-  LocaleUnitCurrency,
-} from '@/shared/configs/i18n/config';
+import { Locale } from '@/shared/configs/i18n/config';
 import { Badge } from '@/components/ui/badge';
 import { useIsMounted } from '@/hooks/use-is-mounted';
 import { Label } from '@/components/ui/label';
@@ -117,21 +109,13 @@ const ProductPriceHistory = memo(
                 <div className="flex flex-row items-center gap-2">
                   <Label>{t('priceSell')}: </Label>
                   <span className="text-md font-semibold">
-                    {formatCurrency(
-                      item.price,
-                      LocaleCurrencyConst[locale] as LocaleCurrency,
-                      LocaleCurrencyUnitConst[locale] as LocaleUnitCurrency
-                    )}
+                    {formatCurrency(item.price)}
                   </span>
                 </div>
                 <div className="flex flex-row items-center gap-2">
                   <Label>{t('originalPrice')}: </Label>
                   <span className="text-md font-semibold">
-                    {formatCurrency(
-                      item.originalPrice,
-                      LocaleCurrencyConst[locale] as LocaleCurrency,
-                      LocaleCurrencyUnitConst[locale] as LocaleUnitCurrency
-                    )}
+                    {formatCurrency(item.originalPrice)}
                   </span>
                 </div>
               </div>

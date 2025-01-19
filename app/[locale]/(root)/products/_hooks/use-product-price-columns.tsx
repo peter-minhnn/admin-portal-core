@@ -10,16 +10,6 @@ import {
 } from '@/components/ui/tooltip';
 import { useActionsButtonStore } from '@/states/common.state';
 import { Badge } from '@/components/ui/badge';
-import { useLocale } from 'next-intl';
-import {
-  LocaleCurrencyConst,
-  LocaleCurrencyUnitConst,
-} from '@/shared/constants';
-import {
-  Locale,
-  LocaleCurrency,
-  LocaleUnitCurrency,
-} from '@/shared/configs/i18n/config';
 import { useModal } from '@/hooks/use-modal';
 import ProductPriceHistory from '@/app/[locale]/(root)/products/prices/_components/product-price-history';
 import { Button } from '@/components/ui/button';
@@ -31,7 +21,6 @@ type ProductPriceColumnProps = {
 export default function useProductPriceColumns({ t }: ProductPriceColumnProps) {
   const { setActionType } = useActionsButtonStore();
   const { openModal } = useModal();
-  const locale = useLocale() as Locale;
 
   const handleOpenPriceHistory = (productCode: string, unitCode: string) => {
     openModal({
@@ -75,12 +64,7 @@ export default function useProductPriceColumns({ t }: ProductPriceColumnProps) {
           textAlign: 'right',
         },
       },
-      accessorFn: (dataRow) =>
-        formatCurrency(
-          dataRow.price,
-          LocaleCurrencyConst[locale] as LocaleCurrency,
-          LocaleCurrencyUnitConst[locale] as LocaleUnitCurrency
-        ),
+      accessorFn: (dataRow) => formatCurrency(dataRow.price),
     },
     {
       accessorKey: 'originalPrice',
@@ -90,12 +74,7 @@ export default function useProductPriceColumns({ t }: ProductPriceColumnProps) {
           textAlign: 'right',
         },
       },
-      accessorFn: (dataRow) =>
-        formatCurrency(
-          dataRow.originalPrice,
-          LocaleCurrencyConst[locale] as LocaleCurrency,
-          LocaleCurrencyUnitConst[locale] as LocaleUnitCurrency
-        ),
+      accessorFn: (dataRow) => formatCurrency(dataRow.originalPrice),
     },
     {
       accessorKey: 'unitCode',

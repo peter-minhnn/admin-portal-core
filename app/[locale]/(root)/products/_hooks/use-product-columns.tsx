@@ -11,16 +11,6 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { useActionsButtonStore } from '@/states/common.state';
-import {
-  LocaleCurrencyConst,
-  LocaleCurrencyUnitConst,
-} from '@/shared/constants';
-import {
-  Locale,
-  LocaleCurrency,
-  LocaleUnitCurrency,
-} from '@/shared/configs/i18n/config';
-import { useLocale } from 'next-intl';
 import { Switch } from '@/components/ui/switch';
 
 type ProductColumnProps = {
@@ -29,7 +19,6 @@ type ProductColumnProps = {
 
 export default function useProductColumns({ t }: ProductColumnProps) {
   const { setActionType } = useActionsButtonStore();
-  const locale = useLocale() as Locale;
 
   return [
     {
@@ -82,11 +71,7 @@ export default function useProductColumns({ t }: ProductColumnProps) {
         },
       },
       accessorFn: (dataRow) =>
-        formatCurrency(
-          Number(dataRow.pricing?.originalPrice ?? 0),
-          LocaleCurrencyConst[locale] as LocaleCurrency,
-          LocaleCurrencyUnitConst[locale] as LocaleUnitCurrency
-        ),
+        formatCurrency(Number(dataRow.pricing?.originalPrice ?? 0)),
     },
     {
       accessorKey: 'pricing.price',
@@ -97,11 +82,7 @@ export default function useProductColumns({ t }: ProductColumnProps) {
         },
       },
       accessorFn: (dataRow) =>
-        formatCurrency(
-          Number(dataRow.pricing?.price ?? 0),
-          LocaleCurrencyConst[locale] as LocaleCurrency,
-          LocaleCurrencyUnitConst[locale] as LocaleUnitCurrency
-        ),
+        formatCurrency(Number(dataRow.pricing?.price ?? 0)),
     },
     {
       accessorKey: 'productMinQty',
