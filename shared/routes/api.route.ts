@@ -67,5 +67,6 @@ export const apiRoutes = {
     getCustomers: (page: number = 1, take: number = PAGE_SIZE) =>
       `/customer${createQueryParams({ order: 'DESC', page, take })}`,
     resetPassword: '/customer/reset-password',
+    export: '/customer/export',
   },
 };

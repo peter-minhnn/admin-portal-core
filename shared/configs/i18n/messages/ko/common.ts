@@ -69,6 +69,7 @@ const CommonMessages = {
   btnExport: '내보내기',
   btnClickToCopy: '복사',
   copyTextSuccess: '복사 성공',
+  exportExcel: '내보내기',
 };
 
 export default CommonMessages;

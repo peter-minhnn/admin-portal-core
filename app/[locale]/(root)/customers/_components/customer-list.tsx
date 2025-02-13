@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import get from 'lodash/get';
 import { useModal } from '@/hooks/use-modal';
@@ -10,7 +10,10 @@ import { Locale } from '@/shared/configs/i18n/config';
 import { PAGE_SIZE } from '@/shared/enums';
 import { ListResponseType, PaginationState } from '@/types/common.type';
 import { CustomerType } from '@/types/customer.type';
-import { useGetCustomers } from '@/app/[locale]/(root)/products/_hooks/use-queries';
+import {
+  useCustomersExport,
+  useGetCustomers,
+} from '@/app/[locale]/(root)/products/_hooks/use-queries';
 import { RESPONSE_OBJ_KEY } from '@/shared/constants';
 import { useMaterialReactTable } from 'material-react-table';
 import { DataTableProps } from '@/shared/data-table-props';
@@ -29,6 +32,9 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { copyToClipboard } from '@/shared/lib';
 import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
+import { IconFileExcel } from '@tabler/icons-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export default function CustomerList() {
   const t = useTranslations('CustomerMessages');
@@ -38,6 +44,7 @@ export default function CustomerList() {
   const { width } = useWindowSize();
   const { actionType, actionData, setActionType } = useActionsButtonStore();
   const locale = useLocale() as Locale;
+  const isMobile = useIsMobile();
 
   const [customers, setCustomers] = useState<ListResponseType<CustomerType>>({
     data: [],
@@ -64,6 +71,9 @@ export default function CustomerList() {
     },
     isOpen ? 'dialog' : 'list'
   );
+
+  const { mutateAsync: mutateExportData, status: exportStatus } =
+    useCustomersExport(t);
 
   const handleShowNewCustomerPwd = (data: { newPassword: string }) => {
     closeAlertModal();
@@ -121,6 +131,21 @@ export default function CustomerList() {
     initialState: {
       columnSizing: { 'mrt-row-actions': 120 },
     },
+    renderTopToolbarCustomActions: () => (
+      <div className="flex justify-start gap-2 w-fit">
+        <Button
+          type="button"
+          size="sm"
+          title={tCommon('exportExcel')}
+          variant="save"
+          onClick={async () => await mutateExportData()}
+          loading={exportStatus === 'pending'}
+        >
+          <IconFileExcel size={18} />
+          {!isMobile ? tCommon('exportExcel') : ''}
+        </Button>
+      </div>
+    ),
   });
 
   const openEditCustomerModal = useCallback(() => {
