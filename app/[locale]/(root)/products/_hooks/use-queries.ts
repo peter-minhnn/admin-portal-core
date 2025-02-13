@@ -37,6 +37,7 @@ import {
 import { format } from 'date-fns';
 import { downloadExcelFile } from '@/shared/lib';
 import { AxiosResponse } from 'axios';
+import { downloadFile as downloadCustomerFile } from '@/services/customer.service';
 
 //-------------------------------------UNIT HOOKS----------------------------------------
 export const useGetUnits = () => {
@@ -355,6 +356,23 @@ export const useOrdersExport = (t: any) => {
       downloadExcelFile(
         response.data,
         `orders-${format(new Date(), 'yyyyMMddHHmmss')}`
+      );
+    },
+    onError: () => toast.error(t('notifications.exportExcelError')),
+  });
+};
+
+export const useCustomersExport = (t: any) => {
+  return useMutation({
+    mutationFn: async () => (await downloadCustomerFile()) as AxiosResponse,
+    onSuccess: (response: AxiosResponse) => {
+      if (!response?.data) {
+        toast.error(t('notifications.exportExcelError'));
+        return;
+      }
+      downloadExcelFile(
+        response.data,
+        `customers-${format(new Date(), 'yyyyMMddHHmmss')}`
       );
     },
     onError: () => toast.error(t('notifications.exportExcelError')),

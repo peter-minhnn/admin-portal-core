@@ -71,6 +71,7 @@ const CommonMessages = {
   btnExport: 'Xuất dữ liệu',
   btnClickToCopy: 'Nhấn để sao chép',
   copyTextSuccess: 'Sao chép thành công',
+  exportExcel: 'Xuất Excel',
 };
 
 export default CommonMessages;
