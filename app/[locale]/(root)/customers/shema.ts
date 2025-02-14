@@ -6,13 +6,16 @@ export const CustomerFormSchema = z.object({
     .string()
     .min(1, { message: 'errors.phoneRequired' })
     .regex(/^\d+$/, { message: 'errors.onlyNumber' }),
-  firstName: z.string().min(1),
-  lastName: z.string().min(1),
-  email: z.string().optional().default(''),
+  firstName: z.string().min(1, { message: 'errors.firstNameRequired' }),
+  lastName: z.string().min(1, { message: 'errors.lastNameRequired' }),
+  email: z
+    .string()
+    .min(1, { message: 'errors.emailRequired' })
+    .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, { message: 'errors.invalidEmail' }),
   avatar: z.string().optional().default(''),
-  gender: z.number().int().optional().default(0),
+  gender: z.string().min(1, { message: 'errors.genderRequired' }),
   birthDate: z.string().optional().default(''),
-  address: z.string().optional().default(''),
+  address: z.string().min(1, { message: 'errors.addressRequired' }).default(''),
   companyId: z.number().int().default(1),
   isActive: z.boolean().optional().default(true),
 });

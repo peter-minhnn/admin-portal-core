@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import {
   Form,
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
@@ -14,13 +15,23 @@ import { AutosizeTextarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { useModal } from '@/hooks/use-modal';
 import { IconDeviceFloppy, IconX } from '@tabler/icons-react';
-import { CustomerFormData } from '@/types/customer.type';
+import { CustomerFormData, CustomerType } from '@/types/customer.type';
 import { CustomerFormSchema } from '@/app/[locale]/(root)/customers/shema';
-import { useUpdateCustomer } from '@/app/[locale]/(root)/customers/_hooks/use-queries';
+import {
+  useCreateCustomer,
+  useUpdateCustomer,
+} from '@/app/[locale]/(root)/customers/_hooks/use-queries';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 type CustomerFormProps = {
   rowData?: CustomerFormData;
+  setIsSaved?: Dispatch<
+    SetStateAction<{
+      success: boolean;
+      data: CustomerType | null;
+    }>
+  >;
 };
 
 const defaultProductData = {
@@ -28,33 +39,62 @@ const defaultProductData = {
   customerName: '',
   address: '',
   email: '',
-  companyId: 0,
+  companyId: 1,
   avatar: '',
   firstName: '',
   lastName: '',
   birthDate: '',
-  gender: 0,
+  gender: '1',
   isActive: true,
 } as CustomerFormData;
 
-export default function CustomerForm({ rowData }: Readonly<CustomerFormProps>) {
+export default function CustomerForm({
+  rowData,
+  setIsSaved,
+}: Readonly<CustomerFormProps>) {
   const t = useTranslations('CustomerMessages');
   const tCommon = useTranslations('CommonMessages');
   const { closeModal } = useModal();
   const form = useForm<CustomerFormData>({
     resolver: zodResolver(CustomerFormSchema),
     defaultValues: rowData?.id
-      ? { ...rowData, birthDate: '', avatar: rowData.avatar ?? '' }
+      ? {
+          ...rowData,
+          birthDate: '',
+          avatar: rowData.avatar ?? '',
+          gender: String(rowData.gender ?? '1'),
+        }
       : { ...defaultProductData },
   });
 
   const { mutateAsync: updateCustomer, status: updateMutateStatus } =
     useUpdateCustomer(t, closeModal);
 
+  const { mutateAsync: createCustomer, status: createMutateStatus } =
+    useCreateCustomer(t, (data: CustomerType) =>
+      setIsSaved?.({ success: true, data: data })
+    );
+
   const onSubmit = async (data: CustomerFormData) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { id, ...rest } = data;
-    await updateCustomer(rest);
+    const obj = {
+      email: rest.email,
+      phoneNumber: rest.phoneNumber,
+      firstName: rest.firstName,
+      lastName: rest.lastName,
+      address: rest.address,
+      gender: Number(rest.gender),
+      companyId: rest.companyId,
+      avatar: rest.avatar,
+      birthDate: rest.birthDate,
+    };
+
+    if (id) {
+      await updateCustomer({ ...obj, id, isActive: rest.isActive });
+      return;
+    }
+    await createCustomer(obj);
   };
 
   return (
@@ -143,13 +183,14 @@ export default function CustomerForm({ rowData }: Readonly<CustomerFormProps>) {
               name="email"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>{t('email')}</FormLabel>
+                  <FormLabel required>{t('email')}</FormLabel>
                   <Input
+                    {...field}
                     type="text"
-                    value={field.value ?? ''}
                     placeholder={t('email')}
-                    disabled
+                    hasError={!!form.formState.errors.email}
                   />
+                  <FormMessage namespace="CustomerMessages" />
                 </FormItem>
               )}
             />
@@ -157,15 +198,50 @@ export default function CustomerForm({ rowData }: Readonly<CustomerFormProps>) {
         </div>
         <FormField
           control={form.control}
+          name="gender"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormLabel required>{t('gender')}</FormLabel>
+              <RadioGroup
+                onValueChange={field.onChange}
+                defaultValue={String(field.value)}
+                className="flex flex-row items-center"
+              >
+                <FormItem className="flex items-center space-x-3 space-y-0">
+                  <FormControl>
+                    <RadioGroupItem value="1" />
+                  </FormControl>
+                  <FormLabel className="font-normal">{t('male')}</FormLabel>
+                </FormItem>
+                <FormItem className="flex items-center space-x-3 space-y-0">
+                  <FormControl>
+                    <RadioGroupItem value="2" />
+                  </FormControl>
+                  <FormLabel className="font-normal">{t('female')}</FormLabel>
+                </FormItem>
+                <FormItem className="flex items-center space-x-3 space-y-0">
+                  <FormControl>
+                    <RadioGroupItem value="0" />
+                  </FormControl>
+                  <FormLabel className="font-normal">{t('other')}</FormLabel>
+                </FormItem>
+              </RadioGroup>
+              <FormMessage namespace="CustomerMessages" />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="address"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t('address')}</FormLabel>
+              <FormLabel required>{t('address')}</FormLabel>
               <AutosizeTextarea
                 value={field.value ?? ''}
                 onChange={field.onChange}
                 placeholder={t('address')}
                 autoSize
+                hasError={!!form.formState.errors.address}
               />
               <FormMessage namespace="CustomerMessages" />
             </FormItem>
@@ -176,8 +252,11 @@ export default function CustomerForm({ rowData }: Readonly<CustomerFormProps>) {
             type="button"
             title={tCommon('btnCancel')}
             variant="outline"
-            onClick={closeModal}
-            disabled={updateMutateStatus === 'pending'}
+            onClick={() => closeModal(false)}
+            disabled={
+              updateMutateStatus === 'pending' ||
+              createMutateStatus === 'pending'
+            }
           >
             <IconX size={16} />
             {tCommon('btnCancel')}
@@ -186,8 +265,14 @@ export default function CustomerForm({ rowData }: Readonly<CustomerFormProps>) {
             type="submit"
             title={tCommon('btnSave')}
             variant="save"
-            disabled={updateMutateStatus === 'pending'}
-            loading={updateMutateStatus === 'pending'}
+            disabled={
+              updateMutateStatus === 'pending' ||
+              createMutateStatus === 'pending'
+            }
+            loading={
+              updateMutateStatus === 'pending' ||
+              createMutateStatus === 'pending'
+            }
           >
             <IconDeviceFloppy size={16} />
             {tCommon('btnSave')}

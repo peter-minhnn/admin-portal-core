@@ -5,6 +5,12 @@ const CustomerMessages = {
   errors: {
     phoneRequired: '전화번호를 입력하세요',
     onlyNumber: '숫자만 입력하세요',
+    emailRequired: '이메일을 입력하세요',
+    invalidEmail: '유효한 이메일을 입력하세요',
+    firstNameRequired: '이름을 입력하세요',
+    lastNameRequired: '성을 입력하세요',
+    genderRequired: '성별을 입력하세요',
+    addressRequired: '주소를 입력하세요',
   },
   email: '이메일',
   firstName: '이름',
@@ -35,6 +41,7 @@ const CustomerMessages = {
   resetPasswordAlertTitle: '비밀번호 재설정',
   resetPasswordAlertContent:
     '이메일이 {email}인 회원의 비밀번호를 재설정하시겠습니까?',
+  createUser: '회원 추가',
 };
 
 export default CustomerMessages;

@@ -5,20 +5,28 @@ import {
   handleApiCatchResponse,
   handleApiResponse,
 } from '@/services/api.service';
-import {
-  CustomerFormData,
-  CustomerResetPwdFormData,
-} from '@/types/customer.type';
+import { CustomerResetPwdFormData, CustomerType } from '@/types/customer.type';
 import globalAxiosInstance from '@/shared/configs/axios.config';
 
-export const updateCustomer = async (data: CustomerFormData) => {
+export const createCustomer = async (data: CustomerType) => {
   try {
-    const response = await useAxios.put<
-      null,
-      BaseResponseType,
-      CustomerFormData
-    >(apiRoutes.customers.customer, data);
-    return handleApiResponse<CustomerFormData>(response);
+    const response = await useAxios.post<null, BaseResponseType, CustomerType>(
+      apiRoutes.customers.create,
+      data
+    );
+    return handleApiResponse<CustomerType>(response);
+  } catch (e) {
+    return handleApiCatchResponse(e);
+  }
+};
+
+export const updateCustomer = async (data: CustomerType) => {
+  try {
+    const response = await useAxios.put<null, BaseResponseType, CustomerType>(
+      apiRoutes.customers.customer,
+      data
+    );
+    return handleApiResponse<CustomerType>(response);
   } catch (e) {
     return handleApiCatchResponse(e);
   }
