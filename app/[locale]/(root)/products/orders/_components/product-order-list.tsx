@@ -100,7 +100,7 @@ export default function ProductOrderList() {
     onPaginationChange: setPagination, //hoist pagination state to your state when it changes internally
     state: {
       pagination,
-      isLoading: isFetchingOrders && !isOpen,
+      isLoading: isFetchingOrders && !isOpen && isRefresh,
     }, //pass the pagination state to the table
     initialState: {
       columnSizing: {

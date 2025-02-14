@@ -465,7 +465,7 @@ export default function ProductOrderForm({
               type="button"
               title={t('modalCancelBtn')}
               variant="outline"
-              onClick={closeModal}
+              onClick={() => closeModal(false)}
               disabled={
                 addMutateStatus === 'pending' ||
                 updateMutateStatus === 'pending'

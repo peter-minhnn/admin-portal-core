@@ -26,10 +26,21 @@ export function CustomerActive({ rowData }: Readonly<CustomerActiveProps>) {
     useUpdateCustomer(t, closeModal);
 
   const handleSaveChanges = async () => {
-    await updateCustomer({
-      ...rowData,
+    const obj = {
+      id: rowData.id,
+      email: rowData.email,
+      phoneNumber: rowData.phoneNumber,
+      firstName: rowData.firstName,
+      lastName: rowData.lastName,
+      address: rowData.address,
+      gender: Number(rowData.gender),
+      companyId: rowData.companyId,
+      avatar: rowData.avatar,
+      birthDate: rowData.birthDate,
       isActive: status === 'Y',
-    });
+    };
+
+    await updateCustomer(obj);
   };
 
   useEffect(() => {
