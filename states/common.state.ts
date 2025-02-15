@@ -29,7 +29,7 @@ export const useModalStore = create<ModalStore>((set) => ({
   modalProps: {
     isOpen: false,
     isClosed: false,
-    isRefresh: false,
+    isRefresh: true,
     description: '',
     customSize: '',
     title: '',
