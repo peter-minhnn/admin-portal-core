@@ -7,19 +7,19 @@ import {
 } from '@/app/[locale]/(root)/customers/shema';
 
 export type CustomerType = {
-  id: number;
+  id?: number;
   email: string;
-  userName: string;
   phoneNumber: string;
   firstName: string;
   lastName: string;
   gender: Gender;
-  birthDate: string;
-  avatar: string;
+  birthDate?: string;
+  avatar?: string;
   address: string;
-  deviceToken: string;
+  deviceToken?: string;
   companyId: number;
-  isActive: boolean;
+  isActive?: boolean;
+  password?: string;
 };
 
 export type CustomerFilterType = {

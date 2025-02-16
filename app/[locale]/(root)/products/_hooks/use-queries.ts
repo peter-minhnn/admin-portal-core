@@ -72,7 +72,7 @@ export const useGetProducts = (
 };
 
 //ADD hook (post product in api)
-export const useAddProduct = (t: any, closeModal: () => void) => {
+export const useAddProduct = (t: any, closeModal: (value: boolean) => void) => {
   return useMutation({
     mutationFn: async (product: ProductType) => await addProduct(product),
     onSuccess: (response) => {
@@ -86,14 +86,17 @@ export const useAddProduct = (t: any, closeModal: () => void) => {
         return;
       }
       toast.success(message);
-      closeModal();
+      closeModal(true);
     },
     onError: () => toast.error(t('notifications.addProductError')),
   });
 };
 
 //UPDATE hook (put product in api)
-export const useUpdateProduct = (t: any, closeModal: () => void) => {
+export const useUpdateProduct = (
+  t: any,
+  closeModal: (value: boolean) => void
+) => {
   return useMutation({
     mutationFn: async (product: ProductType) => await updateProduct(product),
     onSuccess: (response) => {
@@ -107,14 +110,17 @@ export const useUpdateProduct = (t: any, closeModal: () => void) => {
         return;
       }
       toast.success(message);
-      closeModal();
+      closeModal(true);
     },
     onError: () => toast.error(t('notifications.updateProductError')),
   });
 };
 
 //DELETE hook (delete product in api)
-export const useDeleteProduct = (t: any, closeModal: () => void) => {
+export const useDeleteProduct = (
+  t: any,
+  closeModal: (value: boolean) => void
+) => {
   return useMutation({
     mutationFn: async (productCode: string) => await deleteProduct(productCode),
     onSuccess: (response) => {
@@ -128,7 +134,7 @@ export const useDeleteProduct = (t: any, closeModal: () => void) => {
         return;
       }
       toast.success(message);
-      closeModal();
+      closeModal(true);
     },
     onError: () => toast.error(t('notifications.deleteProductError')),
   });
@@ -209,7 +215,7 @@ export const useUpdateProductPrice = (t: any, closeModal: any) => {
         return;
       }
       toast.success(message);
-      closeModal();
+      closeModal(true);
     },
     onError: () => toast.error(t('notifications.updateProductPriceError')),
   });
@@ -250,7 +256,7 @@ export const useGetProductOptions = (
   });
 };
 
-export const useAddOrder = (t: any, closeModal: () => void) => {
+export const useAddOrder = (t: any, closeModal: (value: boolean) => void) => {
   return useMutation({
     mutationFn: async (product: OrderRequestType) => await addOrder(product),
     onSuccess: (response) => {
@@ -265,13 +271,16 @@ export const useAddOrder = (t: any, closeModal: () => void) => {
       }
 
       toast.success(message);
-      closeModal();
+      closeModal(true);
     },
     onError: () => toast.error(t('notifications.addOrderError')),
   });
 };
 
-export const useUpdateOrder = (t: any, closeModal: () => void) => {
+export const useUpdateOrder = (
+  t: any,
+  closeModal: (value: boolean) => void
+) => {
   return useMutation({
     mutationFn: async (product: OrderRequestType) => await updateOrder(product),
     onSuccess: (response) => {
@@ -286,13 +295,16 @@ export const useUpdateOrder = (t: any, closeModal: () => void) => {
       }
 
       toast.success(message);
-      closeModal();
+      closeModal(true);
     },
     onError: () => toast.error(t('notifications.updateOrderError')),
   });
 };
 
-export const useDeleteOrder = (t: any, closeModal: () => void) => {
+export const useDeleteOrder = (
+  t: any,
+  closeModal: (value: boolean) => void
+) => {
   return useMutation({
     mutationFn: async (orderCode: string) => await deleteOrder(orderCode),
     onSuccess: (response) => {
@@ -307,7 +319,7 @@ export const useDeleteOrder = (t: any, closeModal: () => void) => {
       }
 
       toast.success(message);
-      closeModal();
+      closeModal(true);
     },
     onError: () => toast.error(t('notifications.deleteOrderError')),
   });
@@ -322,7 +334,10 @@ export const useGetOrderDetail = (orderCode: string) => {
   });
 };
 
-export const useApproveOrder = (t: any, closeModal: () => void) => {
+export const useApproveOrder = (
+  t: any,
+  closeModal: (value: boolean) => void
+) => {
   return useMutation({
     mutationFn: async (product: ApproveOrderType) =>
       await approveOrder(product),
@@ -338,7 +353,7 @@ export const useApproveOrder = (t: any, closeModal: () => void) => {
       }
 
       toast.success(message);
-      closeModal();
+      closeModal(true);
     },
     onError: () => toast.error(t('notifications.approveOrderError')),
   });

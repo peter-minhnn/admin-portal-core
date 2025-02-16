@@ -27,12 +27,12 @@ export function useModal() {
     });
   };
 
-  const closeModal = () => {
+  const closeModal = (isRefresh: boolean = true) => {
     setModalOpen({
       ...modalProps,
       isClosed: true,
       isOpen: false,
-      isRefresh: true,
+      isRefresh: isRefresh,
     });
   };
 

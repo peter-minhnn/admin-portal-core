@@ -5,6 +5,12 @@ const CustomerMessages = {
   errors: {
     phoneRequired: 'Vui lòng nhập số điện thoại',
     onlyNumber: 'Vui lòng nhập số',
+    emailRequired: 'Vui lòng nhập email',
+    invalidEmail: 'Vui lòng nhập email hợp lệ',
+    firstNameRequired: 'Vui lòng nhập tên',
+    lastNameRequired: 'Vui lòng nhập họ',
+    genderRequired: 'Vui lòng chọn giới tính',
+    addressRequired: 'Vui lòng nhập địa chỉ',
   },
   email: 'Email',
   firstName: 'Tên',
@@ -33,6 +39,7 @@ const CustomerMessages = {
   newPassword: 'Mật khẩu mới',
   resetPasswordAlertTitle: 'Đặt lại mật khẩu',
   resetPasswordAlertContent: `Bạn có chắc chắn muốn đặt lại mật khẩu cho khách hàng có email là {email}?`,
+  createUser: 'Thêm khách hàng',
 };
 
 export default CustomerMessages;

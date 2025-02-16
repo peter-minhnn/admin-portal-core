@@ -84,7 +84,7 @@ export default function ProductPriceForm({
             type="button"
             title={t('modalCancelBtn')}
             variant="outline"
-            onClick={closeModal}
+            onClick={() => closeModal(false)}
             disabled={priceStatus === 'pending' || status === 'pending'}
             loading={priceStatus === 'pending'}
           >

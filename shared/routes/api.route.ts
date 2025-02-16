@@ -68,5 +68,6 @@ export const apiRoutes = {
       `/customer${createQueryParams({ order: 'DESC', page, take })}`,
     resetPassword: '/customer/reset-password',
     export: '/customer/export',
+    create: '/customer/create',
   },
 };

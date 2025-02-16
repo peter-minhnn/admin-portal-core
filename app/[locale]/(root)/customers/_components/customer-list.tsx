@@ -35,11 +35,12 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { IconFileExcel } from '@tabler/icons-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { PlusIcon } from 'lucide-react';
 
 export default function CustomerList() {
   const t = useTranslations('CustomerMessages');
   const tCommon = useTranslations('CommonMessages');
-  const { openModal, isClosed, isOpen } = useModal();
+  const { openModal, isClosed, isOpen, isRefresh, closeModal } = useModal();
   const { openAlertModal, closeAlertModal } = useAlertModal();
   const { width } = useWindowSize();
   const { actionType, actionData, setActionType } = useActionsButtonStore();
@@ -58,6 +59,10 @@ export default function CustomerList() {
     pageIndex: 0,
     pageSize: PAGE_SIZE,
   });
+  const [isSaved, setIsSaved] = useState<{
+    success: boolean;
+    data: CustomerType | null;
+  }>({ success: false, data: null });
 
   const {
     data: customerData,
@@ -75,44 +80,21 @@ export default function CustomerList() {
   const { mutateAsync: mutateExportData, status: exportStatus } =
     useCustomersExport(t);
 
-  const handleShowNewCustomerPwd = (data: { newPassword: string }) => {
-    closeAlertModal();
-    openModal({
-      isOpen: true,
-      title: t('newPassword'),
-      description: '',
-      isRefresh: false,
-      modalContent: (
-        <div className="flex flex-row items-center justify-center mt-4">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <Badge
-                  variant="primary"
-                  className="flex flex-row gap-2"
-                  onClick={async () => {
-                    await copyToClipboard(data?.newPassword ?? '');
-                    toast.success(tCommon('copyTextSuccess'));
-                  }}
-                >
-                  <span className="font-semibold text-lg">
-                    {data?.newPassword}
-                  </span>
-                </Badge>
-              </TooltipTrigger>
-              <TooltipContent>{tCommon('btnClickToCopy')}</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
-      ),
-    });
-  };
-
   const customerColumns = useCustomerColumns({ t });
+
   const { mutateAsync: resetPwdMutateAsync } = useCustomerResetPassword(
     t,
-    handleShowNewCustomerPwd
+    closeAlertModal
   );
+
+  const handleCreateCustomer = useCallback(() => {
+    openModal({
+      isOpen: true,
+      title: t('createUser'),
+      description: '',
+      modalContent: <CustomerForm setIsSaved={setIsSaved} />,
+    });
+  }, [openModal, t]);
 
   const table = useMaterialReactTable({
     ...DataTableProps(locale),
@@ -126,13 +108,23 @@ export default function CustomerList() {
     onPaginationChange: setPagination, //hoist pagination state to your state when it changes internally
     state: {
       pagination,
-      isLoading: isFetching && !isOpen,
+      isLoading: isFetching && !isOpen && isRefresh,
     }, //pass the pagination state to the table
     initialState: {
       columnSizing: { 'mrt-row-actions': 120 },
     },
     renderTopToolbarCustomActions: () => (
       <div className="flex justify-start gap-2 w-fit">
+        <Button
+          type="button"
+          size="sm"
+          title={t('createUser')}
+          onClick={handleCreateCustomer}
+          variant="blueShine"
+        >
+          <PlusIcon size={18} />
+          {!isMobile ? t('createUser') : ''}
+        </Button>
         <Button
           type="button"
           size="sm"
@@ -200,6 +192,43 @@ export default function CustomerList() {
     openCustomerResetPwdModal,
   ]);
 
+  const handleShowPwdCreated = useCallback(
+    (data: { password: string }) => {
+      setIsSaved({ success: false, data: null });
+      closeModal();
+      openModal({
+        isOpen: true,
+        title: t('newPassword'),
+        description: '',
+        isRefresh: false,
+        modalContent: (
+          <div className="flex flex-row items-center justify-center mt-4">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Badge
+                    variant="primary"
+                    className="flex flex-row gap-2"
+                    onClick={async () => {
+                      await copyToClipboard(data?.password ?? '');
+                      toast.success(tCommon('copyTextSuccess'));
+                    }}
+                  >
+                    <span className="font-semibold text-lg">
+                      {data?.password}
+                    </span>
+                  </Badge>
+                </TooltipTrigger>
+                <TooltipContent>{tCommon('btnClickToCopy')}</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+        ),
+      });
+    },
+    [closeAlertModal, openModal, t, tCommon]
+  );
+
   useEffect(() => {
     if (status === 'pending' || customerData?.type === 'error') {
       setCustomers({
@@ -225,8 +254,9 @@ export default function CustomerList() {
   }, [customerData, status]);
 
   useEffect(() => {
+    if (!isRefresh) return;
     refetch().finally();
-  }, [pagination, isClosed, refetch]);
+  }, [pagination, isClosed, refetch, isRefresh]);
 
   useEffect(() => {
     if (width > 1280) {
@@ -245,6 +275,12 @@ export default function CustomerList() {
       setActionType('', null);
     }
   }, [actionType, setActionType, handleActionClick]);
+
+  useEffect(() => {
+    if (!isSaved.success) return;
+    const password = get(isSaved.data, 'password', '');
+    handleShowPwdCreated({ password: password });
+  }, [isSaved, handleShowPwdCreated]);
 
   return <DataTable table={table} />;
 }
